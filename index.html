@@ -397,9 +397,11 @@
             bottom: 30px;
             right: 30px;
             z-index: 9999;
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
+            width: 80px;
+            /* Increased size */
+            height: 80px;
+            /* Increased size */
+            background: transparent;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -408,10 +410,10 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            box-shadow: 0 0 15px var(--primary-glow);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            /* Remove rotation so rocket points up by default */
-            transform: rotate(0deg);
+            border: none;
+            /* Disable default text selection on long press */
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         #rocket-top.show {
@@ -419,22 +421,44 @@
             visibility: visible;
         }
 
-        #rocket-top:hover {
-            background: #c01092;
-            transform: translateY(-5px);
-            box-shadow: 0 0 25px var(--primary-glow);
+        #rocket-top:active {
+            transform: scale(0.95);
         }
 
-        /* Rocket Icon Styling */
-        #rocket-top svg {
-            width: 28px;
-            height: 28px;
-            fill: white;
-            /* Rotate the specific SVG slightly if needed to align perfectly vertical */
-            transform: rotate(0deg);
+        /* Tooltip Text */
+        #rocket-tooltip {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+            font-family: 'Orbitron', sans-serif;
+            pointer-events: none;
         }
 
-        /* The Launch Animation */
+        #rocket-top:hover #rocket-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Rocket GIF Styling */
+        #rocket-top img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 0 5px rgba(212, 18, 161, 0.8));
+        }
+
+        /* The Launch Animation (Scroll to Top) */
         @keyframes flyUp {
             0% {
                 transform: translateY(0) scale(1);
@@ -443,16 +467,10 @@
 
             20% {
                 transform: translateY(20px) scale(0.9);
-                /* Compress for launch */
-            }
-
-            40% {
-                opacity: 1;
             }
 
             100% {
-                transform: translateY(-150vh) scale(0.5);
-                /* Fly off screen */
+                transform: translateY(-120vh) scale(0.5);
                 opacity: 0;
             }
         }
@@ -460,18 +478,70 @@
         #rocket-top.launching {
             animation: flyUp 1s ease-in-out forwards;
             pointer-events: none;
-            /* Prevent double clicks */
         }
 
-        /* --- Responsive Tweaks --- */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
+        /* --- Easter Egg Modal --- */
+        .easter-egg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+            backdrop-filter: blur(10px);
+        }
 
-            .hero-subtitle {
-                font-size: 1rem;
-            }
+        .easter-egg-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .easter-egg-content {
+            background: rgba(20, 20, 20, 0.95);
+            border: 2px solid var(--primary);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 0 50px var(--primary-glow);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .easter-egg-overlay.active .easter-egg-content {
+            transform: scale(1);
+        }
+
+        .char-gif {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary);
+            background: #000;
+        }
+
+        .close-egg {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-egg:hover {
+            color: var(--primary);
         }
     </style>
 </head>
@@ -790,13 +860,24 @@
         </div>
     </footer>
 
-    <!-- Rocket Scroll Top -->
-    <a href="#" id="rocket-top" title="Back to Top">
-        <svg viewBox="0 0 512 512" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-            <path fill="currentColor"
-                d="M256,16c-50,0-80,50-80,120v90c0,40-30,60-60,70v50l60-20v60l40-30h80l40,30v-60l60,20v-50c-30-10-60-30-60-70v-90C336,66,306,16,256,16z M256,96c11,0,20,9,20,20s-9,20-20,20s-20-9-20-20S245,96,256,96z" />
-        </svg>
-    </a>
+    <!-- Rocket Scroll Top (With Image) -->
+    <div id="rocket-top" title="Back to Top">
+        <span id="rocket-tooltip">Go to Top</span>
+        <!-- Using your provided GIF name -->
+        <img src="img/rocket.gif" alt="Rocket Launch">
+    </div>
+
+    <!-- Easter Egg Modal -->
+    <div id="easter-egg-modal" class="easter-egg-overlay">
+        <div class="easter-egg-content">
+            <span class="close-egg">&times;</span>
+            <!-- Placeholder Character GIF -->
+            <img src="https://media.giphy.com/media/l3vR16pONsV8cKkWk/giphy.gif" class="char-gif" alt="Space Character">
+            <h4 class="text-white mb-3">Secret Found! 🚀</h4>
+            <p class="text-white mb-4">Want to know who created this and me?</p>
+            <a href="https://www.linkedin.com/in/ananthudev/" target="_blank" class="btn btn-neon">Click Here</a>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -818,9 +899,15 @@
             document.getElementById('preloader').style.display = 'none';
         });
 
-        // --- ROCKET SCROLL LOGIC ---
+        // --- ROCKET SCROLL & EASTER EGG LOGIC ---
         const rocketBtn = document.getElementById('rocket-top');
+        const modal = document.getElementById('easter-egg-modal');
+        const closeModal = document.querySelector('.close-egg');
 
+        let pressTimer;
+        let isLongPress = false;
+
+        // Show/Hide Rocket on Scroll
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
                 rocketBtn.classList.add('show');
@@ -833,8 +920,42 @@
             }
         });
 
+        // --- Long Press Detection Logic ---
+
+        // Mouse Down / Touch Start -> Start Timer
+        const startPress = (e) => {
+            isLongPress = false; // Reset flag
+            pressTimer = setTimeout(() => {
+                isLongPress = true;
+                // Trigger Easter Egg
+                modal.classList.add('active');
+            }, 6000); // 6 seconds wait
+        };
+
+        // Mouse Up / Leave / Touch End -> Clear Timer
+        const cancelPress = (e) => {
+            clearTimeout(pressTimer);
+        };
+
+        // Attach Events for Long Press
+        rocketBtn.addEventListener('mousedown', startPress);
+        rocketBtn.addEventListener('touchstart', startPress);
+
+        rocketBtn.addEventListener('mouseup', cancelPress);
+        rocketBtn.addEventListener('mouseleave', cancelPress);
+        rocketBtn.addEventListener('touchend', cancelPress);
+
+        // Click Handler (Launch Logic)
         rocketBtn.addEventListener('click', (e) => {
             e.preventDefault();
+
+            // If it was a long press (Easter Egg opened), do NOT launch rocket
+            if (isLongPress) {
+                isLongPress = false; // Reset for next time
+                return;
+            }
+
+            // Normal Click Behavior -> Launch Rocket
             rocketBtn.classList.add('launching');
 
             window.scrollTo({
@@ -846,6 +967,18 @@
                 rocketBtn.classList.remove('launching');
                 rocketBtn.classList.remove('show');
             }, 1000);
+        });
+
+        // Close Modal Logic
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        // Close modal when clicking outside box
+        window.addEventListener('click', (e) => {
+            if (e.target == modal) {
+                modal.classList.remove('active');
+            }
         });
 
         // --- STARFIELD ANIMATION SCRIPT ---
