@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Spacelabs provides cutting-edge aerospace technology, simulation, and software solutions for space and defense missions." />
+    <meta name="keywords"
+        content="Spacelabs, Aerospace Technology, Space Simulation, Defense Software, Satellite Systems, Launch Vehicle Testing, Aerospace Engineering, Space Research India">
+    <meta name="author" content="SK">
+    <title>Spacelabs – Astra</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Dependencies -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicons/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+    <link rel="manifest" href="favicons/site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicons/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicons/android-chrome-512x512.png">
+
+    <style>
+        /* --- VARIABLES & GLOBAL --- */
+        :root {
+            --bg-color: #050505;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent: #d412a1;
+            --accent-glow: rgba(212, 18, 161, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .display-5 {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        /* --- LOADER --- */
+        #overfull {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212, 18, 161, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            display: block;
+            margin: 0 auto 15px auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: rgba(5, 5, 5, 0.9) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1rem 0;
+        }
+
+        .logogok {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 1.5rem;
+            color: var(--text-muted) !important;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent) !important;
+        }
+
+        .offcanvas {
+            background-color: var(--bg-color) !important;
+            border-left: 1px solid var(--card-border);
+        }
+
+        /* --- HERO / HEADER --- */
+        .page-header {
+            padding-top: 120px;
+            padding-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .star-field {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 2px);
+            background-size: 550px 550px, 350px 350px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        /* Satellite Image Animation */
+        .hero-planet {
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+            animation: floatSat 6s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+        }
+
+        @keyframes floatSat {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+        }
+
+        .breadcrumb {
+            justify-content: center;
+            background: transparent;
+        }
+
+        .breadcrumb-item a {
+            color: var(--accent);
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-muted);
+        }
+
+        /* --- CONTENT & CARDS --- */
+        .section-padding {
+            padding: 60px 0;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s, border-color 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            color: #fff;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        .feature-text {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        .feature-title {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid var(--card-border);
+            background: #000;
+            padding-top: 3rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            margin-left: 10px;
+        }
+
+        .social-icon:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOADING OVERLAY -->
+    <div id="overfull">
+        <div class="text-center">
+            <span class="spinner"></span>
+            <h5 class="text-white mt-3" style="font-family: var(--font-heading); letter-spacing: 2px;">SPACELABS</h5>
+            <p class="text-muted small">Loading...</p>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="dist/custom/images/logo.png" class="logogok" alt="SpaceLabs Logo" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-white" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="overview.html">About Us</a></li>
+                        <!-- Products Active for Astra Page -->
+                        <li class="nav-item"><a class="nav-link active" href="products.html">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER SECTION -->
+    <section class="page-header">
+        <div class="star-field"></div>
+        <div class="container" data-aos="fade-up">
+
+            <!-- Added Satellite Image here -->
+            <img src="dist/custom/images/sat.png" class="hero-planet" alt="Satellite Simulation" />
+
+            <h1 class="display-5 fw-bold text-white">ASTRA</h1>
+            <p class="text-accent h5 mb-3">AeroSpace TRAjectory optimizer</p>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                Optimizer and three degrees of freedom simulator together forms ASTRA.
+            </p>
+            <nav aria-label="breadcrumb" class="mt-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="products.html">Products</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Astra</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="container pb-5">
+
+        <!-- Space Missions -->
+        <section class="section-padding" data-aos="fade-up">
+            <h3 class="section-title">Space Missions</h3>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title text-accent">Launcher</span>
+                        <p class="feature-text">Trajectory optimization for orbital and sub-orbital launches.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title text-accent">Satellites</span>
+                        <p class="feature-text">Orbit transfer, deorbiting, and constellation management.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title text-accent">Missiles</span>
+                        <p class="feature-text">Simulation for tactical and strategic missile trajectories.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title text-accent">Re-Entry</span>
+                        <p class="feature-text">Modeling of high-speed atmospheric re-entry dynamics.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title text-accent">Interplanetary</span>
+                        <p class="feature-text">Support for lunar and deep space mission analysis.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title text-accent">Human Space</span>
+                        <p class="feature-text">Advanced planning for manned mission trajectories.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Design & Planning -->
+        <section class="section-padding pt-0" data-aos="fade-up">
+            <h3 class="section-title">Mission Design and Planning</h3>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title">Configuration Design</span>
+                        <p class="feature-text">Design configurations for launch vehicles, reentry vehicles, missiles,
+                            satellites, and projectiles.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title">Satellite Mission Planning</span>
+                        <p class="feature-text">Plan missions for LEO, SSO, GSO, and GTO satellite deployments with
+                            precision targeting.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title">Manned Mission Scenarios</span>
+                        <p class="feature-text">Support advanced manned mission profiles including rendezvous, docking,
+                            and return phases.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title">Constellation & Swarm Flying</span>
+                        <p class="feature-text">Design and manage coordinated trajectories for satellite swarms and
+                            constellations.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title">Interplanetary & Lunar Missions</span>
+                        <p class="feature-text">Plan mission phases for lunar transfers, interplanetary flybys, and
+                            orbit insertions.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <span class="feature-title">Multi-Body Simulation</span>
+                        <p class="feature-text">Simulate dynamics with multiple gravitational bodies and custom
+                            reference frames.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Analysis -->
+        <section class="section-padding pt-0" data-aos="fade-up">
+            <h3 class="section-title">Mission Analysis</h3>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text text-center">Visibility Analysis</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text text-center">Range Safety Analysis</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text text-center">Long-term & short-term orbit propagation</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text text-center">Monte Carlo analysis for probabilistic assessment</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text text-center">Collision & Conjunction Analysis</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text text-center">Proximity Operations & Mitigation strategies</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text text-center">Re-entry Safety & Risk Analysis</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Optimization -->
+        <section class="section-padding pt-0" data-aos="fade-up">
+            <h3 class="section-title">Optimization</h3>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Gradient based parameter and control optimization</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Global hybrid optimization techniques</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Mission-related objective functions & constraints</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Stage wise steering and sequence optimization</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Libraries -->
+        <section class="section-padding pt-0" data-aos="fade-up">
+            <h3 class="section-title">Model Libraries</h3>
+            <div class="row row-cols-2 row-cols-md-3 g-3">
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Gravity field (Harmonics, J2)</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Planet model (Earth, Moon, Mars)</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Atmosphere (NRLMSISE, JB2006)</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Wind Models</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Rocket Propulsion</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Aerodynamics</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Numerical Propagations</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Time bases (TT, UTC, GPS)</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card text-center p-3">
+                        <p class="feature-text small">Predefined Frames (J2000, ECEF)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Generic Characteristics -->
+        <section class="section-padding pt-0 mb-5" data-aos="fade-up">
+            <h3 class="section-title">Generic Characteristics</h3>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Supports direct JSON input or an auto-generating UI</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Reload functionality of past saved missions</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Event-driven sequence management</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Auto-population of dependent parameters</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">CSV data import/export capabilities</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="glass-card">
+                        <p class="feature-text">Mission state persistence and reload</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container pb-4">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0 text-muted small">© <span id="current-year"></span> SpaceLabs. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center justify-content-md-end">
+                    <a href="https://www.linkedin.com/company/thespacelabs" target="_blank" class="social-icon">
+                        <img src="icon/linkedin.png" style="width: 20px; filter: invert(1);" alt="LinkedIn">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/js/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Loader
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('overfull');
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        });
+
+        // Year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+
+</html>
