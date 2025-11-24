@@ -7,7 +7,7 @@
     <meta name="description"
         content="Spacelabs provides cutting-edge aerospace technology, simulation, and software solutions for space and defense missions." />
     <meta name="author" content="SK">
-    <title>Spacelabs – Saras 6</title>
+    <title>Spacelabs – Mission Design</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     <link href="dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- Favicons (Original Paths) -->
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="48x48" href="favicons/favicon-48x48.png">
     <link rel="icon" type="image/png" sizes="96x96" href="favicons/favicon-96x96.png">
@@ -67,7 +67,7 @@
         p,
         li {
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         a {
@@ -210,13 +210,10 @@
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
+            border-radius: 16px;
+            padding: 2.5rem;
             transition: transform 0.3s, border-color 0.3s;
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .glass-card:hover {
@@ -225,57 +222,30 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
-        .section-title {
-            color: #fff;
-            margin-bottom: 2rem;
-            border-left: 3px solid var(--accent);
-            padding-left: 1rem;
+        /* --- LIST STYLING --- */
+        .mission-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .feature-text {
-            margin-bottom: 0;
-            font-size: 0.95rem;
-            color: #ccc;
-        }
-
-        .feature-title {
-            color: #fff;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        /* --- SIMULATION CARDS (MILS/OILS/HILS) --- */
-        .sim-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 2rem;
-            height: 100%;
-            transition: 0.3s;
-        }
-
-        .sim-card:hover {
-            border-color: var(--accent);
-            background: rgba(212, 18, 161, 0.05);
-        }
-
-        .sim-list {
-            padding-left: 0;
-        }
-
-        .sim-list li {
+        .mission-list li {
             position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.5rem;
+            padding-left: 40px;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: #fff;
         }
 
-        .sim-list li::before {
-            content: '•';
-            color: var(--accent);
+        .mission-list li::before {
+            content: '\f024';
+            /* Flag icon from FontAwesome */
+            font-family: 'FontAwesome';
             position: absolute;
             left: 0;
-            font-weight: bold;
+            top: 2px;
+            color: var(--accent);
+            font-size: 1.2rem;
         }
 
         /* --- FOOTER --- */
@@ -336,8 +306,8 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="overview.html">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="index.html#products">Products</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#products">Products</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="index.html#services">Services</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                     </ul>
                 </div>
@@ -351,162 +321,40 @@
         <div class="container" data-aos="fade-up">
 
             <!-- Satellite Image -->
-            <img src="dist/custom/images/sat.png" class="hero-planet" alt="SARAS Simulation" />
+            <img src="dist/custom/images/sat.png" class="hero-planet" alt="Mission Design" />
 
-            <h1 class="display-5 fw-bold text-white">SARAS</h1>
-            <p class="text-accent h5 mb-3">Simulator for AeRospace ApplicationS</p>
-            <p class="lead text-muted mx-auto" style="max-width: 800px;">
-                Test bed to simulate six degrees of freedom motion of an aerospace vehicle. SARAS simulates
-                translational and rotational motion of the vehicle. The subsystems are mathematically modeled to
-                realistically represent the vehicle and environment.
+            <h1 class="display-5 fw-bold text-white">Mission Design</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                Comprehensive planning and design solutions for aerospace missions.
             </p>
             <nav aria-label="breadcrumb" class="mt-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="products.html">Products</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">SARAS-6</li>
+                    <li class="breadcrumb-item"><a href="services.html">Services</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Mission Design</li>
                 </ol>
             </nav>
         </div>
     </section>
 
-    <!-- MAIN CONTENT -->
-    <div class="container pb-5">
-
-        <!-- Core Capabilities -->
-        <section class="section-padding" data-aos="fade-up">
-            <h3 class="section-title">Core Capabilities</h3>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                <div class="col">
-                    <div class="glass-card text-center">
-                        <span class="feature-title text-accent">Multifaceted Software</span>
-                        <p class="feature-text">Mathematical models of dynamics and environment</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="glass-card text-center">
-                        <span class="feature-title text-accent">External Integration</span>
-                        <p class="feature-text">Integration with range of external tools and sensors</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="glass-card text-center">
-                        <span class="feature-title text-accent">Real-time Processing</span>
-                        <p class="feature-text">Processing of multiple sensor data and display</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="glass-card text-center">
-                        <span class="feature-title text-accent">Force & Moment Computation</span>
-                        <p class="feature-text">Computes all the forces and moments acting on the vehicle</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="glass-card text-center">
-                        <span class="feature-title text-accent">Subsystem Simulation</span>
-                        <p class="feature-text">Simulates subsystems independently and integrated mode</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="glass-card text-center">
-                        <span class="feature-title text-accent">Off-Nominal Conditions</span>
-                        <p class="feature-text">Simulates the vehicle dynamics in off-nominal conditions</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Configuration & Analysis -->
-        <section class="section-padding pt-0" data-aos="fade-up">
-            <h3 class="section-title">Configuration & Analysis</h3>
-            <div class="glass-card p-4">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <div class="col">
-                        <div class="p-3 border border-secondary rounded h-100 text-center bg-black">
-                            <p class="text-white mb-0">Configurable as design/analysis tool</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="p-3 border border-secondary rounded h-100 text-center bg-black">
-                            <p class="text-white mb-0">Monte Carlo simulations, Range/Mission Safety analysis and
-                                visibility studies</p>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="p-3 border border-secondary rounded h-100 text-center bg-black">
-                            <p class="text-white mb-0">Configurable for MILS, OILS, HILS</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SIMULATION MODES (MILS/OILS/HILS) -->
-        <section class="section-padding pt-0" data-aos="fade-up">
-            <h3 class="section-title">Simulation Modes</h3>
-            <div class="row g-4">
-
-                <!-- MILS Card -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="sim-card">
-                        <div class="text-center mb-4">
-                            <h4 class="fw-bold text-white">Model in Loop Simulation</h4>
-                            <h5 class="text-accent">(MILS)</h5>
-                        </div>
-                        <div class="mb-3">
-                            <h6 class="fw-semibold text-white mb-2 border-bottom border-secondary pb-2">Mathematical
-                                formulation and Design Verification tool</h6>
-                        </div>
-                        <ul class="list-unstyled sim-list">
-                            <li>Navigation Guidance and Control (NGC) models</li>
-                            <li>Attitude and Orbit Control System (AOCS) Models</li>
-                            <li>Sensor and actuator mathematical models</li>
+    <!-- CONTENT SECTION -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="glass-card" data-aos="fade-up">
+                        <h2 class="h3 text-white mb-4">Core Services</h2>
+                        <ul class="mission-list">
+                            <li>Aerospace Vehicle sizing and configuration design.</li>
+                            <li>Feasibility studies of vehicle, payload and mission specification.</li>
+                            <li>Mathematical modeling of subsystems.</li>
+                            <!-- Monte Carlo studies (Commented out in original, kept hidden/removed) -->
                         </ul>
                     </div>
                 </div>
-
-                <!-- OILS Card -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="sim-card">
-                        <div class="text-center mb-4">
-                            <h4 class="fw-bold text-white">Onboard in Loop Simulation</h4>
-                            <h5 class="text-accent">(OILS)</h5>
-                        </div>
-                        <div class="mb-3">
-                            <h6 class="fw-semibold text-white mb-2 border-bottom border-secondary pb-2">Flight Software
-                                validation tool</h6>
-                        </div>
-                        <ul class="list-unstyled sim-list">
-                            <li>NGC/AOCS Software in target processor</li>
-                            <li>Sensors and Actuator models</li>
-                            <li>Communication via Ethernet</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- HILS Card -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="sim-card">
-                        <div class="text-center mb-4">
-                            <h4 class="fw-bold text-white">Hardware in Loop Simulation</h4>
-                            <h5 class="text-accent">(HILS)</h5>
-                        </div>
-                        <div class="mb-3">
-                            <h6 class="fw-semibold text-white mb-2 border-bottom border-secondary pb-2">NGC/AOCS System
-                                Test Bed</h6>
-                        </div>
-                        <ul class="list-unstyled sim-list">
-                            <li>NGC/AOCS Software in target processor</li>
-                            <li>Sensors and Actuators Hardware in the loop</li>
-                            <li>Communication via Ethernet</li>
-                        </ul>
-                    </div>
-                </div>
-
             </div>
-        </section>
-
-    </div>
+        </div>
+    </section>
 
     <!-- FOOTER -->
     <footer>

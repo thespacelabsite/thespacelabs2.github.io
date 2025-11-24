@@ -44,6 +44,8 @@
             --card-bg: rgba(20, 20, 20, 0.7);
             --text-main: #ffffff;
             --text-muted: #a0a0a0;
+            --text-bright: #e0e0e0;
+            /* Lighter text for descriptions */
         }
 
         body {
@@ -181,7 +183,8 @@
 
         .hero-subtitle {
             font-size: 1.25rem;
-            color: var(--text-muted);
+            color: var(--text-bright);
+            /* Brighter text */
             max-width: 700px;
             margin: 0 auto 2rem auto;
             animation: fadeInUp 1s ease-out 0.5s backwards;
@@ -235,7 +238,8 @@
         .about-text p {
             font-size: 1.1rem;
             line-height: 1.8;
-            color: #ccc;
+            color: var(--text-bright);
+            /* Brighter text */
         }
 
         .about-highlight {
@@ -422,8 +426,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#overview">Overview</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="overview.html">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="#news">News</a></li>
@@ -488,7 +492,8 @@
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
                 <h2 class="section-title">Our Products</h2>
-                <p class="text-muted mx-auto" style="max-width: 600px;">
+                <!-- UPDATED TEXT COLOR TO be more visible (text-bright/white) -->
+                <p class="text-white mx-auto" style="max-width: 600px; opacity: 0.9;">
                     Designed for aerospace and defence sectors where perfection and precision are primary needs. Simple
                     design, user-friendly features, and quality outputs.
                 </p>
@@ -507,7 +512,7 @@
                         <img src="img/unsplash-photo-1.jpg" class="product-img" alt="ASTRA">
                         <h3 class="text-white">ASTRA</h3>
                         <p class="text-primary small mb-3">AeroSpace TRAjectory optimizer</p>
-                        <p class="text-muted small">Optimizing trajectories with a spectrum of advanced mathematical
+                        <p class="text-white small">Optimizing trajectories with a spectrum of advanced mathematical
                             optimizers for maximum mission efficiency.</p>
                         <a href="astra.html" class="btn btn-neon btn-sm w-100 mt-3">View Details</a>
                     </div>
@@ -520,7 +525,7 @@
                         <img src="img/unsplash-photo-2.jpg" class="product-img" alt="SARAS">
                         <h3 class="text-white">SARAS</h3>
                         <p class="text-primary small mb-3">Aerospace Simulator - 6 DOF</p>
-                        <p class="text-muted small">High granularity vehicle simulation technology allowing for precise
+                        <p class="text-white small">High granularity vehicle simulation technology allowing for precise
                             6-Degrees-of-Freedom analysis.</p>
                         <a href="saras6.html" class="btn btn-neon btn-sm w-100 mt-3">View Details</a>
                     </div>
@@ -533,7 +538,7 @@
                         <img src="img/druv1.jpg" class="product-img" alt="Druv">
                         <h3 class="text-white">Druv</h3>
                         <p class="text-primary small mb-3">Orbital Studies</p>
-                        <p class="text-muted small">Advanced Simulator and Optimizer specifically designed for complex
+                        <p class="text-white small">Advanced Simulator and Optimizer specifically designed for complex
                             Orbital Studies and mission planning.</p>
                         <a href="#" class="btn btn-neon btn-sm w-100 mt-3">View Details</a>
                     </div>
@@ -547,17 +552,20 @@
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
                 <h2 class="section-title">Our Services</h2>
-                <p class="text-muted">Comprehensive solutions for aerospace and defence missions.</p>
+                <!-- UPDATED TEXT COLOR -->
+                <p class="text-white">Comprehensive solutions for aerospace and defence missions.</p>
             </div>
 
-            <div class="row g-4">
+            <div class="row g-4 justify-content-center">
                 <!-- Service 1 -->
                 <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
                     <a href="mission-design.html" class="text-decoration-none">
                         <div class="glass-card text-center">
                             <i class="fas fa-flag card-icon"></i>
                             <h4 class="text-white">Mission Design</h4>
-                            <p class="text-muted small mt-2">End-to-end mission planning and trajectory design.</p>
+                            <!-- UPDATED TEXT COLOR to lighter white -->
+                            <p class="text-white small mt-2" style="opacity: 0.8;">End-to-end mission planning and
+                                trajectory design.</p>
                         </div>
                     </a>
                 </div>
@@ -568,7 +576,8 @@
                         <div class="glass-card text-center">
                             <i class="fas fa-cogs card-icon"></i>
                             <h4 class="text-white">System Development</h4>
-                            <p class="text-muted small mt-2">NGC (Navigation, Guidance & Control) system architecture.
+                            <p class="text-white small mt-2" style="opacity: 0.8;">NGC (Navigation, Guidance & Control)
+                                system architecture.
                             </p>
                         </div>
                     </a>
@@ -580,7 +589,8 @@
                         <div class="glass-card text-center">
                             <i class="fas fa-square-root-alt card-icon"></i>
                             <h4 class="text-white">Math Models</h4>
-                            <p class="text-muted small mt-2">Precise mathematical model development for simulations.</p>
+                            <p class="text-white small mt-2" style="opacity: 0.8;">Precise mathematical model
+                                development for simulations.</p>
                         </div>
                     </a>
                 </div>
@@ -591,7 +601,20 @@
                         <div class="glass-card text-center">
                             <i class="fas fa-code card-icon"></i>
                             <h4 class="text-white">Flight Software</h4>
-                            <p class="text-muted small mt-2">Reliable onboard flight software development.</p>
+                            <p class="text-white small mt-2" style="opacity: 0.8;">Reliable onboard flight software
+                                development.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Service 5: Simulation (ADDED) -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="500">
+                    <a href="simulation.html" class="text-decoration-none">
+                        <div class="glass-card text-center">
+                            <i class="fas fa-laptop-code card-icon"></i>
+                            <h4 class="text-white">Simulation</h4>
+                            <p class="text-white small mt-2" style="opacity: 0.8;">Real-time 6-DOF simulation and
+                                hardware-in-loop testing.</p>
                         </div>
                     </a>
                 </div>
