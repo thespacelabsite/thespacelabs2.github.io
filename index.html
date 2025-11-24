@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Spacelabs provides cutting-edge aerospace technology, simulation, and software solutions for space and defense missions." />
+    <meta name="keywords"
+        content="Spacelabs, Aerospace Technology, Space Simulation, Defense Software, Satellite Systems, Launch Vehicle Testing, Aerospace Engineering, Space Research India">
+    <meta name="author" content="SK">
+    <link rel="canonical" href="https://thespacelabs.com/" />
+
+    <title>Spacelabs – Aerospace Technology, Simulation & Software</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap & AOS CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <!-- Favicons (Kept original paths) -->
+    <link rel="icon" type="image/x-icon" href="/favicon2/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon2/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon2/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon2/apple-touch-icon.png">
+    <link rel="manifest" href="/favicon2/site.webmanifest">
+
+    <style>
+        /* --- VARIABLES & GLOBAL --- */
+        :root {
+            --bg-color: #050505;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent: #d412a1;
+            --accent-glow: rgba(212, 18, 161, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        .display-4,
+        .display-5 {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        /* --- LOADER --- */
+        #overfull {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212, 18, 161, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            display: block;
+            margin: 0 auto 15px auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: rgba(5, 5, 5, 0.8) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1rem 0;
+        }
+
+        .logogok {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 1.5rem;
+            color: var(--text-muted) !important;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .offcanvas {
+            background-color: var(--bg-color) !important;
+            border-left: 1px solid var(--card-border);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        /* Subtle Purple Nebula Background */
+        .hero-bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0, 0, 0, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star-field {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .hero-content {
+            z-index: 2;
+            text-align: center;
+        }
+
+        .subt1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .subt2 {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .planet {
+            position: absolute;
+            right: -10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60vw;
+            max-width: 800px;
+            opacity: 0.8;
+            z-index: 1;
+            animation: floatSat 10s ease-in-out infinite;
+            filter: drop-shadow(0 0 50px rgba(0, 0, 0, 0.8));
+        }
+
+        @keyframes floatSat {
+
+            0%,
+            100% {
+                transform: translateY(-50%) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-45%) rotate(2deg);
+            }
+        }
+
+        /* --- BUTTONS --- */
+        .btn-custom {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+            display: inline-block;
+        }
+
+        .btn-custom:hover {
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+            color: #fff;
+        }
+
+        /* --- CARDS & GLASSMORPHISM --- */
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s, border-color 0.3s;
+            height: 100%;
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        /* --- OVERVIEW SECTION --- */
+        .section-padding {
+            padding: 6rem 0;
+        }
+
+        /* --- CAROUSEL REPLACEMENT (FEATURES) --- */
+        .feature-grid-item {
+            position: relative;
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .feature-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .feature-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, #000 0%, transparent 100%);
+            padding: 2rem;
+            z-index: 2;
+        }
+
+        .feature-grid-item:hover .feature-img {
+            transform: scale(1.1);
+        }
+
+        .feature-title {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* --- PRODUCTS (CARDS) --- */
+        .product-card {
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: 400px;
+            border: 1px solid var(--card-border);
+        }
+
+        .product-content {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+        }
+
+        /* --- SERVICES --- */
+        .service-icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .service-icon-box svg {
+            fill: #fff;
+            width: 24px;
+        }
+
+        /* --- CLIENTS --- */
+        .clients-carousel {
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+        }
+
+        .clients-carousel:hover {
+            filter: grayscale(0%);
+        }
+
+        .client-logo {
+            height: 60px;
+            margin: 0 20px;
+            object-fit: contain;
+            opacity: 0;
+            position: absolute;
+            transition: opacity 0.5s;
+        }
+
+        .client-logo.active {
+            opacity: 0.7;
+        }
+
+        /* --- NEWS SCROLL --- */
+        .news-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 2rem 0;
+        }
+
+        .news-track {
+            display: inline-flex;
+            gap: 2rem;
+            animation: scrollNews 20s linear infinite;
+        }
+
+        .news-card {
+            width: 300px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        @keyframes scrollNews {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .news-track:hover {
+            animation-play-state: paused;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid var(--card-border);
+            background: #000;
+            padding-top: 3rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            margin-left: 10px;
+        }
+
+        .social-icon:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        /* --- UTILS --- */
+        .text-accent {
+            color: var(--accent);
+        }
+
+        .line-accent {
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin: 0 auto 2rem auto;
+        }
+
+        /* Responsive Adjustments */
+        @media(max-width: 991px) {
+            .subt1 {
+                font-size: 2.5rem;
+            }
+
+            .planet {
+                width: 80vw;
+                right: -20%;
+                opacity: 0.4;
+            }
+
+            .feature-grid-item {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOADING OVERLAY (Kept function, updated style) -->
+    <div id="overfull">
+        <div class="text-center">
+            <span class="spinner"></span>
+            <h5 class="text-white mt-3" style="font-family: var(--font-heading); letter-spacing: 2px;">SPACELABS</h5>
+            <p class="text-muted small">Loading Systems...</p>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="dist/custom/images/logo.png" class="logogok" alt="Spacelabs Logo" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-white" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="overview.html">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="star-field"></div>
+        <div class="hero-bg-glow"></div>
+
+        <!-- Retained Image Path -->
+        <img src="dist/custom/images/sat.png" class="planet" alt="Satellite" />
+
+        <div class="container hero-content" data-aos="fade-up">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <span class="badge rounded-pill border border-secondary text-light mb-3 px-3 py-2"
+                        style="background: rgba(255,255,255,0.1);">Aerospace Technology</span>
+                    <h1 class="subt1">Innovation in Space</h1>
+                    <p class="subt2 mt-4">
+                        Empowering space and defence missions with advanced technology, software, and simulation
+                        solutions.
+                    </p>
+                    <a href="#overview" class="btn-custom">Explore Our Mission</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OVERVIEW SECTION -->
+    <section id="overview" class="section-padding">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+                    <!-- Decorative placeholder or image from retained assets -->
+                    <img src="img/paperplane.png" class="img-fluid" style="filter: brightness(0.8) contrast(1.2);"
+                        alt="Paper Plane Concept">
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <h2 class="display-5 mb-3">Overview</h2>
+                    <div class="line-accent ms-0"></div>
+                    <p class="lead text-muted mb-4">
+                        We offer cutting-edge tools and technologies for your space mission. From digital transformation
+                        of simulation to trajectory optimization.
+                    </p>
+                    <p class="text-muted">
+                        Spacelabs provides aerospace technology, simulation systems, and software for space and defense
+                        missions. We focus on precision, simple design, and user-friendly features.
+                    </p>
+                    <a href="overview.html" class="text-accent fw-bold mt-3 d-inline-block">Read More <i
+                            class="fa fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CAPABILITIES (Replaced Carousel with Grid) -->
+    <section class="section-padding" style="background: linear-gradient(180deg, var(--bg-color) 0%, #0a0a0a 100%);">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="display-5">Core Capabilities</h2>
+                <div class="line-accent"></div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Item 1 -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-grid-item">
+                        <img src="img/unsp1.jpg" class="feature-img" alt="Optimizers">
+                        <div class="feature-overlay">
+                            <h3 class="feature-title">Optimizers</h3>
+                            <p class="feature-desc">Trajectory optimization with a spectrum of optimizers for aerospace
+                                applications.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-grid-item">
+                        <img src="img/imx3.jpg" class="feature-img" alt="Simulation">
+                        <div class="feature-overlay">
+                            <h3 class="feature-title">Simulation</h3>
+                            <p class="feature-desc">High granularity vehicle simulation technology for precise mission
+                                planning.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-grid-item">
+                        <img src="img/imx1.jpg" class="feature-img" alt="Closed Loop">
+                        <div class="feature-overlay">
+                            <h3 class="feature-title">Closed Loop</h3>
+                            <p class="feature-desc">Integrated testing with mathematical models and flight software.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="col-md-6 col-lg-8" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-grid-item">
+                        <img src="img/imx4.jpg" class="feature-img" alt="Systems">
+                        <div class="feature-overlay">
+                            <h3 class="feature-title">System Development</h3>
+                            <p class="feature-desc">Navigation, Guidance and Control system (NGC) and Attitude
+                                Determination and Control (ADCS).</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 5 -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                    <!-- Using astronaut image here as it fits the "Future" theme -->
+                    <div class="feature-grid-item">
+                        <img src="img/astronaut.png" class="feature-img"
+                            style="object-fit: contain; padding: 20px; background: radial-gradient(circle at center, #222, #000);"
+                            alt="AI Simulator">
+                        <div class="feature-overlay">
+                            <h3 class="feature-title">AI Simulators</h3>
+                            <p class="feature-desc">Software simulators with AI/ML features and hardware integration.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section id="products" class="section-padding">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap" data-aos="fade-up">
+                <div>
+                    <h2 class="display-5">Our Products</h2>
+                    <div class="line-accent ms-0"></div>
+                    <p class="text-muted max-w-600">Precision designed for aerospace and defence sectors.</p>
+                </div>
+                <div>
+                    <a href="assets/spacelabs-services-brochure.pdf" target="_blank" class="btn-custom mt-0">
+                        <i class="fa fa-download me-2"></i> Download Brochure
+                    </a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- ASTRA Card -->
+                <div class="col-lg-6" data-aos="flip-up">
+                    <div class="product-card" style="background-image: url('img/unsplash-photo-1.jpg')">
+                        <div class="product-content">
+                            <h3 class="fw-bold">ASTRA</h3>
+                            <p class="text-white-50">AeroSpace TRAjectory optimizer</p>
+                            <a href="astra.html" class="btn btn-sm btn-outline-light rounded-pill px-4">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- SARAS Card -->
+                <div class="col-lg-6" data-aos="flip-up" data-aos-delay="100">
+                    <div class="product-card" style="background-image: url('img/unsplash-photo-2.jpg')">
+                        <div class="product-content">
+                            <h3 class="fw-bold">SARAS</h3>
+                            <p class="text-white-50">Aerospace Simulator - 6 DOF</p>
+                            <a href="saras6.html" class="btn btn-sm btn-outline-light rounded-pill px-4">View
+                                Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" class="section-padding" style="background: #0a0a0a;">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="display-5">Services</h2>
+                <div class="line-accent"></div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Service 1 -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up">
+                    <a href="mission-design.html">
+                        <div class="glass-card">
+                            <div class="service-icon-box">
+                                <svg viewBox="0 0 63.27 77.088">
+                                    <path
+                                        d="M6,47.907s3.454-3.454,13.818-3.454,17.272,6.909,27.635,6.909S61.27,47.907,61.27,47.907V6.454S57.816,9.909,47.453,9.909,30.181,3,19.818,3,6,6.454,6,6.454Z"
+                                        fill="none" stroke="#fff" stroke-width="4"></path>
+                                </svg>
+                            </div>
+                            <h4>Mission Design</h4>
+                            <p class="text-muted small mt-2">Comprehensive mission planning and analysis.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                    <a href="subsystem-development.html">
+                        <div class="glass-card">
+                            <div class="service-icon-box">
+                                <span
+                                    style="font-family: monospace; font-weight: bold; font-size: 1.5rem;">&lt;/&gt;</span>
+                            </div>
+                            <h4>System Development</h4>
+                            <p class="text-muted small mt-2">Hardware and subsystem engineering solutions.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                    <a href="algorithm-development.html">
+                        <div class="glass-card">
+                            <div class="service-icon-box">
+                                <i class="fa fa-calculator" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <h4>Math Models</h4>
+                            <p class="text-muted small mt-2">Rigorous mathematical modeling for flight dynamics.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                    <a href="flight-software-development.html">
+                        <div class="glass-card">
+                            <div class="service-icon-box">
+                                <i class="fa fa-code" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <h4>Flight Software</h4>
+                            <p class="text-muted small mt-2">Robust onboard software for real-time operations.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWS SCROLL -->
+    <section class="section-padding overflow-hidden">
+        <div class="container mb-4">
+            <h3 class="text-center mb-4">SpaceLabs in News</h3>
+        </div>
+        <div class="news-wrapper">
+            <div class="news-track">
+                <!-- News Items (Duplicated for infinite scroll effect) -->
+                <div class="news-card">
+                    <a href="https://timesofindia.indiatimes.com/city/thiruvananthapuram/space-startup-launches-astra/articleshow/92734704.cms"
+                        target="_blank">
+                        <img src="img/n1.jpg" alt="News 1">
+                    </a>
+                </div>
+                <div class="news-card">
+                    <a href="https://keralatechnology.com/blog/all-women-team-ready-for-lift-off" target="_blank">
+                        <img src="img/n2.jpg" alt="News 2">
+                    </a>
+                </div>
+                <div class="news-card">
+                    <img src="img/n3.jpg" alt="News 3">
+                </div>
+                <div class="news-card">
+                    <img src="img/news6.png" alt="News 4">
+                </div>
+                <div class="news-card">
+                    <a href="https://www.linkedin.com/posts/thespacelabs_excellent-opportunity-and-platform-created-activity-7356737020167114752-i2Vu"
+                        target="_blank">
+                        <img src="img/news5.1.png" alt="News 5">
+                    </a>
+                </div>
+                <!-- Duplicates for loop -->
+                <div class="news-card"><img src="img/n1.jpg"></div>
+                <div class="news-card"><img src="img/n2.jpg"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARTNERS -->
+    <section class="py-5 bg-black border-top border-dark">
+        <div class="container text-center">
+            <p class="text-muted mb-4 text-uppercase tracking-wider">Trusted Partners</p>
+            <div class="clients-carousel position-relative">
+                <img src="img/IIT_Madras_Logo.svg.png" class="client-logo active" />
+                <img src="img/L&T.png" class="client-logo" />
+                <img src="img/Cosmic-1.png" class="client-logo" />
+                <img src="img/MTAR-Logo.webp" class="client-logo" />
+                <img src="img/SKYROOT.png" class="client-logo" />
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container pb-4">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0 text-muted small">© <span id="current-year"></span> SpaceLabs. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center justify-content-md-end">
+                    <a href="https://www.linkedin.com/company/thespacelabs" target="_blank" class="social-icon">
+                        <img src="icon/linkedin.png" style="width: 20px; filter: invert(1);" alt="LinkedIn">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/js/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Remove Loader on Load
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('overfull');
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        });
+
+        // Year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Partners Carousel Logic
+        const logos = document.querySelectorAll('.client-logo');
+        let currentIndex = 0;
+        setInterval(() => {
+            logos[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % logos.length;
+            logos[currentIndex].classList.add('active');
+        }, 2500);
+    </script>
+</body>
+
+</html>
