@@ -987,8 +987,31 @@
 
         let width, height;
         let stars = [];
-        const numStars = 400;
-        const speed = 0.3;
+        const numStars = 800;
+        const baseSpeed = 0.1;
+        let currentSpeed = baseSpeed;
+        let mouseX = 0;
+        let mouseY = 0;
+        let mouseActive = false;
+        let particles = []; // For click burst effect
+        let mouseTrail = []; // For star trails on mouse movement
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let mouseVelocity = 0;
+        let time = 0; // For pulsing animation
+        let constellations = []; // For constellation drawing
+        let isDrawing = false;
+        let drawStartX = 0;
+        let drawStartY = 0;
+        let currentConstellation = null;
+        let warpSpeed = false; // Warp speed effect
+        let warpIntensity = 0; // Warp intensity (0-1)
+        let warpDuration = 0; // Warp duration counter
+        let lastClickTime = 0; // For double-click detection
+        let meteors = []; // For meteor shower
+        let lastScrollY = 0;
+        let scrollDelta = 0;
+        let meteorCooldown = 0; // Prevent too many meteors
 
         // Resize Canvas
         function resize() {
@@ -998,6 +1021,318 @@
             canvas.height = height;
         }
 
+        // Track mouse position with velocity for trails
+        canvas.addEventListener('mousemove', (e) => {
+            const newMouseX = e.clientX - width / 2;
+            const newMouseY = e.clientY - height / 2;
+
+            // Calculate velocity for trail intensity
+            const dx = newMouseX - lastMouseX;
+            const dy = newMouseY - lastMouseY;
+            mouseVelocity = Math.sqrt(dx * dx + dy * dy);
+
+            // Add to trail if moving fast enough
+            if (mouseVelocity > 2) {
+                mouseTrail.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    life: 1.0,
+                    intensity: Math.min(mouseVelocity / 10, 1)
+                });
+                // Keep trail length manageable
+                if (mouseTrail.length > 20) {
+                    mouseTrail.shift();
+                }
+            }
+
+            // Constellation drawing - track points while dragging
+            if (isDrawing && currentConstellation) {
+                const currentX = e.clientX;
+                const currentY = e.clientY;
+                const lastPoint = currentConstellation.points[currentConstellation.points.length - 1];
+                const distance = Math.sqrt(
+                    Math.pow(currentX - lastPoint.x, 2) +
+                    Math.pow(currentY - lastPoint.y, 2)
+                );
+
+                // Add point if moved enough (prevents too many points)
+                if (distance > 15) {
+                    currentConstellation.points.push({ x: currentX, y: currentY });
+                }
+            }
+
+            mouseX = newMouseX;
+            mouseY = newMouseY;
+            lastMouseX = newMouseX;
+            lastMouseY = newMouseY;
+            mouseActive = true;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            mouseActive = false;
+            mouseVelocity = 0;
+        });
+
+        // Touch support for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchActive = false;
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            mouseX = touch.clientX - width / 2;
+            mouseY = touch.clientY - height / 2;
+            touchActive = true;
+            mouseActive = true;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const newMouseX = touch.clientX - width / 2;
+            const newMouseY = touch.clientY - height / 2;
+
+            // Calculate swipe velocity
+            const dx = newMouseX - lastMouseX;
+            const dy = newMouseY - lastMouseY;
+            mouseVelocity = Math.sqrt(dx * dx + dy * dy);
+
+            // Create star stream effect on swipe
+            if (mouseVelocity > 5) {
+                for (let i = 0; i < 3; i++) {
+                    mouseTrail.push({
+                        x: touch.clientX + (Math.random() - 0.5) * 20,
+                        y: touch.clientY + (Math.random() - 0.5) * 20,
+                        life: 0.8,
+                        intensity: Math.min(mouseVelocity / 15, 1)
+                    });
+                }
+                if (mouseTrail.length > 30) {
+                    mouseTrail.shift();
+                }
+            }
+
+            mouseX = newMouseX;
+            mouseY = newMouseY;
+            lastMouseX = newMouseX;
+            lastMouseY = newMouseY;
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchActive = false;
+            mouseActive = false;
+            mouseVelocity = 0;
+        });
+
+        // Particle class for burst effect (defined early for use in click handler)
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 8;
+                this.vy = (Math.random() - 0.5) * 8;
+                this.life = 1.0;
+                this.decay = 0.02;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx *= 0.95;
+                this.vy *= 0.95;
+                this.life -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = "#d412a1";
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Constellation drawing - mousedown to start
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            drawStartX = e.clientX;
+            drawStartY = e.clientY;
+            currentConstellation = {
+                points: [{ x: e.clientX, y: e.clientY }],
+                life: 1.0,
+                decay: 0.005
+            };
+        });
+
+        // Mouseup to finish constellation
+        canvas.addEventListener('mouseup', (e) => {
+            if (isDrawing && currentConstellation && currentConstellation.points.length > 1) {
+                // Finalize constellation
+                currentConstellation.points.push({ x: e.clientX, y: e.clientY });
+                constellations.push(currentConstellation);
+                // Keep max 5 constellations visible
+                if (constellations.length > 5) {
+                    constellations.shift();
+                }
+            }
+            isDrawing = false;
+            currentConstellation = null;
+        });
+
+        // Warp speed activation function
+        function activateWarpSpeed() {
+            warpSpeed = true;
+            warpIntensity = 1.0;
+            warpDuration = 0;
+
+            // Create burst particles at center
+            for (let i = 0; i < 30; i++) {
+                particles.push(new Particle(width / 2, height / 2));
+            }
+        }
+
+        // Click particle burst (only if not drawing)
+        canvas.addEventListener('click', (e) => {
+            // Only create burst if it was a quick click (not a drag)
+            if (!isDrawing) {
+                const currentTime = Date.now();
+                const timeSinceLastClick = currentTime - lastClickTime;
+
+                // Double-click detection (within 300ms)
+                if (timeSinceLastClick < 300) {
+                    activateWarpSpeed();
+                    lastClickTime = 0; // Reset to prevent triple-click
+                } else {
+                    const clickX = e.clientX;
+                    const clickY = e.clientY;
+                    // Create burst particles
+                    for (let i = 0; i < 15; i++) {
+                        particles.push(new Particle(clickX, clickY));
+                    }
+                    lastClickTime = currentTime;
+                }
+            }
+        });
+
+        // Keyboard shortcut for warp speed (press 'W' or 'w')
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'w' || e.key === 'W') {
+                activateWarpSpeed();
+            }
+        });
+
+        // Meteor class for meteor shower
+        class Meteor {
+            constructor() {
+                // Random starting position from top or sides
+                const side = Math.floor(Math.random() * 4); // 0=top, 1=right, 2=bottom, 3=left
+                if (side === 0) { // Top
+                    this.x = Math.random() * width;
+                    this.y = -20;
+                    this.vx = (Math.random() - 0.5) * 3;
+                    this.vy = 5 + Math.random() * 5;
+                } else if (side === 1) { // Right
+                    this.x = width + 20;
+                    this.y = Math.random() * height;
+                    this.vx = -(5 + Math.random() * 5);
+                    this.vy = (Math.random() - 0.5) * 3;
+                } else if (side === 2) { // Bottom
+                    this.x = Math.random() * width;
+                    this.y = height + 20;
+                    this.vx = (Math.random() - 0.5) * 3;
+                    this.vy = -(5 + Math.random() * 5);
+                } else { // Left
+                    this.x = -20;
+                    this.y = Math.random() * height;
+                    this.vx = 5 + Math.random() * 5;
+                    this.vy = (Math.random() - 0.5) * 3;
+                }
+
+                this.length = 20 + Math.random() * 30;
+                this.life = 1.0;
+                this.decay = 0.01 + Math.random() * 0.02;
+                this.brightness = 0.8 + Math.random() * 0.2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= this.decay;
+            }
+
+            draw(ctx) {
+                if (this.life <= 0) return;
+
+                ctx.save();
+                ctx.globalAlpha = this.life * this.brightness;
+
+                // Create gradient for meteor tail
+                const gradient = ctx.createLinearGradient(
+                    this.x, this.y,
+                    this.x - this.vx * this.length / Math.sqrt(this.vx * this.vx + this.vy * this.vy),
+                    this.y - this.vy * this.length / Math.sqrt(this.vx * this.vx + this.vy * this.vy)
+                );
+                gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                gradient.addColorStop(0.3, 'rgba(212, 18, 161, 0.8)');
+                gradient.addColorStop(1, 'rgba(212, 18, 161, 0)');
+
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+
+                const angle = Math.atan2(this.vy, this.vx);
+                const tailX = this.x - Math.cos(angle) * this.length;
+                const tailY = this.y - Math.sin(angle) * this.length;
+
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+
+                // Bright head
+                ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+
+            isOffScreen() {
+                return this.x < -50 || this.x > width + 50 ||
+                    this.y < -50 || this.y > height + 50 ||
+                    this.life <= 0;
+            }
+        }
+
+        // Scroll-based speed variation and meteor shower
+        let scrollSpeed = 0;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            scrollDelta = Math.abs(currentScrollY - lastScrollY);
+            lastScrollY = currentScrollY;
+
+            scrollSpeed = Math.min(currentScrollY / 1000, 0.3); // Max 0.3 speed boost
+            currentSpeed = baseSpeed + scrollSpeed;
+
+            // Spawn meteors on scroll (with cooldown)
+            meteorCooldown--;
+            if (scrollDelta > 10 && meteorCooldown <= 0 && Math.random() < 0.15) {
+                // Spawn 1-2 meteors
+                const meteorCount = Math.random() < 0.7 ? 1 : 2;
+                for (let i = 0; i < meteorCount; i++) {
+                    meteors.push(new Meteor());
+                }
+                meteorCooldown = 30; // Cooldown to prevent spam
+            }
+        });
+
         // Star Class
         class Star {
             constructor() {
@@ -1005,15 +1340,67 @@
                 this.y = Math.random() * height - height / 2;
                 this.z = Math.random() * width;
                 this.pz = this.z;
+                this.vx = 0; // Velocity for gravity well
+                this.vy = 0;
+                this.pulsePhase = Math.random() * Math.PI * 2; // Random pulse phase
             }
 
             update() {
-                this.z = this.z - speed * 20; // Move star closer
+                // Warp speed effect - stars streak toward center
+                if (warpSpeed && warpIntensity > 0) {
+                    // Calculate direction toward center
+                    const centerX = 0; // Center in 3D space
+                    const centerY = 0;
+                    const dx = centerX - this.x;
+                    const dy = centerY - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance > 0) {
+                        // Strong pull toward center during warp
+                        const warpForce = warpIntensity * 0.15;
+                        this.vx += (dx / distance) * warpForce;
+                        this.vy += (dy / distance) * warpForce;
+                    }
+
+                    // Increase forward speed dramatically
+                    const warpSpeedMultiplier = 1 + (warpIntensity * 8); // Up to 9x speed
+                    this.z = this.z - (currentSpeed * 20 * warpSpeedMultiplier);
+                } else {
+                    // Enhanced gravity well effect with orbital motion
+                    if (mouseActive) {
+                        const dx = mouseX - this.x;
+                        const dy = mouseY - this.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const maxDistance = 250;
+
+                        if (distance < maxDistance && distance > 0) {
+                            // Gravity force (inverse square law)
+                            const force = (1 - distance / maxDistance) * 0.5;
+                            const angle = Math.atan2(dy, dx);
+
+                            // Add orbital velocity component (perpendicular to radius)
+                            const orbitalSpeed = force * 0.02;
+                            this.vx += Math.cos(angle) * force * 0.01 + Math.cos(angle + Math.PI / 2) * orbitalSpeed;
+                            this.vy += Math.sin(angle) * force * 0.01 + Math.sin(angle + Math.PI / 2) * orbitalSpeed;
+                        }
+                    }
+
+                    this.z = this.z - currentSpeed * 20; // Move star closer
+                }
+
+                // Apply velocity with damping
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx *= 0.95; // Damping
+                this.vy *= 0.95;
+
                 if (this.z < 1) {
                     this.z = width;
                     this.x = Math.random() * width - width / 2;
                     this.y = Math.random() * height - height / 2;
                     this.pz = this.z;
+                    this.vx = 0;
+                    this.vy = 0;
                 }
             }
 
@@ -1028,15 +1415,53 @@
 
                 this.pz = this.z;
 
+                // Mouse proximity effect - brighter stars near cursor
+                let brightness = 1 - this.z / width;
+                let pulseMultiplier = 1;
+                const screenX = sx - width / 2;
+                const screenY = sy - height / 2;
+
+                if (mouseActive) {
+                    const mouseDist = Math.sqrt(
+                        Math.pow(mouseX - screenX, 2) +
+                        Math.pow(mouseY - screenY, 2)
+                    );
+
+                    if (mouseDist < 150) {
+                        brightness = Math.min(brightness + (1 - mouseDist / 150) * 0.5, 1);
+                    }
+
+                    // Pulsing effect for stars near cursor
+                    if (mouseDist < 120) {
+                        // Pulse animation based on time and distance
+                        const pulseSpeed = 0.05;
+                        const pulseAmount = (1 - mouseDist / 120) * 0.3;
+                        pulseMultiplier = 1 + Math.sin(time * pulseSpeed + this.pulsePhase) * pulseAmount;
+                        r *= pulseMultiplier;
+                    }
+                }
+
                 ctx.beginPath();
                 ctx.moveTo(px, py);
                 ctx.lineTo(sx, sy);
 
-                // Color logic: mostly white/grey, occasional purple accent
-                if (Math.random() > 0.95) {
-                    ctx.strokeStyle = "#d412a1";
+                // Warp speed visual effects - brighter, longer streaks
+                if (warpSpeed && warpIntensity > 0) {
+                    brightness = Math.min(brightness * (1 + warpIntensity * 0.5), 1);
+                    r *= (1 + warpIntensity * 0.3); // Longer streaks
+                    // More purple during warp
+                    ctx.strokeStyle = `rgba(212, 18, 161, ${brightness * (0.7 + warpIntensity * 0.3)})`;
                 } else {
-                    ctx.strokeStyle = "rgba(255, 255, 255, " + (1 - this.z / width) + ")";
+                    // Color logic: mostly white/grey, occasional purple accent
+                    // Stars near mouse get purple tint
+                    const isNearMouse = mouseActive &&
+                        Math.sqrt(Math.pow(mouseX - screenX, 2) + Math.pow(mouseY - screenY, 2)) < 100;
+
+                    if (isNearMouse || Math.random() > 0.95) {
+                        ctx.strokeStyle = `rgba(212, 18, 161, ${brightness})`;
+                    } else {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${brightness})`;
+                    }
                 }
 
                 ctx.lineWidth = r;
@@ -1054,13 +1479,168 @@
 
         // Animation Loop
         function animate() {
+            time += 0.1; // Increment time for pulsing animation
+
+            // Update warp speed effect
+            if (warpSpeed) {
+                warpDuration += 1;
+                // Fade out over 2 seconds (120 frames at 60fps)
+                if (warpDuration > 120) {
+                    warpIntensity = Math.max(0, warpIntensity - 0.05);
+                    if (warpIntensity <= 0) {
+                        warpSpeed = false;
+                        warpIntensity = 0;
+                        warpDuration = 0;
+                    }
+                }
+            }
+
             ctx.fillStyle = "#050505"; // Background clear color
             ctx.fillRect(0, 0, width, height);
+
+            // Warp speed visual overlay (radial gradient at center)
+            if (warpSpeed && warpIntensity > 0) {
+                ctx.save();
+                const gradient = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width);
+                gradient.addColorStop(0, `rgba(212, 18, 161, ${warpIntensity * 0.1})`);
+                gradient.addColorStop(0.5, `rgba(212, 18, 161, ${warpIntensity * 0.05})`);
+                gradient.addColorStop(1, 'rgba(212, 18, 161, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+                ctx.restore();
+            }
+
+            // Draw star trails (fading trails behind mouse movement)
+            if (mouseTrail.length > 1) {
+                ctx.save();
+                for (let i = 0; i < mouseTrail.length - 1; i++) {
+                    const trail = mouseTrail[i];
+                    trail.life -= 0.03;
+
+                    if (trail.life > 0 && i < mouseTrail.length - 1) {
+                        const nextTrail = mouseTrail[i + 1];
+                        ctx.strokeStyle = `rgba(212, 18, 161, ${trail.life * trail.intensity * 0.3})`;
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(trail.x, trail.y);
+                        ctx.lineTo(nextTrail.x, nextTrail.y);
+                        ctx.stroke();
+                    }
+                }
+                ctx.restore();
+
+                // Remove dead trails
+                mouseTrail = mouseTrail.filter(trail => trail.life > 0);
+            }
+
+            // Draw constellations (click and drag to connect stars)
+            if (constellations.length > 0) {
+                ctx.save();
+                constellations.forEach(constellation => {
+                    constellation.life -= constellation.decay;
+
+                    if (constellation.life > 0 && constellation.points.length > 1) {
+                        // Find nearby stars and connect them
+                        const connectedStars = [];
+                        constellation.points.forEach(point => {
+                            // Find closest star to each point
+                            let closestStar = null;
+                            let minDist = Infinity;
+
+                            stars.forEach(star => {
+                                const sx = (star.x / star.z) * width + width / 2;
+                                const sy = (star.y / star.z) * height + height / 2;
+                                const dist = Math.sqrt(
+                                    Math.pow(point.x - sx, 2) +
+                                    Math.pow(point.y - sy, 2)
+                                );
+
+                                if (dist < 50 && dist < minDist) {
+                                    minDist = dist;
+                                    closestStar = { x: sx, y: sy };
+                                }
+                            });
+
+                            if (closestStar) {
+                                connectedStars.push(closestStar);
+                            }
+                        });
+
+                        // Draw lines connecting stars
+                        if (connectedStars.length > 1) {
+                            ctx.strokeStyle = `rgba(212, 18, 161, ${constellation.life * 0.6})`;
+                            ctx.lineWidth = 1.5;
+                            ctx.setLineDash([5, 5]);
+                            ctx.beginPath();
+                            ctx.moveTo(connectedStars[0].x, connectedStars[0].y);
+
+                            for (let i = 1; i < connectedStars.length; i++) {
+                                ctx.lineTo(connectedStars[i].x, connectedStars[i].y);
+                            }
+
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                        }
+
+                        // Draw the drawing path itself
+                        if (constellation.points.length > 1) {
+                            ctx.strokeStyle = `rgba(212, 18, 161, ${constellation.life * 0.4})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(constellation.points[0].x, constellation.points[0].y);
+
+                            for (let i = 1; i < constellation.points.length; i++) {
+                                ctx.lineTo(constellation.points[i].x, constellation.points[i].y);
+                            }
+
+                            ctx.stroke();
+                        }
+                    }
+                });
+                ctx.restore();
+
+                // Remove dead constellations
+                constellations = constellations.filter(c => c.life > 0);
+            }
+
+            // Draw current drawing constellation (while dragging)
+            if (isDrawing && currentConstellation && currentConstellation.points.length > 1) {
+                ctx.save();
+                ctx.strokeStyle = `rgba(212, 18, 161, 0.6)`;
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(currentConstellation.points[0].x, currentConstellation.points[0].y);
+
+                for (let i = 1; i < currentConstellation.points.length; i++) {
+                    ctx.lineTo(currentConstellation.points[i].x, currentConstellation.points[i].y);
+                }
+
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.restore();
+            }
 
             stars.forEach(star => {
                 star.update();
                 star.show();
             });
+
+            // Update and draw meteors
+            meteors.forEach(meteor => {
+                meteor.update();
+                meteor.draw(ctx);
+            });
+            // Remove off-screen or dead meteors
+            meteors = meteors.filter(meteor => !meteor.isOffScreen());
+
+            // Update and draw particles
+            particles = particles.filter(particle => {
+                particle.update();
+                particle.draw();
+                return particle.life > 0;
+            });
+
             requestAnimationFrame(animate);
         }
 
