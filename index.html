@@ -133,7 +133,7 @@
             justify-content: center;
             overflow: hidden;
             background: radial-gradient(circle at center, #1a0214 0%, #000000 100%);
-            padding: 0px 0 60px;
+            padding: 40px 0 60px;
         }
 
         .aurora-band {
@@ -221,12 +221,16 @@
             .hero-section {
                 height: auto;
                 min-height: 100vh;
-                padding: 140px 0 80px;
+                padding: 60px 0 70px;
+            }
+
+            .hero-content {
+                padding-top: 130px;
             }
 
             .hero-planet {
                 max-width: 160px;
-                margin-top: 50px;
+                margin-top: 0;
                 margin-bottom: 1.5rem;
             }
 
@@ -254,12 +258,16 @@
 
         @media (max-width: 576px) {
             .hero-section {
-                padding-top: 120px;
+                padding: 50px 0 70px;
+            }
+
+            .hero-content {
+                padding-top: 110px;
             }
 
             .hero-planet {
                 max-width: 130px;
-                margin-top: 25px;
+                margin-top: 0;
             }
 
             .hero-title {
@@ -355,11 +363,12 @@
             position: relative;
             z-index: 2;
             text-align: center;
+            padding-top: clamp(100px, 14vh, 190px);
         }
 
         .hero-planet {
             max-width: 200px;
-            margin-top: 80px;
+            margin-top: 0;
             margin-bottom: 2rem;
             animation: floatSat 6s ease-in-out infinite;
             filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.8));
