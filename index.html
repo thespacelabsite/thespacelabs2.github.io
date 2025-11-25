@@ -133,6 +133,163 @@
             justify-content: center;
             overflow: hidden;
             background: radial-gradient(circle at center, #1a0214 0%, #000000 100%);
+            padding: 0px 0 60px;
+        }
+
+        .aurora-band {
+            position: absolute;
+            width: 140%;
+            height: 250px;
+            left: -20%;
+            background: linear-gradient(120deg, rgba(60, 255, 199, 0.08), rgba(212, 18, 161, 0.25), rgba(120, 200, 255, 0.08));
+            filter: blur(60px);
+            opacity: 0.35;
+            animation: auroraDrift 18s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .aurora-band.band-2 {
+            top: 20%;
+            animation-duration: 26s;
+            animation-delay: -8s;
+            opacity: 0.25;
+            transform: rotate(-5deg);
+        }
+
+        .aurora-band.band-1 {
+            top: 5%;
+            transform: rotate(8deg);
+        }
+
+        @keyframes auroraDrift {
+            0% {
+                transform: translateY(0) rotate(5deg);
+            }
+
+            50% {
+                transform: translateY(20px) rotate(-2deg);
+            }
+
+            100% {
+                transform: translateY(-15px) rotate(6deg);
+            }
+        }
+
+        @media (max-width: 991px) {
+            .hero-section {
+                height: auto;
+                min-height: 100vh;
+                padding: 140px 0 80px;
+            }
+
+            .hero-planet {
+                max-width: 160px;
+                margin-top: 50px;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-title {
+                font-size: 2.6rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
+
+            .orbit-container {
+                display: none;
+            }
+
+            .aurora-band {
+                opacity: 0.2;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section {
+                padding-top: 120px;
+            }
+
+            .hero-planet {
+                max-width: 130px;
+                margin-top: 25px;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+                padding: 0 10px;
+            }
+
+            .d-flex.gap-3 {
+                flex-direction: column;
+                gap: 0.75rem !important;
+            }
+
+            .btn-neon {
+                width: 100%;
+            }
+        }
+
+        .orbiting-satellite {
+            position: absolute;
+            width: 70px;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 8px rgba(212, 18, 161, 0.6));
+            pointer-events: none;
+            animation: orbitOne 28s linear infinite;
+        }
+
+        .orbit-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+        }
+
+        .orbiting-satellite img {
+            width: 100%;
+            height: auto;
+        }
+
+        .orbit-two {
+            animation: orbitTwo 36s linear infinite;
+            width: 55px;
+            opacity: 0.65;
+        }
+
+        @keyframes orbitOne {
+            0% {
+                transform: rotate(0deg) translateX(260px) rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(180deg) translateX(260px) rotate(-180deg);
+            }
+
+            100% {
+                transform: rotate(360deg) translateX(260px) rotate(-360deg);
+            }
+        }
+
+        @keyframes orbitTwo {
+            0% {
+                transform: rotate(0deg) translateX(-200px) rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(180deg) translateX(-200px) rotate(-180deg);
+            }
+
+            100% {
+                transform: rotate(360deg) translateX(-200px) rotate(-360deg);
+            }
         }
 
         #starfield {
@@ -152,6 +309,7 @@
 
         .hero-planet {
             max-width: 200px;
+            margin-top: 80px;
             margin-bottom: 2rem;
             animation: floatSat 6s ease-in-out infinite;
             filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.8));
@@ -177,9 +335,13 @@
             text-transform: uppercase;
             background: linear-gradient(to right, #fff, var(--primary));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent;
             margin-bottom: 1rem;
             animation: fadeInDown 1s ease-out;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-subtitle {
@@ -223,7 +385,42 @@
             margin-bottom: 3rem;
             position: relative;
             display: inline-block;
+            overflow: hidden;
         }
+
+        .hero-title::before,
+        .section-title::before,
+        .glass-card h3::before,
+        .glass-card h4::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 80%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmerSweep 6s linear infinite;
+            z-index: 1;
+        }
+
+        .hero-title,
+        .glass-card h3,
+        .glass-card h4,
+        .section-title {
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes shimmerSweep {
+            0% {
+                left: -150%;
+            }
+
+            100% {
+                left: 150%;
+            }
+        }
+
 
         .section-title::after {
             content: '';
@@ -583,6 +780,16 @@
     <!-- Hero Section -->
     <section id="home" class="hero-section">
         <canvas id="starfield"></canvas>
+        <div class="aurora-band band-1" aria-hidden="true"></div>
+        <div class="aurora-band band-2" aria-hidden="true"></div>
+        <div class="orbit-container" aria-hidden="true">
+            <div class="orbiting-satellite orbit-one">
+                <img src="dist/custom/images/sat.png" alt="Orbiting satellite">
+            </div>
+            <div class="orbiting-satellite orbit-two">
+                <img src="img/astronaut.png" alt="Orbiting probe">
+            </div>
+        </div>
         <div class="container hero-content">
             <div data-aos="zoom-in" data-aos-duration="1200">
                 <!-- SAT.PNG PATH UPDATED & VISIBLE -->
@@ -988,6 +1195,11 @@
         let width, height;
         let stars = [];
         const numStars = 800;
+        const parallaxConfigs = [
+            { multiplier: 0.5, depth: 0.7, speed: 0.8 },
+            { multiplier: 1, depth: 1, speed: 1 },
+            { multiplier: 0.4, depth: 1.4, speed: 1.2 }
+        ];
         const baseSpeed = 0.1;
         let currentSpeed = baseSpeed;
         let mouseX = 0;
@@ -1009,10 +1221,22 @@
         let warpDuration = 0; // Warp duration counter
         let lastClickTime = 0; // For double-click detection
         let meteors = []; // For meteor shower
+        let comets = []; // For rare comet events
         let lastScrollY = 0;
         let scrollDelta = 0;
         let meteorCooldown = 0; // Prevent too many meteors
         let nebulaClouds = []; // For nebula clouds
+        let cometTimer = 0;
+        let cometInterval = 600 + Math.random() * 600; // ~10s default
+        let magneticLines = [];
+        let blackHoleActive = false;
+        let blackHoleStrength = 0;
+        let blackHoleCenter = { x: 0, y: 0 };
+        let blackHoleDuration = 0;
+        let blackHoleTimer = null;
+        const BLACK_HOLE_MAX_DURATION = 240;
+        let spaceDust = [];
+        const DUST_COUNT = 120;
 
         // Resize Canvas
         function resize() {
@@ -1046,6 +1270,27 @@
                 }
             }
 
+            // Magnetic field lines near cursor (subtle arcs)
+            if (mouseVelocity > 1) {
+                const fieldLines = 1 + Math.floor(Math.random() * 2);
+                for (let i = 0; i < fieldLines; i++) {
+                    magneticLines.push({
+                        x: e.clientX,
+                        y: e.clientY,
+                        radius: 40 + Math.random() * 80,
+                        startAngle: Math.random() * Math.PI * 2,
+                        span: (Math.PI / 2) + Math.random() * (Math.PI / 2),
+                        direction: Math.random() > 0.5,
+                        thickness: 0.5 + Math.random() * 1.5,
+                        life: 1.0,
+                        decay: 0.04 + Math.random() * 0.03
+                    });
+                }
+                if (magneticLines.length > 60) {
+                    magneticLines.splice(0, magneticLines.length - 60);
+                }
+            }
+
             // Constellation drawing - track points while dragging
             if (isDrawing && currentConstellation) {
                 const currentX = e.clientX;
@@ -1070,6 +1315,7 @@
         });
 
         canvas.addEventListener('mouseleave', () => {
+            clearBlackHoleTimer();
             mouseActive = false;
             mouseVelocity = 0;
         });
@@ -1159,8 +1405,17 @@
             }
         }
 
+        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
         // Constellation drawing - mousedown to start
         canvas.addEventListener('mousedown', (e) => {
+            if (e.button === 2) {
+                scheduleBlackHole(e.clientX, e.clientY);
+                return;
+            }
+            if (e.button !== 0) {
+                return;
+            }
             isDrawing = true;
             drawStartX = e.clientX;
             drawStartY = e.clientY;
@@ -1173,6 +1428,10 @@
 
         // Mouseup to finish constellation
         canvas.addEventListener('mouseup', (e) => {
+            if (e.button === 2) {
+                clearBlackHoleTimer();
+                return;
+            }
             if (isDrawing && currentConstellation && currentConstellation.points.length > 1) {
                 // Finalize constellation
                 currentConstellation.points.push({ x: e.clientX, y: e.clientY });
@@ -1225,6 +1484,12 @@
         window.addEventListener('keydown', (e) => {
             if (e.key === 'w' || e.key === 'W') {
                 activateWarpSpeed();
+            }
+            if (e.key === 'c' || e.key === 'C') {
+                spawnComet(true);
+            }
+            if (e.key === 'b' || e.key === 'B') {
+                activateBlackHole(width / 2, height / 2);
             }
         });
 
@@ -1312,6 +1577,130 @@
             }
         }
 
+        // Comet class (long luminous tails)
+        class Comet {
+            constructor(manualTrigger = false) {
+                // Decide entry edge and trajectory
+                const angleRange = [
+                    { angle: Math.PI / 4, spread: Math.PI / 12 }, // from left-top to right-bottom
+                    { angle: (Math.PI * 3) / 4, spread: Math.PI / 12 }, // from right-top to left-bottom
+                    { angle: (Math.PI * 5) / 4, spread: Math.PI / 12 }, // from right-bottom to left-top
+                    { angle: (Math.PI * 7) / 4, spread: Math.PI / 12 }  // from left-bottom to right-top
+                ];
+
+                const preset = angleRange[Math.floor(Math.random() * angleRange.length)];
+                const angle = preset.angle + (Math.random() - 0.5) * preset.spread;
+                const speed = manualTrigger ? 8 + Math.random() * 2 : 5 + Math.random() * 2;
+
+                // Spawn just outside canvas bounds in the opposite direction of travel
+                const margin = 200;
+                this.x = Math.cos(angle + Math.PI) * margin + width / 2;
+                this.y = Math.sin(angle + Math.PI) * margin + height / 2;
+
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.length = 150 + Math.random() * 120;
+                this.life = 1.2; // longer life than meteors
+                this.decay = 0.002 + Math.random() * 0.003;
+                this.twist = (Math.random() - 0.5) * 0.002; // subtle curve
+                this.hue = manualTrigger ? 320 + Math.random() * 20 : 280 + Math.random() * 30;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx += this.twist;
+                this.vy -= this.twist / 2;
+                this.life -= this.decay;
+            }
+
+            draw(ctx) {
+                if (this.life <= 0) return;
+                ctx.save();
+                ctx.globalAlpha = Math.min(this.life, 1);
+
+                const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                const tailLength = this.length * (0.5 + speed / 10);
+                const angle = Math.atan2(this.vy, this.vx);
+
+                const tailX = this.x - Math.cos(angle) * tailLength;
+                const tailY = this.y - Math.sin(angle) * tailLength;
+
+                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
+                gradient.addColorStop(0, `hsla(${this.hue}, 90%, 80%, 1)`);
+                gradient.addColorStop(0.5, `hsla(${this.hue - 40}, 90%, 65%, 0.6)`);
+                gradient.addColorStop(1, `hsla(${this.hue - 60}, 90%, 45%, 0)`);
+
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+
+                ctx.fillStyle = `hsla(${this.hue}, 100%, 90%, 1)`;
+                ctx.shadowColor = `hsla(${this.hue}, 100%, 80%, 1)`;
+                ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+
+            isDead() {
+                return this.life <= 0 || this.x < -400 || this.x > width + 400 || this.y < -400 || this.y > height + 400;
+            }
+        }
+
+        function spawnComet(manual = false) {
+            comets.push(new Comet(manual));
+            // Limit number of active comets
+            if (comets.length > 3) {
+                comets.shift();
+            }
+        }
+
+        function createDustParticle() {
+            return {
+                x: Math.random() * width,
+                y: Math.random() * height,
+                size: 0.5 + Math.random() * 1.5,
+                speed: 0.05 + Math.random() * 0.08,
+                drift: (Math.random() - 0.5) * 0.05
+            };
+        }
+
+        function scheduleBlackHole(clientX, clientY) {
+            clearBlackHoleTimer();
+            blackHoleTimer = setTimeout(() => {
+                activateBlackHole(clientX, clientY);
+            }, 1500);
+        }
+
+        function clearBlackHoleTimer() {
+            if (blackHoleTimer) {
+                clearTimeout(blackHoleTimer);
+                blackHoleTimer = null;
+            }
+        }
+
+        function activateBlackHole(clientX, clientY) {
+            blackHoleActive = true;
+            blackHoleStrength = 1;
+            blackHoleDuration = 0;
+            blackHoleCenter = {
+                x: clientX - width / 2,
+                y: clientY - height / 2
+            };
+            // Create ring particles for visual feedback
+            for (let i = 0; i < 25; i++) {
+                particles.push(new Particle(clientX, clientY));
+            }
+        }
+
+
         // Scroll-based speed variation and meteor shower
         let scrollSpeed = 0;
         window.addEventListener('scroll', () => {
@@ -1336,7 +1725,7 @@
 
         // Star Class
         class Star {
-            constructor() {
+            constructor(depthFactor = 1, speedFactor = 1) {
                 this.x = Math.random() * width - width / 2;
                 this.y = Math.random() * height - height / 2;
                 this.z = Math.random() * width;
@@ -1344,6 +1733,8 @@
                 this.vx = 0; // Velocity for gravity well
                 this.vy = 0;
                 this.pulsePhase = Math.random() * Math.PI * 2; // Random pulse phase
+                this.depthFactor = depthFactor;
+                this.speedFactor = speedFactor;
                 // Twinkling properties
                 this.isTwinkling = false;
                 this.twinkleIntensity = 0;
@@ -1371,28 +1762,23 @@
 
                     // Increase forward speed dramatically
                     const warpSpeedMultiplier = 1 + (warpIntensity * 8); // Up to 9x speed
-                    this.z = this.z - (currentSpeed * 20 * warpSpeedMultiplier);
+                    this.z = this.z - (currentSpeed * 20 * warpSpeedMultiplier * this.speedFactor);
                 } else {
-                    // Enhanced gravity well effect with orbital motion
-                    if (mouseActive) {
-                        const dx = mouseX - this.x;
-                        const dy = mouseY - this.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        const maxDistance = 250;
+                    this.z = this.z - currentSpeed * 20 * this.speedFactor; // Move star closer
+                }
 
-                        if (distance < maxDistance && distance > 0) {
-                            // Gravity force (inverse square law)
-                            const force = (1 - distance / maxDistance) * 0.5;
-                            const angle = Math.atan2(dy, dx);
+                // Black hole collapse pull
+                if (blackHoleActive && blackHoleStrength > 0) {
+                    const dx = blackHoleCenter.x - this.x;
+                    const dy = blackHoleCenter.y - this.y;
+                    const distanceSq = dx * dx + dy * dy + 1;
+                    const pull = Math.min(0.15, (blackHoleStrength * 40) / distanceSq);
+                    this.vx += dx * pull;
+                    this.vy += dy * pull;
 
-                            // Add orbital velocity component (perpendicular to radius)
-                            const orbitalSpeed = force * 0.02;
-                            this.vx += Math.cos(angle) * force * 0.01 + Math.cos(angle + Math.PI / 2) * orbitalSpeed;
-                            this.vy += Math.sin(angle) * force * 0.01 + Math.sin(angle + Math.PI / 2) * orbitalSpeed;
-                        }
+                    if (distanceSq < 15000) {
+                        this.z -= blackHoleStrength * 4 * this.speedFactor;
                     }
-
-                    this.z = this.z - currentSpeed * 20; // Move star closer
                 }
 
                 // Apply velocity with damping
@@ -1441,7 +1827,7 @@
                 }
 
                 if (this.z < 1) {
-                    this.z = width;
+                    this.z = width * this.depthFactor;
                     this.x = Math.random() * width - width / 2;
                     this.y = Math.random() * height - height / 2;
                     this.pz = this.z;
@@ -1459,17 +1845,9 @@
                 let sy = (this.y / this.z) * height + height / 2;
 
                 let r = (1 - this.z / width) * 2.5; // Size based on distance
-
-                let px = (this.x / this.pz) * width + width / 2;
-                let py = (this.y / this.pz) * height + height / 2;
-
                 this.pz = this.z;
 
-                // Mouse proximity effect - brighter stars near cursor
-                let brightness = 1 - this.z / width;
-                let pulseMultiplier = 1;
-                const screenX = sx - width / 2;
-                const screenY = sy - height / 2;
+                let brightness = (1 - this.z / width) * (0.7 + (1 / this.depthFactor) * 0.2);
 
                 // Twinkling effect - random stars brighten periodically
                 if (this.isTwinkling && this.twinkleIntensity > 0) {
@@ -1479,56 +1857,23 @@
                     r *= (1 + this.twinkleIntensity * 0.2);
                 }
 
-                if (mouseActive) {
-                    const mouseDist = Math.sqrt(
-                        Math.pow(mouseX - screenX, 2) +
-                        Math.pow(mouseY - screenY, 2)
-                    );
-
-                    if (mouseDist < 150) {
-                        brightness = Math.min(brightness + (1 - mouseDist / 150) * 0.5, 1);
-                    }
-
-                    // Pulsing effect for stars near cursor
-                    if (mouseDist < 120) {
-                        // Pulse animation based on time and distance
-                        const pulseSpeed = 0.05;
-                        const pulseAmount = (1 - mouseDist / 120) * 0.3;
-                        pulseMultiplier = 1 + Math.sin(time * pulseSpeed + this.pulsePhase) * pulseAmount;
-                        r *= pulseMultiplier;
-                    }
-                }
-
                 ctx.beginPath();
-                ctx.moveTo(px, py);
-                ctx.lineTo(sx, sy);
 
-                // Warp speed visual effects - brighter, longer streaks
                 if (warpSpeed && warpIntensity > 0) {
                     brightness = Math.min(brightness * (1 + warpIntensity * 0.5), 1);
-                    r *= (1 + warpIntensity * 0.3); // Longer streaks
-                    // More purple during warp
-                    ctx.strokeStyle = `rgba(212, 18, 161, ${brightness * (0.7 + warpIntensity * 0.3)})`;
+                    r *= (1 + warpIntensity * 0.3);
+                    ctx.fillStyle = `rgba(212, 18, 161, ${brightness * (0.7 + warpIntensity * 0.3)})`;
+                } else if (this.isTwinkling && this.twinkleIntensity > 0.5) {
+                    const twinkleColorMix = this.twinkleIntensity * 0.4;
+                    ctx.fillStyle = `rgba(${255 - twinkleColorMix * 43}, ${255 - twinkleColorMix * 237}, ${255 - twinkleColorMix * 94}, ${brightness})`;
+                } else if (Math.random() > 0.97) {
+                    ctx.fillStyle = `rgba(212, 18, 161, ${brightness})`;
                 } else {
-                    // Color logic: mostly white/grey, occasional purple accent
-                    // Stars near mouse get purple tint
-                    const isNearMouse = mouseActive &&
-                        Math.sqrt(Math.pow(mouseX - screenX, 2) + Math.pow(mouseY - screenY, 2)) < 100;
-
-                    // Twinkling stars get a slight purple/blue tint
-                    if (this.isTwinkling && this.twinkleIntensity > 0.5) {
-                        // Mix white and purple during twinkle
-                        const twinkleColorMix = this.twinkleIntensity * 0.4;
-                        ctx.strokeStyle = `rgba(${255 - twinkleColorMix * 43}, ${255 - twinkleColorMix * 237}, ${255 - twinkleColorMix * 94}, ${brightness})`;
-                    } else if (isNearMouse || Math.random() > 0.95) {
-                        ctx.strokeStyle = `rgba(212, 18, 161, ${brightness})`;
-                    } else {
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${brightness})`;
-                    }
+                    ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`;
                 }
 
-                ctx.lineWidth = r;
-                ctx.stroke();
+                ctx.arc(sx, sy, Math.max(r * 0.5, 0.5), 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
@@ -1600,15 +1945,24 @@
         // Init Stars
         function initStars() {
             stars = [];
-            for (let i = 0; i < numStars; i++) {
-                stars.push(new Star());
-            }
+            parallaxConfigs.forEach(config => {
+                const layerCount = Math.round(numStars * config.multiplier);
+                for (let i = 0; i < layerCount; i++) {
+                    stars.push(new Star(config.depth, config.speed));
+                }
+            });
 
             // Initialize nebula clouds (3-5 clouds)
             nebulaClouds = [];
             const cloudCount = 3 + Math.floor(Math.random() * 3);
             for (let i = 0; i < cloudCount; i++) {
                 nebulaClouds.push(new NebulaCloud());
+            }
+
+            // Initialize slow space dust layer
+            spaceDust = [];
+            for (let i = 0; i < DUST_COUNT; i++) {
+                spaceDust.push(createDustParticle());
             }
         }
 
@@ -1633,6 +1987,31 @@
             ctx.fillStyle = "#050505"; // Background clear color
             ctx.fillRect(0, 0, width, height);
 
+            // Space dust layer (behind nebula)
+            ctx.save();
+            ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+            spaceDust.forEach(dust => {
+                dust.x += dust.speed;
+                dust.y += dust.drift;
+                if (dust.x > width + 20) dust.x = -20;
+                if (dust.x < -20) dust.x = width + 20;
+                if (dust.y > height + 20) dust.y = -20;
+                if (dust.y < -20) dust.y = height + 20;
+
+                ctx.beginPath();
+                ctx.arc(dust.x, dust.y, dust.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.restore();
+
+            // Handle automatic comet spawns
+            cometTimer++;
+            if (cometTimer > cometInterval) {
+                spawnComet(false);
+                cometTimer = 0;
+                cometInterval = 600 + Math.random() * 600;
+            }
+
             // Draw nebula clouds (subtle background gradients)
             nebulaClouds.forEach(cloud => {
                 cloud.update();
@@ -1648,6 +2027,54 @@
                 gradient.addColorStop(1, 'rgba(212, 18, 161, 0)');
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, width, height);
+                ctx.restore();
+            }
+
+            // Black hole effect lifecycle
+            if (blackHoleActive) {
+                blackHoleDuration++;
+                const fade = 1 - Math.min(blackHoleDuration / BLACK_HOLE_MAX_DURATION, 1);
+                blackHoleStrength = fade;
+                if (fade <= 0) {
+                    blackHoleActive = false;
+                    blackHoleStrength = 0;
+                }
+            }
+
+            if (blackHoleActive && blackHoleStrength > 0) {
+                ctx.save();
+                ctx.globalCompositeOperation = 'screen';
+                const radius = 120 * blackHoleStrength + 80;
+                const holeX = blackHoleCenter.x + width / 2;
+                const holeY = blackHoleCenter.y + height / 2;
+                const holeGradient = ctx.createRadialGradient(holeX, holeY, 0, holeX, holeY, radius);
+                holeGradient.addColorStop(0, `rgba(0, 0, 0, ${0.5 * blackHoleStrength})`);
+                holeGradient.addColorStop(0.5, `rgba(212, 18, 161, ${0.2 * blackHoleStrength})`);
+                holeGradient.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = holeGradient;
+                ctx.beginPath();
+                ctx.arc(holeX, holeY, radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Magnetic field lines near cursor
+            if (magneticLines.length > 0) {
+                ctx.save();
+                ctx.globalCompositeOperation = 'screen';
+                magneticLines = magneticLines.filter(line => {
+                    line.life -= line.decay;
+                    if (line.life <= 0) {
+                        return false;
+                    }
+                    const alpha = line.life * 0.5;
+                    ctx.strokeStyle = `rgba(212, 18, 161, ${alpha})`;
+                    ctx.lineWidth = line.thickness;
+                    ctx.beginPath();
+                    ctx.arc(line.x, line.y, line.radius, line.startAngle, line.startAngle + line.span, line.direction);
+                    ctx.stroke();
+                    return true;
+                });
                 ctx.restore();
             }
 
@@ -1766,6 +2193,13 @@
                 star.update();
                 star.show();
             });
+
+            // Update and draw comets
+            comets.forEach(comet => {
+                comet.update();
+                comet.draw(ctx);
+            });
+            comets = comets.filter(comet => !comet.isDead());
 
             // Update and draw meteors
             meteors.forEach(meteor => {
