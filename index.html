@@ -1012,6 +1012,7 @@
         let lastScrollY = 0;
         let scrollDelta = 0;
         let meteorCooldown = 0; // Prevent too many meteors
+        let nebulaClouds = []; // For nebula clouds
 
         // Resize Canvas
         function resize() {
@@ -1343,6 +1344,12 @@
                 this.vx = 0; // Velocity for gravity well
                 this.vy = 0;
                 this.pulsePhase = Math.random() * Math.PI * 2; // Random pulse phase
+                // Twinkling properties
+                this.isTwinkling = false;
+                this.twinkleIntensity = 0;
+                this.twinkleTimer = Math.random() * 300 + 100; // Random initial delay
+                this.twinkleDuration = 0;
+                this.maxTwinkleDuration = 20 + Math.random() * 30; // Random twinkle duration
             }
 
             update() {
@@ -1394,6 +1401,45 @@
                 this.vx *= 0.95; // Damping
                 this.vy *= 0.95;
 
+                // Twinkling logic
+                this.twinkleTimer--;
+                if (this.twinkleTimer <= 0) {
+                    if (!this.isTwinkling) {
+                        // Start twinkling (random chance)
+                        if (Math.random() < 0.02) { // 2% chance per check
+                            this.isTwinkling = true;
+                            this.twinkleDuration = 0;
+                            this.twinkleIntensity = 0;
+                        } else {
+                            // Reset timer for next check
+                            this.twinkleTimer = Math.random() * 200 + 50;
+                        }
+                    }
+                }
+
+                if (this.isTwinkling) {
+                    this.twinkleDuration++;
+                    // Twinkle animation: fade in, peak, fade out
+                    if (this.twinkleDuration < this.maxTwinkleDuration / 3) {
+                        // Fade in
+                        this.twinkleIntensity = (this.twinkleDuration / (this.maxTwinkleDuration / 3));
+                    } else if (this.twinkleDuration < (this.maxTwinkleDuration * 2 / 3)) {
+                        // Peak brightness
+                        this.twinkleIntensity = 1.0;
+                    } else {
+                        // Fade out
+                        const fadeOutProgress = (this.twinkleDuration - (this.maxTwinkleDuration * 2 / 3)) / (this.maxTwinkleDuration / 3);
+                        this.twinkleIntensity = 1.0 - fadeOutProgress;
+                    }
+
+                    // End twinkling
+                    if (this.twinkleDuration >= this.maxTwinkleDuration) {
+                        this.isTwinkling = false;
+                        this.twinkleIntensity = 0;
+                        this.twinkleTimer = Math.random() * 400 + 200; // Random delay before next twinkle
+                    }
+                }
+
                 if (this.z < 1) {
                     this.z = width;
                     this.x = Math.random() * width - width / 2;
@@ -1401,6 +1447,10 @@
                     this.pz = this.z;
                     this.vx = 0;
                     this.vy = 0;
+                    // Reset twinkling when star resets
+                    this.isTwinkling = false;
+                    this.twinkleIntensity = 0;
+                    this.twinkleTimer = Math.random() * 300 + 100;
                 }
             }
 
@@ -1420,6 +1470,14 @@
                 let pulseMultiplier = 1;
                 const screenX = sx - width / 2;
                 const screenY = sy - height / 2;
+
+                // Twinkling effect - random stars brighten periodically
+                if (this.isTwinkling && this.twinkleIntensity > 0) {
+                    const twinkleBoost = this.twinkleIntensity * 0.8; // Up to 80% brightness boost
+                    brightness = Math.min(brightness + twinkleBoost, 1);
+                    // Slight size increase during twinkle
+                    r *= (1 + this.twinkleIntensity * 0.2);
+                }
 
                 if (mouseActive) {
                     const mouseDist = Math.sqrt(
@@ -1457,7 +1515,12 @@
                     const isNearMouse = mouseActive &&
                         Math.sqrt(Math.pow(mouseX - screenX, 2) + Math.pow(mouseY - screenY, 2)) < 100;
 
-                    if (isNearMouse || Math.random() > 0.95) {
+                    // Twinkling stars get a slight purple/blue tint
+                    if (this.isTwinkling && this.twinkleIntensity > 0.5) {
+                        // Mix white and purple during twinkle
+                        const twinkleColorMix = this.twinkleIntensity * 0.4;
+                        ctx.strokeStyle = `rgba(${255 - twinkleColorMix * 43}, ${255 - twinkleColorMix * 237}, ${255 - twinkleColorMix * 94}, ${brightness})`;
+                    } else if (isNearMouse || Math.random() > 0.95) {
                         ctx.strokeStyle = `rgba(212, 18, 161, ${brightness})`;
                     } else {
                         ctx.strokeStyle = `rgba(255, 255, 255, ${brightness})`;
@@ -1469,11 +1532,83 @@
             }
         }
 
+        // Nebula Cloud class
+        class NebulaCloud {
+            constructor() {
+                // Random position
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                // Random size
+                this.radiusX = 200 + Math.random() * 400;
+                this.radiusY = 200 + Math.random() * 400;
+                // Random movement speed
+                this.vx = (Math.random() - 0.5) * 0.1;
+                this.vy = (Math.random() - 0.5) * 0.1;
+                // Color phase for shifting
+                this.colorPhase = Math.random() * Math.PI * 2;
+                this.colorSpeed = 0.001 + Math.random() * 0.002;
+                // Opacity
+                this.opacity = 0.03 + Math.random() * 0.05; // Very subtle
+            }
+
+            update() {
+                // Slow movement
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Wrap around edges
+                if (this.x < -this.radiusX) this.x = width + this.radiusX;
+                if (this.x > width + this.radiusX) this.x = -this.radiusX;
+                if (this.y < -this.radiusY) this.y = height + this.radiusY;
+                if (this.y > height + this.radiusY) this.y = -this.radiusY;
+
+                // Color phase shift
+                this.colorPhase += this.colorSpeed;
+            }
+
+            draw(ctx) {
+                ctx.save();
+
+                // Create radial gradient with shifting colors
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, Math.max(this.radiusX, this.radiusY)
+                );
+
+                // Color shifts between purple, pink, and blue
+                const r1 = 212 + Math.sin(this.colorPhase) * 20;
+                const g1 = 18 + Math.sin(this.colorPhase + Math.PI / 3) * 30;
+                const b1 = 161 + Math.sin(this.colorPhase + Math.PI * 2 / 3) * 50;
+
+                const r2 = 100 + Math.sin(this.colorPhase + Math.PI) * 30;
+                const g2 = 50 + Math.sin(this.colorPhase + Math.PI + Math.PI / 3) * 40;
+                const b2 = 200 + Math.sin(this.colorPhase + Math.PI + Math.PI * 2 / 3) * 55;
+
+                gradient.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, ${this.opacity})`);
+                gradient.addColorStop(0.5, `rgba(${r2}, ${g2}, ${b2}, ${this.opacity * 0.6})`);
+                gradient.addColorStop(1, `rgba(${r2}, ${g2}, ${b2}, 0)`);
+
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.ellipse(this.x, this.y, this.radiusX, this.radiusY, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
         // Init Stars
         function initStars() {
             stars = [];
             for (let i = 0; i < numStars; i++) {
                 stars.push(new Star());
+            }
+
+            // Initialize nebula clouds (3-5 clouds)
+            nebulaClouds = [];
+            const cloudCount = 3 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < cloudCount; i++) {
+                nebulaClouds.push(new NebulaCloud());
             }
         }
 
@@ -1497,6 +1632,12 @@
 
             ctx.fillStyle = "#050505"; // Background clear color
             ctx.fillRect(0, 0, width, height);
+
+            // Draw nebula clouds (subtle background gradients)
+            nebulaClouds.forEach(cloud => {
+                cloud.update();
+                cloud.draw(ctx);
+            });
 
             // Warp speed visual overlay (radial gradient at center)
             if (warpSpeed && warpIntensity > 0) {
@@ -1646,7 +1787,7 @@
 
         window.addEventListener('resize', () => {
             resize();
-            initStars();
+            initStars(); // This will also reinitialize nebula clouds
         });
 
         // Start
