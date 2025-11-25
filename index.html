@@ -1357,6 +1357,7 @@
         let blackHoleCenter = { x: 0, y: 0 };
         let blackHoleDuration = 0;
         let blackHoleTimer = null;
+        let blackHoleSpiralRotation = 0;
         const BLACK_HOLE_MAX_DURATION = 240;
         let spaceDust = [];
         const DUST_COUNT = 120;
@@ -1813,14 +1814,11 @@
             blackHoleActive = true;
             blackHoleStrength = 1;
             blackHoleDuration = 0;
+            blackHoleSpiralRotation = 0;
             blackHoleCenter = {
                 x: clientX - width / 2,
                 y: clientY - height / 2
             };
-            // Create ring particles for visual feedback
-            for (let i = 0; i < 25; i++) {
-                particles.push(new Particle(clientX, clientY));
-            }
         }
 
 
@@ -2171,14 +2169,52 @@
                 const holeX = blackHoleCenter.x + width / 2;
                 const holeY = blackHoleCenter.y + height / 2;
                 const holeGradient = ctx.createRadialGradient(holeX, holeY, 0, holeX, holeY, radius);
-                holeGradient.addColorStop(0, `rgba(0, 0, 0, ${0.5 * blackHoleStrength})`);
-                holeGradient.addColorStop(0.5, `rgba(212, 18, 161, ${0.2 * blackHoleStrength})`);
+                holeGradient.addColorStop(0, `rgba(0, 0, 0, ${0.7 * blackHoleStrength})`);
+                holeGradient.addColorStop(0.4, `rgba(35, 20, 10, ${0.45 * blackHoleStrength})`);
+                holeGradient.addColorStop(0.8, `rgba(255, 190, 120, ${0.25 * blackHoleStrength})`);
                 holeGradient.addColorStop(1, 'rgba(0,0,0,0)');
                 ctx.fillStyle = holeGradient;
                 ctx.beginPath();
                 ctx.arc(holeX, holeY, radius, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.restore();
+
+                // Accretion disk (side view)
+                ctx.save();
+                ctx.translate(holeX, holeY);
+                const diskFlatten = 0.35;
+                for (let r = 60; r <= 220; r += 6) {
+                    const progress = (r - 60) / 160;
+                    const alpha = Math.max(0, 0.95 - progress) * blackHoleStrength;
+                    if (alpha <= 0.02) continue;
+                    ctx.save();
+                    const wobble = Math.sin(blackHoleSpiralRotation + progress * 4) * 0.2;
+                    ctx.rotate(wobble);
+                    ctx.scale(1, diskFlatten);
+                    ctx.lineWidth = Math.max(1.25, 5 - progress * 4);
+                    const color = `rgba(255, ${190 - progress * 60}, ${120 - progress * 40}, ${alpha})`;
+                    ctx.strokeStyle = color;
+                    ctx.shadowColor = `rgba(255, 210, 160, ${alpha})`;
+                    ctx.shadowBlur = 25 * alpha;
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, r, r, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                // Central bright band
+                ctx.save();
+                ctx.scale(1, diskFlatten * 0.7);
+                const bandGradient = ctx.createLinearGradient(-180, 0, 180, 0);
+                bandGradient.addColorStop(0, 'rgba(255, 200, 140, 0)');
+                bandGradient.addColorStop(0.5, `rgba(255, 240, 210, ${0.6 * blackHoleStrength})`);
+                bandGradient.addColorStop(1, 'rgba(255, 200, 140, 0)');
+                ctx.fillStyle = bandGradient;
+                ctx.fillRect(-200, -18, 400, 36);
+                ctx.restore();
+
+                ctx.restore();
+                blackHoleSpiralRotation += 0.012 + (0.015 * (1 - blackHoleStrength));
             }
 
             // Magnetic field lines near cursor
