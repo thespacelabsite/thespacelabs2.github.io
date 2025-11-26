@@ -450,17 +450,22 @@
             }
 
             .hero-title {
-                font-size: 1.8rem;
-                line-height: 1.2;
-                padding: 0 15px;
+                font-size: 1.5rem;
+                line-height: 1.3;
+                padding: 0 20px;
                 margin-bottom: 0.75rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
             }
 
             .hero-subtitle {
-                font-size: 0.9rem;
-                padding: 0 15px;
+                font-size: 0.875rem;
+                padding: 0 20px;
                 line-height: 1.5;
                 margin-bottom: 1.25rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
 
             .d-flex.justify-content-center.gap-3 {
@@ -574,17 +579,22 @@
             }
 
             .hero-title {
-                font-size: 1.5rem;
-                line-height: 1.2;
-                padding: 0 10px;
+                font-size: 1.3rem;
+                line-height: 1.3;
+                padding: 0 15px;
                 margin-bottom: 0.75rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
             }
 
             .hero-subtitle {
-                font-size: 0.85rem;
-                padding: 0 10px;
+                font-size: 0.8rem;
+                padding: 0 15px;
                 line-height: 1.5;
                 margin-bottom: 1rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
 
             .d-flex.justify-content-center.gap-3 {
@@ -649,6 +659,50 @@
                 height: 50px;
                 bottom: 15px;
                 right: 15px;
+            }
+        }
+
+        /* Very Small Phones (iPhone SE, small Android) */
+        @media (max-width: 360px) {
+            .hero-section {
+                padding: 25px 0 35px;
+            }
+
+            .hero-content {
+                padding-top: 70px;
+            }
+
+            .hero-planet {
+                max-width: 90px;
+                margin-bottom: 0.875rem;
+            }
+
+            .hero-title {
+                font-size: 1.15rem;
+                line-height: 1.3;
+                padding: 0 12px;
+                margin-bottom: 0.625rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+            }
+
+            .hero-subtitle {
+                font-size: 0.75rem;
+                padding: 0 12px;
+                line-height: 1.5;
+                margin-bottom: 0.875rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            .d-flex.justify-content-center.gap-3 {
+                padding: 0 12px;
+            }
+
+            .btn-neon {
+                padding: 9px 12px;
+                font-size: 0.75rem;
             }
         }
 
@@ -723,6 +777,22 @@
             z-index: 2;
             text-align: center;
             padding-top: clamp(100px, 14vh, 190px);
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .hero-content {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .hero-content {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
         }
 
         .hero-planet {
@@ -760,6 +830,9 @@
             animation: fadeInDown 1s ease-out;
             position: relative;
             overflow: hidden;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
         }
 
         .hero-subtitle {
@@ -769,6 +842,8 @@
             max-width: 700px;
             margin: 0 auto 2rem auto;
             animation: fadeInUp 1s ease-out 0.5s backwards;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .btn-neon {
