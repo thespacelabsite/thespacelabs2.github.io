@@ -56,6 +56,16 @@
             scroll-behavior: smooth;
         }
 
+        /* Prevent horizontal scroll on mobile */
+        * {
+            max-width: 100%;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
         h1,
         h2,
         h3,
@@ -209,6 +219,37 @@
             color: var(--text-bright);
         }
 
+        /* Responsive carousel caption */
+        @media (max-width: 768px) {
+            .overview-carousel .carousel-caption {
+                padding: 1rem;
+            }
+
+            .overview-carousel .carousel-caption h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .overview-carousel .carousel-caption p {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .overview-carousel .carousel-caption {
+                padding: 0.75rem;
+            }
+
+            .overview-carousel .carousel-caption h3 {
+                font-size: 1rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .overview-carousel .carousel-caption p {
+                font-size: 0.8rem;
+            }
+        }
+
         .overview-carousel .carousel-indicators [data-bs-target] {
             background-color: var(--primary);
         }
@@ -217,6 +258,24 @@
             margin-bottom: 0.75rem;
         }
 
+        /* --- Responsive Styles --- */
+
+        /* Large Tablets and Small Desktops */
+        @media (max-width: 1199px) {
+            .section-padding {
+                padding: 80px 0;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Tablets */
         @media (max-width: 991px) {
             .hero-section {
                 height: auto;
@@ -236,11 +295,15 @@
 
             .hero-title {
                 font-size: 2.6rem;
+                line-height: 1.2;
+                margin-bottom: 1rem;
             }
 
             .hero-subtitle {
                 font-size: 1rem;
                 padding: 0 15px;
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
             }
 
             .orbit-container {
@@ -254,42 +317,338 @@
             .overview-carousel .carousel-item img {
                 height: 280px;
             }
+
+            .section-padding {
+                padding: 70px 0;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+                margin-bottom: 2rem;
+            }
+
+            .glass-card {
+                padding: 1.5rem;
+            }
+
+            .navbar-brand img {
+                height: 40px;
+            }
+
+            .nav-link {
+                margin-left: 15px;
+            }
         }
 
-        @media (max-width: 576px) {
+        /* Small Tablets and Large Phones */
+        @media (max-width: 768px) {
             .hero-section {
-                padding: 50px 0 70px;
+                padding: 50px 0 60px;
             }
 
             .hero-content {
-                padding-top: 110px;
+                padding-top: 100px;
             }
 
             .hero-planet {
-                max-width: 130px;
-                margin-top: 0;
+                max-width: 140px;
+                margin-bottom: 1.5rem;
             }
 
             .hero-title {
-                font-size: 2.2rem;
-            }
-
-            .hero-subtitle {
-                font-size: 0.95rem;
+                font-size: 2.3rem;
+                line-height: 1.2;
                 padding: 0 10px;
             }
 
-            .d-flex.gap-3 {
+            .hero-subtitle {
+                font-size: 0.98rem;
+                padding: 0 20px;
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+            }
+
+            .d-flex.justify-content-center.gap-3 {
                 flex-direction: column;
                 gap: 0.75rem !important;
+                padding: 0 20px;
             }
 
             .btn-neon {
                 width: 100%;
+                max-width: 300px;
+                padding: 12px 25px;
+                font-size: 0.9rem;
             }
 
             .overview-carousel .carousel-item img {
-                height: 220px;
+                height: 250px;
+            }
+
+            .section-padding {
+                padding: 60px 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .about-text p {
+                font-size: 1rem;
+            }
+
+            .glass-card {
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .card-icon {
+                font-size: 2.5rem;
+            }
+
+            .product-img {
+                height: 180px;
+            }
+
+            .navbar {
+                padding: 0.75rem 0;
+            }
+
+            .navbar-brand img {
+                height: 35px;
+            }
+
+            .nav-link {
+                margin-left: 0;
+                padding: 0.5rem 0;
+            }
+
+            footer {
+                padding: 2rem 0;
+            }
+
+            .partner-logo {
+                height: 60px;
+                margin: 0 25px;
+            }
+        }
+
+        /* Mobile Phones */
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 40px 0 50px;
+            }
+
+            .hero-content {
+                padding-top: 90px;
+            }
+
+            .hero-planet {
+                max-width: 120px;
+                margin-bottom: 1.25rem;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+                line-height: 1.2;
+                padding: 0 15px;
+                margin-bottom: 0.75rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.9rem;
+                padding: 0 15px;
+                line-height: 1.5;
+                margin-bottom: 1.25rem;
+            }
+
+            .d-flex.justify-content-center.gap-3 {
+                flex-direction: column;
+                gap: 0.75rem !important;
+                padding: 0 15px;
+            }
+
+            .btn-neon {
+                width: 100%;
+                max-width: 100%;
+                padding: 10px 20px;
+                font-size: 0.85rem;
+            }
+
+            .overview-carousel .carousel-item img {
+                height: 200px;
+            }
+
+            .section-padding {
+                padding: 50px 0;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .about-text p {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .glass-card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .glass-card h3,
+            .glass-card h4 {
+                font-size: 1.25rem;
+            }
+
+            .card-icon {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            .product-img {
+                height: 150px;
+            }
+
+            .navbar {
+                padding: 0.5rem 0;
+            }
+
+            .navbar-brand img {
+                height: 30px;
+            }
+
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            footer {
+                padding: 1.5rem 0;
+                text-align: center;
+            }
+
+            footer .row {
+                flex-direction: column;
+            }
+
+            footer .col-md-6 {
+                margin-bottom: 1rem;
+            }
+
+            .partner-logo {
+                height: 50px;
+                margin: 0 20px;
+            }
+
+            .social-link {
+                width: 35px;
+                height: 35px;
+                margin: 0 3px;
+            }
+
+            #rocket-top {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Extra Small Phones */
+        @media (max-width: 480px) {
+            .hero-section {
+                padding: 30px 0 40px;
+            }
+
+            .hero-content {
+                padding-top: 80px;
+            }
+
+            .hero-planet {
+                max-width: 100px;
+                margin-bottom: 1rem;
+            }
+
+            .hero-title {
+                font-size: 1.5rem;
+                line-height: 1.2;
+                padding: 0 10px;
+                margin-bottom: 0.75rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.85rem;
+                padding: 0 10px;
+                line-height: 1.5;
+                margin-bottom: 1rem;
+            }
+
+            .d-flex.justify-content-center.gap-3 {
+                flex-direction: column;
+                gap: 0.5rem !important;
+                padding: 0 10px;
+                align-items: center;
+            }
+
+            .btn-neon {
+                width: 100%;
+                max-width: 280px;
+                padding: 10px 15px;
+                font-size: 0.8rem;
+            }
+
+            .overview-carousel .carousel-item img {
+                height: 180px;
+            }
+
+            .section-padding {
+                padding: 40px 0;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .about-text p {
+                font-size: 0.9rem;
+            }
+
+            .glass-card {
+                padding: 0.875rem;
+            }
+
+            .glass-card h3,
+            .glass-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .card-icon {
+                font-size: 1.75rem;
+            }
+
+            .product-img {
+                height: 130px;
+            }
+
+            .navbar-brand img {
+                height: 28px;
+            }
+
+            .partner-logo {
+                height: 40px;
+                margin: 0 15px;
+            }
+
+            #rocket-top {
+                width: 50px;
+                height: 50px;
+                bottom: 15px;
+                right: 15px;
             }
         }
 
@@ -497,6 +856,29 @@
             line-height: 1.8;
             color: var(--text-bright);
             /* Brighter text */
+        }
+
+        /* Responsive overview section */
+        @media (max-width: 768px) {
+            .about-text p {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+
+            .about-text h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .about-text p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+
+            .about-text h3 {
+                font-size: 1.3rem;
+            }
         }
 
         .about-highlight {
@@ -798,6 +1180,40 @@
 
         .close-egg:hover {
             color: var(--primary);
+        }
+
+        /* Responsive news section */
+        @media (max-width: 768px) {
+            .glass-card.p-0 img {
+                height: 180px;
+                object-fit: cover;
+            }
+
+            .glass-card.p-0 .p-3 h5 {
+                font-size: 1.1rem;
+            }
+
+            .glass-card.p-0 .p-3 p {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .glass-card.p-0 img {
+                height: 150px;
+            }
+
+            .glass-card.p-0 .p-3 {
+                padding: 1rem !important;
+            }
+
+            .glass-card.p-0 .p-3 h5 {
+                font-size: 1rem;
+            }
+
+            .glass-card.p-0 .p-3 p {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
