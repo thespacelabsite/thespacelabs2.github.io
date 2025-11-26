@@ -97,12 +97,21 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             padding: 1rem 0;
+            z-index: 1030;
+        }
+
+        /* Ensure navbar doesn't overlap content on mobile */
+        @media (max-width: 991px) {
+            body {
+                padding-top: 0;
+            }
         }
 
         .navbar-brand img {
             height: 50px;
             /* Adjusted height for your logo */
             width: auto;
+            transition: height 0.3s ease;
         }
 
         .nav-link {
@@ -111,6 +120,7 @@
             margin-left: 20px;
             position: relative;
             transition: color 0.3s;
+            font-size: 1rem;
         }
 
         .nav-link:hover,
@@ -132,6 +142,76 @@
 
         .nav-link:hover::after {
             width: 100%;
+        }
+
+        /* Navbar Toggler Button */
+        .navbar-toggler {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(212, 18, 161, 0.25);
+            outline: none;
+        }
+
+        .navbar-toggler:hover {
+            border-color: var(--primary);
+            background: rgba(212, 18, 161, 0.1);
+        }
+
+        .navbar-toggler:active {
+            background: rgba(212, 18, 161, 0.2);
+        }
+
+        .navbar-toggler[aria-expanded="true"] {
+            border-color: var(--primary);
+            background: rgba(212, 18, 161, 0.15);
+        }
+
+        /* Collapsed Menu Styling */
+        .navbar-collapse {
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: rgba(5, 5, 5, 0.98);
+                backdrop-filter: blur(20px);
+                border-radius: 8px;
+                padding: 1rem;
+                margin-top: 1rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            }
+
+            .navbar-nav {
+                width: 100%;
+            }
+        }
+
+        /* Ensure navbar container doesn't overflow */
+        .navbar .container {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .navbar .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .navbar .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
         }
 
         /* --- Hero Section --- */
@@ -331,12 +411,29 @@
                 padding: 1.5rem;
             }
 
+            .navbar {
+                padding: 0.875rem 0;
+            }
+
             .navbar-brand img {
                 height: 40px;
             }
 
             .nav-link {
                 margin-left: 15px;
+                font-size: 0.95rem;
+            }
+
+            .navbar-toggler {
+                padding: 0.4rem 0.65rem;
+            }
+
+            .navbar-toggler span {
+                font-size: 1.4rem !important;
+            }
+
+            .navbar-collapse {
+                margin-top: 0.75rem;
             }
         }
 
@@ -421,7 +518,43 @@
 
             .nav-link {
                 margin-left: 0;
-                padding: 0.5rem 0;
+                padding: 0.75rem 0.5rem;
+                font-size: 0.95rem;
+                display: block;
+                text-align: left;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .nav-link:last-child {
+                border-bottom: none;
+            }
+
+            .nav-link::after {
+                display: none;
+            }
+
+            .nav-link:hover,
+            .nav-link.active {
+                padding-left: 1rem;
+                background: rgba(212, 18, 161, 0.1);
+                border-left: 3px solid var(--primary);
+            }
+
+            .navbar-toggler {
+                padding: 0.4rem 0.6rem;
+            }
+
+            .navbar-toggler span {
+                font-size: 1.3rem !important;
+            }
+
+            .navbar-collapse {
+                margin-top: 1rem;
+                padding: 0.5rem;
+            }
+
+            .navbar-nav {
+                padding: 0;
             }
 
             footer {
@@ -524,6 +657,34 @@
 
             .navbar-brand img {
                 height: 30px;
+            }
+
+            .nav-link {
+                padding: 0.65rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .nav-link:hover,
+            .nav-link.active {
+                padding-left: 0.875rem;
+            }
+
+            .navbar-toggler {
+                padding: 0.35rem 0.5rem;
+            }
+
+            .navbar-toggler span {
+                font-size: 1.25rem !important;
+            }
+
+            .navbar-collapse {
+                margin-top: 0.75rem;
+                padding: 0.5rem;
+            }
+
+            .container {
+                padding-left: 15px;
+                padding-right: 15px;
             }
 
             .container {
@@ -645,8 +806,35 @@
                 height: 130px;
             }
 
+            .navbar {
+                padding: 0.45rem 0;
+            }
+
             .navbar-brand img {
                 height: 28px;
+            }
+
+            .nav-link {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.875rem;
+            }
+
+            .nav-link:hover,
+            .nav-link.active {
+                padding-left: 0.75rem;
+            }
+
+            .navbar-toggler {
+                padding: 0.3rem 0.45rem;
+            }
+
+            .navbar-toggler span {
+                font-size: 1.2rem !important;
+            }
+
+            .navbar-collapse {
+                margin-top: 0.5rem;
+                padding: 0.4rem;
             }
 
             .partner-logo {
@@ -703,6 +891,42 @@
             .btn-neon {
                 padding: 9px 12px;
                 font-size: 0.75rem;
+            }
+
+            .navbar {
+                padding: 0.4rem 0;
+            }
+
+            .navbar-brand img {
+                height: 26px;
+            }
+
+            .nav-link {
+                padding: 0.55rem 0.4rem;
+                font-size: 0.85rem;
+            }
+
+            .nav-link:hover,
+            .nav-link.active {
+                padding-left: 0.65rem;
+            }
+
+            .navbar-toggler {
+                padding: 0.25rem 0.4rem;
+            }
+
+            .navbar-toggler span {
+                font-size: 1.15rem !important;
+            }
+
+            .navbar-collapse {
+                margin-top: 0.5rem;
+                padding: 0.35rem;
+            }
+
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
             }
         }
 
