@@ -1,0 +1,65 @@
+/* SpaceLabs — page-scoped styles: mission-design.html (SERVICE 01)
+   Everything shared lives in assets/css/site.css; this file only adds the Pager (PREVIOUS / NEXT large
+   links), the Instruments two-column layout and the figure pair. Relative, token-driven, no overrides. */
+
+/* ---- TitleBlock: emblem fallback sizing (the SVG is a hairline drawing; let it breathe) ---- */
+.md-emblem > .region__fallback > svg { width: min(78%, 520px); max-height: 82%; }
+
+/* ---- Core services: scope ledger (non-link rows) ---- */
+.ledger--scope .ledger__cells { align-items: start; }
+.ledger--scope .ledger__title { max-width: 40ch; text-wrap: balance; }
+
+/* ---- Figure rows ---- */
+.figures { display: grid; grid-template-columns: 1fr; gap: var(--s6); }
+@media (min-width: 640px) { .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap); } }
+.figure-wide { margin-top: var(--s8); }
+
+/* ---- Instruments: copy left, coverage + figures right (≥1024) ---- */
+.instrument__copy p + p { margin-top: var(--s4); }
+.instrument__copy .ledger { margin-top: var(--s6); }
+/* the ASTRA row sits in a 5-column cell: use the compact ledger layout at every width */
+.instrument__copy .ledger__link { grid-template-columns: 3ch 1fr auto; column-gap: var(--s4); padding-inline: 0; }
+.instrument__copy .ledger__idx { grid-column: 1; }
+.instrument__copy .ledger__title { grid-column: 2; }
+.instrument__copy .ledger__desc { grid-column: 2; grid-row: 2; }
+.instrument__copy .ledger__meta { grid-column: 2; grid-row: 3; margin-top: var(--s2); }
+.instrument__copy .ledger__arrow { grid-column: 3; }
+.coverage__intro { color: var(--muted); max-width: 52ch; margin-bottom: var(--s5); }
+.coverage .specgrid__label { letter-spacing: 0.08em; }
+.coverage .specgrid__value { font: 500 1.0625rem / 1.3 var(--ff-body); }
+@media (min-width: 1024px) {
+  .instrument__copy { position: sticky; top: calc(var(--nav-h) + var(--s6)); align-self: start; }
+  .coverage + .figures { margin-top: var(--s7); }
+}
+
+/* ---- Pager: two large PREVIOUS / NEXT links ---- */
+.pager { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); margin: 0; padding: 0; list-style: none; }
+.pager__link {
+  display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto auto; column-gap: var(--s5); row-gap: var(--s3);
+  align-items: center; padding: var(--s7) 0; border-bottom: 1px solid var(--line); min-height: 44px;
+  text-decoration: none; color: inherit; transition: background-color var(--t-micro);
+}
+.pager__dir { grid-column: 1; color: var(--dim); font-size: 0.6875rem; }
+.pager__title {
+  grid-column: 1; font: 500 var(--fs-h3) / 1.1 var(--ff-display); letter-spacing: -0.02em; color: var(--text-display);
+  display: inline-block; justify-self: start; background: linear-gradient(var(--accent), var(--accent)) no-repeat left bottom / 0 1px;
+  padding-bottom: 3px; transition: background-size var(--t-control) var(--ease-out); text-wrap: balance;
+}
+.pager__code { grid-column: 1; font: 400 var(--fs-mono) / 1.6 var(--ff-mono); color: var(--dim); letter-spacing: 0.06em; }
+.pager__arrow { grid-column: 2; grid-row: 1 / span 3; font: 400 1.75rem / 1 var(--ff-mono); color: var(--muted); transition: transform var(--t-control) var(--ease-out), color var(--t-micro); }
+.pager__link:hover .pager__title, .pager__link:focus-visible .pager__title { background-size: 100% 1px; }
+.pager__link:hover .pager__arrow, .pager__link:focus-visible .pager__arrow { color: var(--text); }
+.pager__link--prev:hover .pager__arrow, .pager__link--prev:focus-visible .pager__arrow { transform: translateX(-8px); }
+.pager__link--next:hover .pager__arrow, .pager__link--next:focus-visible .pager__arrow { transform: translateX(8px); }
+@media (min-width: 768px) {
+  .pager { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pager__link { padding: var(--s8) var(--s6); }
+  .pager__link--prev { padding-left: 0; }
+  .pager__link--next { border-left: 1px solid var(--line); padding-right: 0; grid-template-columns: auto 1fr; text-align: right; }
+  .pager__link--next .pager__dir, .pager__link--next .pager__title, .pager__link--next .pager__code { grid-column: 2; justify-self: end; }
+  .pager__link--next .pager__arrow { grid-column: 1; }
+}
+
+/* ---- FIG. 02: the brochure JPG carries baked-in black pillarbox bars (~9.5% each side, ~2% top/bottom).
+   Oversize the image inside the clipped media box so only the picture shows (no transform: the reveal owns it). ---- */
+.figure-crop .frame__media img { position: absolute; width: 124%; height: 124%; left: -12%; top: -12%; max-width: none; }

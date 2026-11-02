@@ -1,0 +1,76 @@
+/* SpaceLabs — page styles: algorithm-development.html (SERVICE 03 — Mathematical Model Development)
+   Loaded after site.css. Only this page's own components live here: the emblem readout, the NGC kit chain,
+   the model-destination grid and the previous/next sequence links. No shared selector is overridden. */
+
+/* ---- TitleBlock emblem: SIM readout bottom-right of the object cell (caption sits bottom-left) */
+.emblem__readout {
+  position: absolute; right: var(--s5); bottom: var(--s5); margin: 0; z-index: 2;
+  justify-content: flex-end; text-align: right; pointer-events: none;
+}
+.emblem__readout [data-readout] { font-variant-numeric: tabular-nums; min-width: 12ch; display: inline-block; }
+@media (max-width: 479.98px) { .emblem__readout { bottom: var(--s7); } }
+
+/* ---- Core algorithms: aside photo + supporting copy */
+.algo-aside { align-items: start; }
+.algo-aside .frame { max-width: 520px; }
+.algo-aside__copy p { color: var(--muted); }
+.algo-aside__copy .mono { display: block; margin-top: var(--s5); font-size: var(--fs-eyebrow); letter-spacing: 0.06em; }
+
+/* ---- NGC kit chain (brochure diagram): six hairline cells, three marked as the algorithm stages */
+.chain {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0;
+  /* hairlines live on the cells (not a gap-filled background) so cells still fading in never show a grey slab */
+  border-top: 1px solid var(--line); border-left: 1px solid var(--line);
+  counter-reset: chain;
+}
+@media (min-width: 768px)  { .chain { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .chain { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.chain__node {
+  position: relative; background: var(--panel); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: var(--s6) var(--s5) var(--s5); min-width: 0; min-height: 168px;
+  display: flex; flex-direction: column; gap: var(--s2);
+  transition: background-color var(--t-micro);
+}
+.chain__node:hover { background: var(--panel-raised); }
+.chain__idx { font: 400 var(--fs-eyebrow) / 1.5 var(--ff-mono); color: var(--dim); letter-spacing: 0.06em; display: flex; align-items: center; gap: var(--s3); }
+.chain__idx::after { content: "→"; color: var(--dim); margin-left: auto; font-family: var(--ff-mono); opacity: 0.7; }
+.chain__node:last-child .chain__idx::after { content: none; }
+.chain__name { font: 500 var(--fs-h4) / 1.25 var(--ff-body); color: var(--text); letter-spacing: -0.01em; margin-top: var(--s3); }
+.chain__meta { font: 400 0.6875rem / 1.6 var(--ff-mono); color: var(--dim); letter-spacing: 0.06em; margin-top: auto; padding-top: var(--s4); }
+/* the three stages this service develops: one small magenta lamp each (ignition only; no accent borders) */
+.chain__node.is-algo .chain__meta { color: var(--muted); }
+.chain__node.is-algo .chain__meta::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 0.75ch; vertical-align: 1px; }
+.chain__cap { margin-top: var(--s4); font: 400 var(--fs-eyebrow) / 1.6 var(--ff-mono); color: var(--dim); letter-spacing: 0.04em; max-width: none; }
+
+/* site.css resets .ledger margins after the .mt-8 utility; restore the gap between the chain caption and the destinations */
+.chapter .ledger.mt-8 { margin-top: var(--s8); }
+
+/* ---- Previous / next sequence links */
+.seq { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+@media (min-width: 768px) { .seq { grid-template-columns: 1fr 1fr; } .seq__link + .seq__link { border-left: 1px solid var(--line); border-top: 0; } }
+.seq__link {
+  display: grid; grid-template-columns: 1fr auto; column-gap: var(--s5); align-items: center;
+  padding: var(--s7) var(--s5); min-height: 160px; text-decoration: none; color: inherit;
+  transition: background-color var(--t-micro);
+}
+.seq__link + .seq__link { border-top: 1px solid var(--line); }
+.seq__link:hover { background: var(--panel); }
+.seq__link--next { text-align: right; grid-template-columns: auto 1fr; }
+.seq__link--next .seq__arrow { grid-column: 1; grid-row: 1 / span 3; }
+.seq__link--next .seq__eyebrow, .seq__link--next .seq__title, .seq__link--next .seq__code { grid-column: 2; }
+.seq__eyebrow { grid-column: 1; color: var(--dim); font-size: 0.6875rem; }
+.seq__title { grid-column: 1; margin-top: var(--s3); font: 500 var(--fs-h3) / 1.1 var(--ff-display); letter-spacing: -0.02em; color: var(--text-display); }
+.seq__code { grid-column: 1; margin-top: var(--s3); font: 400 var(--fs-mono) / 1.6 var(--ff-mono); color: var(--dim); letter-spacing: 0.06em; }
+.seq__arrow { grid-column: 2; grid-row: 1 / span 3; font: 400 1.5rem / 1 var(--ff-mono); color: var(--muted); transition: transform var(--t-control) var(--ease-out), color var(--t-micro); }
+.seq__link:hover .seq__arrow { color: var(--text); transform: translateX(8px); }
+.seq__link--prev:hover .seq__arrow { transform: translateX(-8px); }
+
+/* ---- Emblem fallback SVG sizing in the object cell: let the hairline surface fill more of the cell */
+.title__object > .region__fallback > svg { width: min(88%, 620px); max-height: 82%; }
+
+/* ---- Mobile: the title marker "SERVICE 03 — ALGORITHM DEVELOPMENT" must read in full (no ellipsis).
+   The Michroma label may wrap under itself with a slightly tighter track instead of truncating. */
+@media (max-width: 599.98px) {
+  .marker { align-items: baseline; }
+  .marker__label { white-space: normal; overflow: visible; text-overflow: clip; letter-spacing: 0.16em; line-height: 1.6; }
+}

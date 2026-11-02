@@ -1,0 +1,175 @@
+/* =============================================================================
+   SpaceLabs — overview.html (The Company) · page-scoped styles
+   Loaded after site.css. Only what the shared system does not provide:
+   the sticky in-page sub-nav, the About split, the founders / team photo
+   grids and the mentor dossier row. No transforms on any [data-region].
+   ============================================================================= */
+
+/* ---------- Sticky in-page sub-nav (mono, under the CommandBar) ---------- */
+.subnav {
+  position: sticky; top: var(--nav-h); z-index: 40;
+  background: var(--ink);
+  border-bottom: 1px solid var(--line);
+  transition: opacity var(--t-control) var(--ease-out), visibility 0s linear 0s;
+}
+/* past #team (the CTA band and footer) the in-page list has nothing left to point at */
+.subnav.is-past { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--t-control) var(--ease-out), visibility 0s linear var(--t-control); }
+.subnav__row {
+  display: flex; align-items: center; gap: var(--s5);
+  min-height: 48px;
+  overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.subnav__row::-webkit-scrollbar { display: none; }
+/* phones: the row scrolls edge to edge (no hard cut at the gutter) and fades at both ends */
+@media (max-width: 767.98px) {
+  .subnav__row.wrap { width: 100%; padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+  /* the fade only appears on a side that has more links to scroll to (classes set by the page script) */
+  /* (explicit gradients per state: Chrome does not always repaint a mask whose custom properties change) */
+  .subnav__row {
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent 100%);
+            mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent 100%);
+  }
+  .subnav__row.has-more-l {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 16px, #000 64px, #000 calc(100% - 48px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, transparent 16px, #000 64px, #000 calc(100% - 48px), transparent 100%);
+  }
+  .subnav__row.has-more-l.at-end {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 16px, #000 64px);
+            mask-image: linear-gradient(90deg, transparent 0, transparent 16px, #000 64px);
+  }
+  .subnav__row.at-end:not(.has-more-l) { -webkit-mask-image: none; mask-image: none; }
+  .subnav__list { padding-right: var(--gutter); }
+}
+.subnav__label {
+  flex: none; font: 400 0.6875rem / 1 var(--ff-tech); letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--muted); padding-right: var(--s5); border-right: 1px solid var(--line);
+  display: none;
+}
+@media (min-width: 768px) { .subnav__label { display: block; } }
+.subnav__list { display: flex; gap: var(--s2); margin: 0; padding: 0; list-style: none; flex: none; }
+.subnav__link {
+  position: relative; display: inline-flex; align-items: center; gap: 0.75ch;
+  min-height: 48px; padding: 0 var(--s3);
+  font: 400 var(--fs-mono) / 1 var(--ff-mono); letter-spacing: 0.06em; color: var(--muted);
+  text-decoration: none; white-space: nowrap;
+  transition: color var(--t-micro);
+}
+.subnav__link::after {
+  content: ""; position: absolute; left: var(--s3); right: var(--s3); bottom: -1px; height: 1px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--t-control) var(--ease-out);
+}
+.subnav__idx { color: var(--dim); font-variant-numeric: tabular-nums; }
+.subnav__link:hover, .subnav__link:focus-visible { color: var(--text); }
+.subnav__link.is-active { color: var(--text); }
+.subnav__link.is-active::after { transform: scaleX(1); }
+.subnav__link.is-active .subnav__idx { color: var(--accent); }
+
+/* give anchored sections room under the sticky sub-nav (48 px) */
+#about, #leadership, #founders, #mentors, #team { scroll-margin-top: calc(var(--nav-h) + 56px); }
+
+/* ---------- Title block SpecStrip: labels wrap instead of ellipsising; the 2x2 left column sits flush */
+.title__strip dt { white-space: normal; overflow: visible; text-overflow: clip; }
+@media (max-width: 479.98px) { .title__strip dt { letter-spacing: 0.12em; } }
+@media (max-width: 389.98px) { .title__strip dt { letter-spacing: 0.08em; } }
+@media (max-width: 339.98px) { .title__strip dt { font-size: 0.5625rem; letter-spacing: 0.04em; } }
+.title__strip .dt-short { display: none; }
+@media (max-width: 379.98px) {
+  .title__strip .dt-long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+  .title__strip .dt-short { display: inline; }
+}
+/* 768-1023: four cells across are too narrow for the place name; keep the 2x2 used on phones and desktop */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .title__strip.strip { grid-template-columns: repeat(2, 1fr); }
+  .title__strip .strip__cell:nth-child(2n + 1) { border-left: 0; padding-left: 0; }
+  .title__strip .strip__cell:nth-child(n + 3) { border-top: 1px solid var(--line); }
+}
+@media (min-width: 1024px) { .title__strip .strip__cell:nth-child(2n + 1) { padding-left: 0; } }
+/* the 18-character place name scales with its own cell (container query) and, as a last resort, hyphenates at the soft hyphen */
+.title__strip .strip__cell--hq, .title__strip .strip__cell--focus { container-type: inline-size; }
+.title__strip .hq-name { hyphens: manual; }
+@supports (font-size: 1cqi) {
+  .title__strip .strip__cell--hq .strip__text { font-size: clamp(0.75rem, 9cqi, 1.25rem); }
+  /* longest word in the focus line is 12 characters ("optimization") */
+  .title__strip .strip__cell--focus .strip__text { font-size: clamp(0.75rem, 13cqi, 1.25rem); }
+}
+
+/* ---------- Breadcrumb: 44 px tap target without moving the line (padding + equal negative margin) */
+.title .crumb a { display: inline-block; padding-block: 14px; margin-block: -14px; }
+
+/* ---------- Title block: a quieter object caption on the company page ------ */
+.title__object .region__caption { max-width: calc(100% - var(--s5) * 2); white-space: normal; }
+/* the tier-NONE still fills more of the cell (the Earth sits lower-right inside the square viewBox) */
+.title__object > .region__fallback > svg { width: min(84%, 640px); max-height: 84%; overflow: visible; }
+
+/* ---------- 02 ABOUT — sticky "Who We Are", body to the right ------------- */
+.about__title { margin-bottom: var(--s6); }
+/* stacked (<768) the title must not stick over the body; side by side it sticks clear of the sub-nav (48 px) */
+@media (max-width: 767.98px) { .about__title.sticky-title { position: static; } }
+@media (min-width: 768px) { .about__title.sticky-title { top: calc(var(--nav-h) + 48px + var(--s6)); } }
+.about__title .chapter__h { margin-bottom: 0; }
+@media (min-width: 768px) {
+  .about__title { grid-column: 1 / 5; margin-bottom: 0; }
+  .about__body { grid-column: 5 / -1; }
+}
+@media (min-width: 1024px) {
+  .about__title { grid-column: 1 / 5; }
+  .about__body { grid-column: 6 / -1; }
+}
+.about__body .lead { max-width: 56ch; }
+.about__body .lead p + p { margin-top: var(--s4); }
+
+/* hairline list: the four areas named in the standfirst */
+.scope { list-style: none; margin: var(--s7) 0 0; padding: 0; border-top: 1px solid var(--line); }
+.scope__row {
+  display: grid; grid-template-columns: 3ch 1fr; column-gap: var(--s5); align-items: baseline;
+  padding: var(--s4) 0; border-bottom: 1px solid var(--line);
+}
+@media (min-width: 640px) { .scope__row { grid-template-columns: 3ch 1fr auto; } }
+.scope__idx { font: 400 var(--fs-mono) / 1.6 var(--ff-mono); color: var(--dim); font-variant-numeric: tabular-nums; }
+.scope__name { font: 500 var(--fs-h4) / 1.3 var(--ff-body); color: var(--text); letter-spacing: -0.01em; }
+.scope__meta { grid-column: 2; font: 400 var(--fs-eyebrow) / 1.5 var(--ff-mono); color: var(--dim); letter-spacing: 0.06em; margin-top: var(--s1); }
+@media (min-width: 640px) { .scope__meta { grid-column: auto; margin-top: 0; } }
+.scope__row:hover .scope__idx { color: var(--accent); }
+
+.about__links { display: flex; flex-wrap: wrap; gap: var(--s3) var(--s6); margin-top: var(--s7); }
+.about__links a { min-height: 44px; display: inline-flex; align-items: center; }
+
+/* ---------- 04 FOUNDERS — one portrait, one landscape, aligned on the baseline */
+.founders { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
+/* .dossier's row-gap would otherwise open a dark band between photo and caption in the flex .frame */
+.founders .frame { row-gap: 0; }
+@media (min-width: 768px) {
+  /* 4 + 8 columns: the 3/2 landscape sets the row height and the portrait stretches to it (~3/4, close to the photo's own ratio) */
+  .founders { grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: stretch; }
+  .founders__portrait { grid-column: 1 / 5; }
+  .founders__wide { grid-column: 5 / -1; }
+  .founders__portrait .frame__media { aspect-ratio: auto; flex: 1 1 auto; min-height: 0; }
+  .founders__portrait .frame__media img { position: absolute; inset: 0; }
+}
+
+/* ---------- 05 MENTORS — compact dossiers as a portrait + body row --------- */
+.mentor { display: grid; grid-template-columns: 1fr; gap: var(--s5); padding-top: var(--s6); border-top: 1px solid var(--line); }
+.mentor > * { grid-column: auto; } /* site.css spans .dossier children across its 12-col grid; this is a 2-col row */
+@media (min-width: 480px) {
+  .mentor { grid-template-columns: 96px minmax(0, 1fr); align-items: start; }
+  .mentor .dossier__portrait { margin-bottom: 0; }
+}
+.mentor .dossier__portrait--small img { filter: grayscale(0.25); }
+.mentor:hover .dossier__portrait--small img { filter: grayscale(0); }
+.mentor .dossier__name { font-size: clamp(1.25rem, 1rem + 0.8vw, 1.5rem); }
+.mentor .dossier__role { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.7; }
+
+/* ---------- 06 TEAM — one wide frame, then two ---------------------------- */
+.team { display: grid; grid-template-columns: 1fr; gap: var(--gap); }
+@media (min-width: 768px) {
+  .team { grid-template-columns: repeat(2, 1fr); }
+  .team__wide { grid-column: 1 / -1; }
+}
+.team .frame__media img { filter: grayscale(0.1); transition: filter 0.5s var(--ease-out); }
+.team .frame:hover .frame__media img { filter: grayscale(0); }
+
+/* ---------- Reduced motion: the sub-nav underline just appears ----------- */
+@media (prefers-reduced-motion: reduce) {
+  .subnav__link::after { transition: none; }
+}

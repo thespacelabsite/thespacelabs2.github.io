@@ -1,547 +1,484 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="en" class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Spacelabs provides cutting-edge aerospace technology, simulation, and software solutions for space and defense missions.">
-    <meta name="keywords"
-        content="Spacelabs, Aerospace Technology, Space Simulation, Defense Software, Satellite Systems">
-    <meta name="author" content="Spacelabs">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- PAGE: head — title + description are per page -->
+  <title>Contact — SpaceLabs</title>
+  <meta name="description" content="Contact SpaceLabs — corporate office in Thiruvananthapuram, Kerala, India. Write to connect@thespacelabs.com, call +91-8590705557 or +91-9446594738, find the corporate office on Google Maps or follow SpaceLabs on LinkedIn.">
+  <meta name="theme-color" content="#050507">
+  <meta name="color-scheme" content="dark">
 
-    <!-- Restored Favicons -->
-    <link rel="icon" type="image/x-icon" href="/favicon2/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon2/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon2/favicon-32x32.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon2/apple-touch-icon.png">
-    <link rel="manifest" href="/favicon2/site.webmanifest">
+  <!-- favicons (favicon2/, relative) -->
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon2/favicon-96x96.png">
+  <link rel="icon" href="favicon2/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon2/apple-touch-icon.png">
+  <link rel="manifest" href="favicon2/site.webmanifest">
 
-    <title>Spacelabs | Contact Us</title>
+  <!-- fonts: the ONE stylesheet named in the spec -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Michroma&display=swap">
 
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- design system -->
+  <link rel="preload" href="assets/css/site.css?v=20261102" as="style">
+  <link rel="stylesheet" href="assets/css/site.css?v=20261102">
+  <!-- PAGE: page-scoped styles (coords grid, mailto composer, pin tag) -->
+  <link rel="stylesheet" href="assets/css/pages/contact.css?v=20261102">
 
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- es-module-shims MUST precede the importmap (Safari < 16.4) -->
+  <script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.8.3/dist/es-module-shims.js" crossorigin="anonymous"></script>
+  <script type="importmap">
+  {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+  </script>
+  <!-- three.js core is preloaded on every page with a [data-region] (crossorigin matches module CORS mode); pages with no scene remove it -->
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" crossorigin="anonymous">
 
-    <!-- Google Fonts: Orbitron & Exo 2 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600&family=Orbitron:wght@400;700;900&display=swap"
-        rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-        :root {
-            --primary: #d412a1;
-            --primary-glow: rgba(212, 18, 161, 0.5);
-            --dark-bg: #050505;
-            --card-bg: rgba(20, 20, 20, 0.7);
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --text-bright: #e0e0e0;
-        }
-
-        body {
-            background-color: var(--dark-bg);
-            color: var(--text-main);
-            font-family: 'Exo 2', sans-serif;
-            overflow-x: hidden;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        .navbar-brand {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-        }
-
-        /* --- Custom Scrollbar --- */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--dark-bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-        }
-
-        /* --- Navigation --- */
-        .navbar {
-            background: rgba(5, 5, 5, 0.95);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            padding: 1rem 0;
-        }
-
-        .navbar-brand img {
-            height: 50px;
-            width: auto;
-        }
-
-        .nav-link {
-            color: var(--text-main) !important;
-            font-weight: 500;
-            margin-left: 20px;
-            position: relative;
-            transition: color 0.3s;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--primary) !important;
-            text-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--primary);
-            transition: width 0.3s;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* --- Hero Section --- */
-        .hero-section {
-            position: relative;
-            height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #1a0214 0%, #000000 100%);
-        }
-
-        #starfield {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
-
-        /* Satellite Animation */
-        .hero-planet {
-            max-width: 150px;
-            margin-bottom: 1.5rem;
-            animation: floatSat 6s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.8));
-        }
-
-        @keyframes floatSat {
-
-            0%,
-            100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-15px) rotate(3deg);
-            }
-        }
-
-        /* --- Contact Cards --- */
-        .section-padding {
-            padding: 80px 0;
-        }
-
-        .glass-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            height: 100%;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 18, 161, 0.2);
-            background: rgba(30, 30, 30, 0.8);
-        }
-
-        .contact-icon-box {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--primary);
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s;
-        }
-
-        .glass-card:hover .contact-icon-box {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        .contact-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0.2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .contact-value {
-            font-size: 1.1rem;
-            color: var(--text-main);
-            margin-bottom: 0;
-            font-weight: 500;
-        }
-
-        a.contact-link {
-            text-decoration: none;
-        }
-
-        /* --- Address Section --- */
-        .address-container {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 3rem;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* --- Footer --- */
-        footer {
-            background: #000;
-            border-top: 1px solid rgba(212, 18, 161, 0.3);
-            padding: 3rem 0;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            color: white;
-            margin: 0 5px;
-            transition: all 0.3s;
-        }
-
-        .social-link img {
-            width: 20px;
-            height: 20px;
-            filter: invert(1);
-        }
-
-        .social-link:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-    </style>
+  <!-- js flag + 4 s hard timeout: the shutter can never trap the page -->
+  <script>document.documentElement.classList.replace('no-js','js');setTimeout(function(){var s=document.querySelector('.shutter');if(s&&!s.classList.contains('is-done')){s.classList.add('is-done');}},4000);</script>
+  <noscript><style>.shutter{display:none}</style></noscript>
 </head>
 
-<body>
+<!-- PAGE: data-page = filename without .html · data-code = this page's chapter code (shutter label) -->
+<body data-page="contact" data-code="CONTACT — GROUND STATION">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Preloader -->
-    <div id="preloader"
-        style="position:fixed; top:0; left:0; width:100%; height:100%; background:#050505; z-index:9999; display:flex; justify-content:center; align-items:center;">
-        <div class="spinner-border text-primary" role="status"
-            style="width: 3rem; height: 3rem; color: #d412a1 !important;">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
+  <!-- Shutter: covers on load, lifts after fonts (<= 400 ms), hard timeouts 800 ms (core.js) and 4 s (inline) -->
+  <!-- PAGE: shutter — code text -->
+  <div class="shutter is-solid" aria-hidden="true"><span class="shutter__bar"></span><span class="shutter__code">CONTACT — GROUND STATION</span></div>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="dist/custom/images/logo.png" class="logogok" alt="Spacelabs Logo" />
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="fa fa-bars" style="color: white; font-size: 1.5rem;"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="overview.html">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#products">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="contact.html">Contact</a></li>
-                </ul>
-            </div>
-        </div>
+  <!-- The single shared WebGL canvas (gl.js owns it; CSS keeps it fixed at z 0, opacity 0 until .is-ready) -->
+  <canvas id="stage" aria-hidden="true"></canvas>
+
+  <!-- ===================== CommandBar (identical on every page) ===================== -->
+  <header class="cmd">
+    <a class="cmd__brand" href="index.html" data-code="00 — FIRST LIGHT" aria-label="SpaceLabs — home">
+      <img class="cmd__mark" src="assets/img/mark.svg" alt="" width="22" height="24">
+      <span class="cmd__wordmark">SpaceLabs</span>
+    </a>
+    <nav class="cmd__links" aria-label="Primary">
+      <ul>
+        <li class="cmd__item">
+          <button class="cmd__trigger" type="button" aria-expanded="false" aria-controls="dd-products">Products
+            <svg class="cmd__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3.5 5 7.5 9 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </button>
+          <div class="cmd__dd" id="dd-products">
+            <ul>
+              <li><a class="dd__row" href="astra.html" data-code="PRODUCT 01 — ASTRA">
+                <svg class="dd__glyph" viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+                  <path d="M8 40C12 31 18 26 40 6" opacity=".55"/><path d="M8 40C14 30 22 22 40 10" opacity=".55"/><path d="M8 40C18 27 28 17 40 18" opacity=".55"/><path d="M8 40C20 30 30 22 40 24" opacity=".55"/>
+                  <path class="glyph-accent" d="M8 40C15 29 24 20 40 13" stroke-width="1.5"/><path d="M6 40h36" opacity=".4"/><circle cx="8" cy="40" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+                <span><span class="dd__name">ASTRA</span><span class="dd__desc">AEROSPACE TRAJECTORY OPTIMIZER · 3-DOF</span></span>
+              </a></li>
+              <li><a class="dd__row" href="saras6.html" data-code="PRODUCT 02 — SARAS">
+                <svg class="dd__glyph" viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+                  <circle cx="24" cy="24" r="18" opacity=".7"/><ellipse cx="24" cy="24" rx="18" ry="7" opacity=".7"/>
+                  <ellipse class="glyph-accent" cx="24" cy="24" rx="7" ry="18" stroke-width="1.5"/><rect x="21" y="21" width="6" height="6" fill="currentColor" stroke="none"/>
+                </svg>
+                <span><span class="dd__name">SARAS</span><span class="dd__desc">SIMULATOR FOR AEROSPACE APPLICATIONS · 6-DOF</span></span>
+              </a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="cmd__item">
+          <button class="cmd__trigger" type="button" aria-expanded="false" aria-controls="dd-services">Services
+            <svg class="cmd__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3.5 5 7.5 9 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </button>
+          <div class="cmd__dd" id="dd-services">
+            <ul>
+              <li><a class="dd__row" href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN"><span class="dd__idx">01</span><span><span class="dd__name">Mission Design</span><span class="dd__desc">END-TO-END MISSION PLANNING AND TRAJECTORY DESIGN</span></span></a></li>
+              <li><a class="dd__row" href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT"><span class="dd__idx">02</span><span><span class="dd__name">System Development</span><span class="dd__desc">NGC SYSTEM ARCHITECTURE</span></span></a></li>
+              <li><a class="dd__row" href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT"><span class="dd__idx">03</span><span><span class="dd__name">Math Models</span><span class="dd__desc">MATHEMATICAL MODEL DEVELOPMENT</span></span></a></li>
+              <li><a class="dd__row" href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE"><span class="dd__idx">04</span><span><span class="dd__name">Flight Software</span><span class="dd__desc">ONBOARD FLIGHT SOFTWARE DEVELOPMENT</span></span></a></li>
+              <li><a class="dd__row" href="simulation.html" data-code="SERVICE 05 — SIMULATION"><span class="dd__idx">05</span><span><span class="dd__name">Simulation</span><span class="dd__desc">REAL-TIME 6-DOF · HARDWARE-IN-LOOP</span></span></a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a class="cmd__link" href="overview.html" data-code="COMPANY — 01 / 06">Company</a></li>
+        <li><a class="cmd__link" href="index.html#news" data-code="06 / 07 — DISPATCHES">News</a></li>
+        <li><a class="cmd__link" href="contact.html" data-code="CONTACT — GROUND STATION">Contact</a></li>
+      </ul>
     </nav>
+    <a class="pill pill--primary cmd__cta" href="contact.html" data-code="CONTACT — GROUND STATION">Start a mission</a>
+    <button class="cmd__burger" type="button" aria-expanded="false" aria-controls="overlay" aria-label="Menu"></button>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <canvas id="starfield"></canvas>
-        <div class="container hero-content" data-aos="fade-up">
-            <img src="dist/custom/images/sat.png" class="hero-planet" alt="Satellite" />
-            <h1 class="hero-title">Contact Us</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb justify-content-center">
-                    <li class="breadcrumb-item"><a href="index.html" style="color: var(--primary);">Home</a></li>
-                    <li class="breadcrumb-item active text-white" aria-current="page">Contact</li>
-                </ol>
+  <!-- ===================== MobileOverlay — film index (identical on every page) ===================== -->
+  <div id="overlay" class="overlay is-solid" role="dialog" aria-modal="true" aria-label="Site index" aria-hidden="true">
+    <ol class="overlay__rows">
+      <li><a class="overlay__row" href="index.html" data-code="00 — FIRST LIGHT"><span class="overlay__idx">01</span><span class="overlay__title">Home</span><span class="overlay__dek">FIRST LIGHT · OVERVIEW · PRODUCTS · SERVICES</span></a></li>
+      <li><a class="overlay__row" href="astra.html" data-code="PRODUCT 01 — ASTRA"><span class="overlay__idx">02</span><span class="overlay__title">ASTRA</span><span class="overlay__dek">AEROSPACE TRAJECTORY OPTIMIZER · 3-DOF</span></a></li>
+      <li><a class="overlay__row" href="saras6.html" data-code="PRODUCT 02 — SARAS"><span class="overlay__idx">03</span><span class="overlay__title">SARAS</span><span class="overlay__dek">SIMULATOR FOR AEROSPACE APPLICATIONS · 6-DOF</span></a></li>
+      <li><a class="overlay__row" href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN"><span class="overlay__idx">04</span><span class="overlay__title">Mission Design</span><span class="overlay__dek">SERVICE 01</span></a></li>
+      <li><a class="overlay__row" href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT"><span class="overlay__idx">05</span><span class="overlay__title">System Development</span><span class="overlay__dek">SERVICE 02 · NGC</span></a></li>
+      <li><a class="overlay__row" href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT"><span class="overlay__idx">06</span><span class="overlay__title">Math Models</span><span class="overlay__dek">SERVICE 03</span></a></li>
+      <li><a class="overlay__row" href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE"><span class="overlay__idx">07</span><span class="overlay__title">Flight Software</span><span class="overlay__dek">SERVICE 04</span></a></li>
+      <li><a class="overlay__row" href="simulation.html" data-code="SERVICE 05 — SIMULATION"><span class="overlay__idx">08</span><span class="overlay__title">Simulation</span><span class="overlay__dek">SERVICE 05 · MILS · OILS · HILS</span></a></li>
+      <li><a class="overlay__row" href="overview.html" data-code="COMPANY — 01 / 06"><span class="overlay__idx">09</span><span class="overlay__title">Company</span><span class="overlay__dek">OVERVIEW · LEADERSHIP · MENTORS · TEAM</span></a></li>
+    </ol>
+    <div class="overlay__foot">
+      <a class="pill pill--primary" href="contact.html" data-code="CONTACT — GROUND STATION">Start a mission</a>
+      <a href="mailto:connect@thespacelabs.com">connect@thespacelabs.com</a>
+      <a href="tel:+918590705557">+91-8590705557</a>
+      <a href="tel:+919446594738">+91-9446594738</a>
+      <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="true">Motion on</button>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- ===================== TitleBlock — GROUND STATION ===================== -->
+    <!-- No SpecStrip on contact (insufficient verified cells, per the design spec). -->
+    <header class="title title--contact" id="top">
+      <div class="wrap">
+        <div class="title__grid">
+          <div class="title__text">
+            <nav class="crumb" aria-label="Breadcrumb">
+              <a href="index.html" data-code="00 — FIRST LIGHT">HOME</a><span class="crumb__sep" aria-hidden="true">/</span>
+              <span aria-current="page">CONTACT</span>
             </nav>
+            <p class="marker rv-eyebrow"><span class="marker__code">CONTACT</span> — <span class="marker__label">GROUND STATION</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h1 class="title__h1 display-2 rv-lines" style="--d:200ms">Start a mission.</h1>
+            <p class="title__sub rv-eyebrow" style="--d:500ms">Contact us · Thiruvananthapuram, India</p>
+            <p class="title__lead lead rv-fade" style="--d:650ms">Tell us what you are flying. Write, call or find the corporate office below — the team answers from Thiruvananthapuram, Kerala.</p>
+            <div class="title__actions rv-fade" style="--d:800ms">
+              <a class="pill pill--primary" href="mailto:connect@thespacelabs.com">Write to connect@thespacelabs.com</a>
+              <a class="pill pill--secondary" href="#compose">Compose a message <span class="arrow" aria-hidden="true">↓</span></a>
+            </div>
+            <p class="title__coords readout rv-fade" style="--d:950ms">
+              <span class="chip">GND</span>
+              <span>08.52°&nbsp;N · 76.94°&nbsp;E</span>
+              <time class="clock" datetime="">THIRUVANANTHAPURAM · --:--:-- IST</time>
+            </p>
+          </div>
+
+          <!-- Transparent region: the Ground Station Earth (scenes/contact.js) — Earth rotated so Thiruvananthapuram
+               faces the camera, in early night with the dusk rim to the west, a magenta pin on Kerala and a following
+               label. The inline SVG below is the tier-NONE / reduced-motion / pre-paint still. -->
+          <div class="title__object" data-region="emblem">
+            <div class="region__fallback">
+              <svg viewBox="0 0 400 400" aria-hidden="true" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1">
+                <!-- globe + graticule -->
+                <circle cx="200" cy="212" r="150"/>
+                <ellipse cx="200" cy="212" rx="150" ry="46" opacity=".7"/>
+                <ellipse cx="200" cy="212" rx="150" ry="104" opacity=".5"/>
+                <ellipse cx="200" cy="212" rx="52" ry="150" opacity=".7"/>
+                <ellipse cx="200" cy="212" rx="112" ry="150" opacity=".5"/>
+                <line x1="200" y1="62" x2="200" y2="362" opacity=".7"/>
+                <line x1="50" y1="212" x2="350" y2="212" opacity=".7"/>
+                <!-- dusk rim to the west (left limb) -->
+                <path d="M200 62A150 150 0 0 0 200 362" stroke="rgba(79,168,255,0.55)" stroke-width="2.5"/>
+                <path d="M200 62A150 150 0 0 0 200 362" stroke="rgba(79,168,255,0.22)" stroke-width="9"/>
+                <!-- the pin on Kerala: the one magenta element -->
+                <g stroke="#D412A1" stroke-width="1.25">
+                  <line x1="214" y1="190" x2="214" y2="128"/>
+                  <circle cx="214" cy="190" r="4" fill="none"/>
+                  <circle cx="214" cy="190" r="9" opacity=".45"/>
+                  <circle cx="214" cy="126" r="3" fill="#FF3FC6" stroke="none"/>
+                </g>
+                <!-- frame ticks -->
+                <path d="M16 16h20M16 16v20M384 16h-20M384 16v20M16 384h20M16 384v-20M384 384h-20M384 384v-20" opacity=".6"/>
+              </svg>
+            </div>
+            <p class="visually-hidden">Three-dimensional Earth seen from orbit, rotated so Thiruvananthapuram, Kerala faces the viewer in early evening, with a magenta pin marking Thiruvananthapuram, home of the SpaceLabs corporate office, at 8.52 degrees north, 76.94 degrees east.</p>
+            <p class="region__caption" aria-hidden="true">FIG. 01 — GROUND STATION · 08.52°&nbsp;N 76.94°&nbsp;E</p>
+            <p class="region__tag region__tag--pin" data-tag="pin" aria-hidden="true">THIRUVANANTHAPURAM, KERALA<br>08.52°&nbsp;N 76.94°&nbsp;E</p>
+          </div>
         </div>
+      </div>
+    </header>
+
+    <!-- ===================== Chapter 01 — CHANNELS ===================== -->
+    <section class="chapter" id="channels" data-chapter="01" data-label="CHANNELS">
+      <div class="wrap">
+        <div class="grid chapter__head">
+          <div class="c1-8">
+            <p class="marker rv-eyebrow"><span class="marker__code">01 / 02</span> — <span class="marker__label">CHANNELS</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h2 class="chapter__h display-2 rv-lines">Every channel to the ground station.</h2>
+            <p class="lead rv-fade">One email address, two mobile numbers, the website, LinkedIn and the office on the map.</p>
+          </div>
+        </div>
+
+        <div class="grid coords-grid">
+          <!-- Address verbatim from the current contact page; spelling fix Thiruvananthapuram approved by the owner. -->
+          <address class="coords c1-4 rv-fade">
+            <span class="eyebrow">Corporate office</span>
+            <p class="coords__name">SPACELABS ANALYTICS AND DYNAMICS PVT LTD</p>
+            <p class="coords__lines">Smarana Towers, TC-97/2124-25,<br>Thamburan Mukku, Karimanal PO,<br>Thiruvananthapuram 695&nbsp;583,<br>India</p>
+            <a class="coords__map ghost" href="https://maps.app.goo.gl/4bKL4NLDp616dCvR8?g_st=aw" target="_blank" rel="noopener">View on Google Maps <span class="ext" aria-hidden="true">↗</span></a>
+            <dl class="coords__meta">
+              <div><dt>Station time</dt><dd><time class="clock" datetime="" data-clock-prefix="" data-clock-suffix=" IST">--:--:-- IST</time></dd></div>
+              <div><dt>Time zone</dt><dd>UTC +05:30</dd></div>
+              <div><dt>City coordinates</dt><dd>08.52°&nbsp;N · 76.94°&nbsp;E</dd></div>
+            </dl>
+          </address>
+
+          <ul class="channels c5-12 rv-group">
+            <li class="channel rv-fade">
+              <a class="channel__link" href="mailto:connect@thespacelabs.com">
+                <span class="channel__label">Email</span>
+                <span class="channel__value">connect@thespacelabs.com</span>
+                <span class="channel__meta">OPENS YOUR MAIL APP · OR COMPOSE BELOW</span>
+                <span class="channel__arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li class="channel rv-fade">
+              <a class="channel__link" href="tel:+918590705557">
+                <span class="channel__label">Mobile</span>
+                <span class="channel__value">+91-8590705557</span>
+                <span class="channel__meta">TEL · INDIA (+91)</span>
+                <span class="channel__arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li class="channel rv-fade">
+              <a class="channel__link" href="tel:+919446594738">
+                <span class="channel__label">Mobile</span>
+                <span class="channel__value">+91-9446594738</span>
+                <span class="channel__meta">TEL · INDIA (+91)</span>
+                <span class="channel__arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li class="channel rv-fade">
+              <a class="channel__link" href="https://thespacelabs.com/" target="_blank" rel="noopener">
+                <span class="channel__label">Website</span>
+                <span class="channel__value">thespacelabs.com</span>
+                <span class="channel__meta">HTTPS · OPENS IN A NEW TAB</span>
+                <span class="channel__arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li class="channel rv-fade">
+              <a class="channel__link" href="https://www.linkedin.com/company/thespacelabs/" target="_blank" rel="noopener">
+                <span class="channel__label">LinkedIn</span>
+                <span class="channel__value">linkedin.com/<wbr>company/<wbr>thespacelabs</span>
+                <span class="channel__meta">FOLLOW US · OPENS IN A NEW TAB</span>
+                <span class="channel__arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li class="channel rv-fade">
+              <a class="channel__link" href="https://maps.app.goo.gl/4bKL4NLDp616dCvR8?g_st=aw" target="_blank" rel="noopener">
+                <span class="channel__label">Locate us</span>
+                <span class="channel__value">View on Google Maps</span>
+                <span class="channel__meta">SMARANA TOWERS · THIRUVANANTHAPURAM 695&nbsp;583</span>
+                <span class="channel__arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </section>
 
-    <!-- Main Content -->
-    <section class="section-padding">
-        <div class="container">
-
-            <!-- Address Section -->
-            <div class="row justify-content-center" data-aos="fade-up">
-                <div class="col-lg-10">
-                    <div class="address-container">
-                        <h2 class="mb-4 text-white">Corporate Office</h2>
-                        <h4 class="text-white mb-3">SPACELABS ANALYTICS AND DYNAMICS PVT LTD</h4>
-                        <p class="lead text-white opacity-75">
-                            Smarana Towers, TC-97/2124-25, Thamburan Mukku,<br>
-                            Karimanal PO, Thrivananthapuram 695 583, India
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contact Cards Grid -->
-            <div class="row g-4 justify-content-center">
-
-                <!-- Email -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                    <a href="mailto:connect@thespacelabs.com" class="contact-link">
-                        <div class="glass-card">
-                            <div class="contact-icon-box">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div>
-                                <div class="contact-label">Email</div>
-                                <div class="contact-value">connect@thespacelabs.com</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Website -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                    <a href="https://thespacelabs.com/" target="_blank" class="contact-link">
-                        <div class="glass-card">
-                            <div class="contact-icon-box">
-                                <i class="fas fa-globe"></i>
-                            </div>
-                            <div>
-                                <div class="contact-label">Website</div>
-                                <div class="contact-value">thespacelabs.com</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Phone -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
-                    <a href="#" class="contact-link">
-                        <div class="glass-card">
-                            <div class="contact-icon-box">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div>
-                                <div class="contact-label">Mobile</div>
-                                <div class="contact-value text-nowrap">+91-8590705557<br>+91-9446594738</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Location Map -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
-                    <a href="https://maps.app.goo.gl/4bKL4NLDp616dCvR8?g_st=aw" target="_blank" class="contact-link">
-                        <div class="glass-card">
-                            <div class="contact-icon-box">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div>
-                                <div class="contact-label">Locate Us</div>
-                                <div class="contact-value">View on Google Maps</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- LinkedIn -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
-                    <a href="https://www.linkedin.com/company/thespacelabs/" target="_blank" class="contact-link">
-                        <div class="glass-card">
-                            <div class="contact-icon-box">
-                                <i class="fab fa-linkedin-in"></i>
-                            </div>
-                            <div>
-                                <div class="contact-label">Follow Us</div>
-                                <div class="contact-value">LinkedIn Profile</div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
+    <!-- ===================== Chapter 02 — COMPOSE (mailto composer, no backend) ===================== -->
+    <!-- No form submission exists on this site: the fields below only assemble a mailto: link to
+         connect@thespacelabs.com that opens the visitor's own mail app. Nothing is sent from this page
+         and no success state is claimed. -->
+    <section class="chapter" id="compose" data-chapter="02" data-label="COMPOSE">
+      <div class="wrap">
+        <div class="grid chapter__head">
+          <div class="c1-8">
+            <p class="marker rv-eyebrow"><span class="marker__code">02 / 02</span> — <span class="marker__label">COMPOSE</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h2 class="chapter__h display-2 rv-lines">Compose a message.</h2>
+            <p class="lead rv-fade">Fill in what you are flying and open it in your own mail app. Nothing is sent from this page — the message goes to connect@thespacelabs.com from your address.</p>
+          </div>
         </div>
+
+        <div class="grid compose-grid">
+          <form class="compose c1-8 rv-group" id="compose-form" novalidate>
+            <div class="compose__row">
+              <div class="field rv-fade">
+                <label class="field__label" for="c-name">Name</label>
+                <input class="field__input" id="c-name" name="name" type="text" autocomplete="name" placeholder="Your name" maxlength="120">
+              </div>
+              <div class="field rv-fade">
+                <label class="field__label" for="c-org">Organisation</label>
+                <input class="field__input" id="c-org" name="organisation" type="text" autocomplete="organization" placeholder="Company, agency or institute" maxlength="120">
+              </div>
+            </div>
+            <div class="field rv-fade">
+              <label class="field__label" for="c-topic">Topic</label>
+              <div class="field__select">
+                <select class="field__input" id="c-topic" name="topic">
+                  <option value="ASTRA">ASTRA — aerospace trajectory optimizer</option>
+                  <option value="SARAS">SARAS — simulator for aerospace applications</option>
+                  <option value="Services">Services — mission design, system development, math models, flight software, simulation</option>
+                  <option value="Other" selected>Other</option>
+                </select>
+                <svg class="field__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3.5 5 7.5 9 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+              </div>
+            </div>
+            <div class="field rv-fade">
+              <label class="field__label" for="c-body">Message</label>
+              <textarea class="field__input field__textarea" id="c-body" name="body" rows="6" placeholder="Vehicle, mission phase, timeline — whatever helps us answer well." maxlength="4000"></textarea>
+            </div>
+            <p class="compose__preview readout rv-fade" aria-live="polite">
+              <span class="chip">TO</span><span>connect@thespacelabs.com</span>
+              <span class="chip">SUBJECT</span><span id="compose-subject">Other enquiry</span>
+            </p>
+            <div class="compose__actions rv-fade">
+              <a class="pill pill--primary" id="compose-send" href="mailto:connect@thespacelabs.com?subject=Other%20enquiry">Open in your mail app <span class="arrow" aria-hidden="true">→</span></a>
+              <a class="ghost" href="mailto:connect@thespacelabs.com">Or write directly <span class="arrow" aria-hidden="true">→</span></a>
+            </div>
+            <p class="compose__note small text-dim rv-fade">No data leaves this page. The link above only pre-fills a new email in the mail app on your device; you review and send it yourself.</p>
+          </form>
+
+          <aside class="compose__aside c9-12 rv-fade">
+            <p class="eyebrow">Also on the pad</p>
+            <ul class="compose__links">
+              <li><a class="u-link" href="astra.html" data-code="PRODUCT 01 — ASTRA">ASTRA — trajectory optimizer</a></li>
+              <li><a class="u-link" href="saras6.html" data-code="PRODUCT 02 — SARAS">SARAS — aerospace simulator</a></li>
+              <li><a class="u-link" href="index.html#services" data-code="03 / 07 — SERVICES">Five services</a></li>
+              <li><a class="u-link" href="overview.html" data-code="COMPANY — 01 / 06">The company</a></li>
+              <li><a class="u-link" href="assets/spacelabs-services-brochure.pdf" target="_blank" rel="noopener">Brochure <span class="mono">PDF · 27 MB</span></a></li>
+            </ul>
+          </aside>
+        </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <p class="mb-0 text-muted">&copy; <span id="current-year"></span> SpaceLabs. All rights reserved.
-                    </p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <a href="https://www.linkedin.com/company/thespacelabs" target="_blank" class="social-link">
-                        <img src="icon/linkedin.png" alt="LinkedIn">
-                    </a>
-                    <a href="#" class="social-link">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="social-link">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
+    <!-- mailto composer: assembles the subject/body of the primary link as the visitor types (no network, no storage) -->
     <script>
-        // Init AOS Animation
-        AOS.init({
-            once: true,
-            offset: 100,
-            duration: 800
-        });
-
-        // Set Current Year
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-        // Remove Preloader
-        window.addEventListener('load', () => {
-            document.getElementById('preloader').style.display = 'none';
-        });
-
-        // --- STARFIELD ANIMATION SCRIPT ---
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let stars = [];
-        const numStars = 400;
-        const speed = 0.3;
-
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
-
-        class Star {
-            constructor() {
-                this.x = Math.random() * width - width / 2;
-                this.y = Math.random() * height - height / 2;
-                this.z = Math.random() * width;
-                this.pz = this.z;
-            }
-            update() {
-                this.z = this.z - speed * 20;
-                if (this.z < 1) {
-                    this.z = width;
-                    this.x = Math.random() * width - width / 2;
-                    this.y = Math.random() * height - height / 2;
-                    this.pz = this.z;
-                }
-            }
-            show() {
-                let sx = (this.x / this.z) * width + width / 2;
-                let sy = (this.y / this.z) * height + height / 2;
-                let r = (1 - this.z / width) * 2.5;
-                let px = (this.x / this.pz) * width + width / 2;
-                let py = (this.y / this.pz) * height + height / 2;
-                this.pz = this.z;
-                ctx.beginPath();
-                ctx.moveTo(px, py);
-                ctx.lineTo(sx, sy);
-                if (Math.random() > 0.95) { ctx.strokeStyle = "#d412a1"; }
-                else { ctx.strokeStyle = "rgba(255, 255, 255, " + (1 - this.z / width) + ")"; }
-                ctx.lineWidth = r;
-                ctx.stroke();
-            }
-        }
-
-        function initStars() {
-            stars = [];
-            for (let i = 0; i < numStars; i++) { stars.push(new Star()); }
-        }
-
-        function animate() {
-            ctx.fillStyle = "#050505";
-            ctx.fillRect(0, 0, width, height);
-            stars.forEach(star => { star.update(); star.show(); });
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', () => { resize(); initStars(); });
-        resize(); initStars(); animate();
+      (function () {
+        try {
+          var form = document.getElementById('compose-form'), send = document.getElementById('compose-send'), subj = document.getElementById('compose-subject');
+          if (!form || !send) return;
+          var f = function (id) { return document.getElementById(id); };
+          var name = f('c-name'), org = f('c-org'), topic = f('c-topic'), body = f('c-body');
+          var TO = 'connect@thespacelabs.com';
+          var build = function () {
+            var n = (name.value || '').trim(), o = (org.value || '').trim(), t = topic.value || 'Other', m = (body.value || '').trim();
+            var subject = t + ' enquiry' + (n ? ' — ' + n : '') + (o ? ' (' + o + ')' : '');
+            var lines = [];
+            if (n) lines.push('Name: ' + n);
+            if (o) lines.push('Organisation: ' + o);
+            lines.push('Topic: ' + t);
+            if (m) { lines.push(''); lines.push(m); }
+            send.href = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\r\n'));
+            if (subj) subj.textContent = subject;
+          };
+          [name, org, topic, body].forEach(function (el) { if (el) { el.addEventListener('input', build); el.addEventListener('change', build); } });
+          form.addEventListener('submit', function (e) { e.preventDefault(); build(); try { send.click(); } catch (err) { location.href = send.href; } });
+          build();
+        } catch (err) { /* the plain mailto links still work */ }
+      })();
     </script>
-</body>
+  </main>
 
+  <!-- ===================== Footer — LaunchPad (identical on every page) ===================== -->
+  <footer class="pad is-solid">
+    <div class="wrap">
+      <div class="pad__grid">
+        <div class="pad__col pad__col--brand">
+          <a class="pad__brand" href="index.html" data-code="00 — FIRST LIGHT" aria-label="SpaceLabs — home"><img src="assets/img/mark.svg" alt="" width="22" height="24"><span class="cmd__wordmark">SpaceLabs</span></a>
+          <p class="pad__line">Aerospace and defence simulation, trajectory optimisation and flight software — Thiruvananthapuram, India</p>
+          <time class="clock" datetime="">THIRUVANANTHAPURAM · --:--:-- IST</time>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Products</h2>
+          <ul class="pad__list">
+            <li><a href="astra.html" data-code="PRODUCT 01 — ASTRA">ASTRA</a></li>
+            <li><a href="saras6.html" data-code="PRODUCT 02 — SARAS">SARAS</a></li>
+            <li><a href="assets/spacelabs-services-brochure.pdf" target="_blank" rel="noopener">Brochure <span class="mono">PDF · 27 MB</span></a></li>
+          </ul>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Services</h2>
+          <ul class="pad__list">
+            <li><a href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN">Mission Design</a></li>
+            <li><a href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT">System Development</a></li>
+            <li><a href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT">Math Models</a></li>
+            <li><a href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE">Flight Software</a></li>
+            <li><a href="simulation.html" data-code="SERVICE 05 — SIMULATION">Simulation</a></li>
+          </ul>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Company</h2>
+          <ul class="pad__list">
+            <li><a href="overview.html" data-code="COMPANY — 01 / 06">Overview</a></li>
+            <li><a href="overview.html#leadership" data-code="COMPANY — 03 / 06">Leadership</a></li>
+            <li><a href="overview.html#mentors" data-code="COMPANY — 05 / 06">Mentors</a></li>
+            <li><a href="overview.html#team" data-code="COMPANY — 06 / 06">Team</a></li>
+            <li><a href="index.html#news" data-code="06 / 07 — DISPATCHES">News</a></li>
+            <li><a href="contact.html" data-code="CONTACT — GROUND STATION">Contact</a></li>
+          </ul>
+          <h2 class="pad__h" style="margin-top:var(--s6)">Contact</h2>
+          <ul class="pad__list pad__list--contact" style="margin-top:0">
+            <li><a href="mailto:connect@thespacelabs.com">connect@thespacelabs.com</a></li>
+            <li><a href="tel:+918590705557">+91-8590705557</a></li>
+            <li><a href="tel:+919446594738">+91-9446594738</a></li>
+            <li><a href="https://www.linkedin.com/company/thespacelabs/" target="_blank" rel="noopener">LinkedIn <span class="ext" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://thespacelabs.com/" target="_blank" rel="noopener">thespacelabs.com <span class="ext" aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pad__legal">
+        <p>© <span data-year>2026</span> SpaceLabs Analytics and Dynamics Pvt Ltd. All rights reserved.</p>
+        <div class="pad__tools">
+          <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="true">Motion on</button>
+          <a class="pad__social" href="https://www.linkedin.com/company/thespacelabs/" target="_blank" rel="noopener" aria-label="SpaceLabs on LinkedIn"><img src="icon/linkedin.png" alt="" width="20" height="20" loading="lazy" decoding="async"></a>
+        </div>
+      </div>
+    </div>
+    <div class="pad__platform" aria-hidden="true"></div>
+  </footer>
+
+  <!-- ===================== LaunchButton + crew-manifest dialog (identical on every page) ===================== -->
+  <button class="launch" type="button" aria-label="Back to top" title="Back to top">
+    <span class="launch__glow" aria-hidden="true"></span>
+    <svg class="launch__ring" viewBox="0 0 62 62" aria-hidden="true"><circle cx="31" cy="31" r="26"/></svg>
+    <span class="launch__plume" aria-hidden="true"><i></i><i></i><i></i></span>
+    <svg class="launch__rocket" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2.5c2.6 2.2 4 5.2 4 8.7V15H8v-3.8c0-3.5 1.4-6.5 4-8.7Z"/>
+      <path d="M8 12.5 5 15.5V19l3-1.5M16 12.5l3 3V19l-3-1.5"/>
+      <circle cx="12" cy="9.5" r="1.4"/>
+      <path class="nozzle" d="M10 17.5h4M12 17.5v3"/>
+    </svg>
+    <span class="launch__label" aria-hidden="true"></span>
+  </button>
+
+  <dialog class="dialog dialog--manifest" id="manifest" aria-labelledby="manifest-h">
+    <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+    <p class="dialog__eyebrow">Mission control — crew manifest</p>
+    <h2 class="dialog__h" id="manifest-h">Secret Found! 🚀</h2>
+    <div class="dialog__media"><img src="img/astronaut.png" alt="" width="120" height="120" loading="lazy" decoding="async"></div>
+    <div class="dialog__body"><p>Want to know who created this and me?</p></div>
+    <div class="dialog__actions"><a class="pill pill--primary" href="https://www.linkedin.com/in/ananthudev/" target="_blank" rel="noopener">Connect on LinkedIn →</a></div>
+  </dialog>
+
+  <!-- ===================== Scripts (order matters; all deferred, then the module) ===================== -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+  <script type="module" src="assets/js/core.js?v=20261102"></script>
+
+  <!-- PAGE: 3D. One shared WebGL stage (assets/js/gl.js) + this page's scene. The boot waits for core.js
+       (window.SL.ready), runs on requestIdleCallback, and fails soft: tier NONE (reduced motion, Motion off,
+       no WebGL, context lost) or any import error leaves every .region__fallback poster / SVG visible.
+       Module imports carry NO ?v= query (scenes import ../gl.js; a query would load gl.js twice).
+       Contract recap: #stage is fixed at z 0 and fades in via .is-ready; each painted [data-region] gets
+       data-gl="on" (hides its fallback); body[data-tier] = HIGH|MID|LOW|NONE; scroll progress for
+       [data-scrub] sections comes from window.SL.onScrub (gl.js's bindScrub reads it automatically);
+       core.js keeps data-px/data-py on hovered .panel elements; "sl:launch" {kind:'egg'} fires at T-0. -->
+  <script type="module">
+    try {
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
+      idle(async () => {
+        if (!document.querySelector('[data-region]')) return;
+        try {
+          if (window.SL && window.SL.ready) { try { await window.SL.ready; } catch (err) { /* core failed: still try the scene */ } }
+          const { createStage } = await import('./assets/js/gl.js');
+          const stage = createStage();
+          addEventListener('pagehide', (e) => { if (!e.persisted) { try { stage.dispose(); } catch (err) { /* noop */ } } });
+          if (stage.isNone()) return;
+          // PAGE: scene — the Ground Station Earth (Thiruvananthapuram facing the camera, pin + following label)
+          const scene = await import('./assets/js/scenes/contact.js');
+          scene.mount(stage);
+        } catch (err) { console.warn('[scene] unavailable', err); }
+      }, { timeout: 300 });
+    } catch (err) { console.warn('[scene] unavailable', err); }
+  </script>
+</body>
 </html>

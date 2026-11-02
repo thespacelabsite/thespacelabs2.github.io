@@ -1,0 +1,108 @@
+/* assets/css/pages/simulation.css — SERVICE 05 · Simulation (page-scoped styles; site.css stays untouched)
+   Scope: the LOOP RING readout inside the emblem, the Loops chapter (sticky ring cell + three mode cards with the
+   five-node legend), the capability ledger meta, the instrument frames and the service sequence nav. */
+
+/* ---- emblem: SIM readout bottom-right (the caption sits bottom-left), projected node tags */
+.sim-readout {
+  position: absolute; right: var(--s5); bottom: var(--s5); margin: 0; z-index: 2;
+  justify-content: flex-end; text-align: right; max-width: calc(100% - var(--s5) * 2);
+}
+.sim-readout [data-sim-mode] { color: var(--text); font-variant-numeric: tabular-nums; }
+.sim-readout [data-sim-note] { color: var(--dim); }
+@media (max-width: 1023.98px) { .sim-readout [data-sim-note] { display: none; } }
+[data-region] > .region__tag.is-front { color: var(--text); }
+.title__object .region__overlay { z-index: 1; }
+/* the fallback SVG reads as a poster: let it breathe in the cell */
+[data-region] > .region__fallback > svg.loopring { width: min(78%, 520px); max-height: 78%; }
+
+/* ---- 02 CAPABILITIES: ledger rows are plain cells (no link); the meta column carries the SARAS mode */
+.ledger--caps .ledger__meta { letter-spacing: 0.18em; }
+.ledger--caps .ledger__row:hover .ledger__meta { color: var(--muted); }
+
+/* ---- 03 THE LOOPS: sticky ring cell + stacked mode cards */
+.loops { display: grid; grid-template-columns: 1fr; gap: var(--s7); align-items: start; }
+.loops__stage {
+  display: none;
+  position: sticky; top: calc(var(--nav-h) + var(--s6));
+  height: calc(100svh - var(--nav-h) - var(--s6) * 2); min-height: 420px;
+  border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
+  contain: layout paint;
+}
+/* the readout sits top-right in the mode-view cell so its long note can wrap without hitting the caption */
+.loops__stage .sim-readout { top: var(--s5); bottom: auto; max-width: calc(100% - var(--s5) * 2); }
+.loops__stage .region__caption {
+  position: absolute; left: var(--s5); bottom: var(--s5); margin: 0;
+  font: 400 0.6875rem / 1.5 var(--ff-mono); color: var(--dim); letter-spacing: 0.06em; pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .loops { grid-template-columns: 5fr 7fr; column-gap: var(--gap); }
+  .loops__stage { display: block; }
+}
+.loops__list { list-style: none; margin: 0; padding: 0; min-width: 0; }
+.loop {
+  position: relative;
+  display: grid; grid-template-columns: 3ch 1fr; column-gap: var(--s4); row-gap: var(--s3);
+  padding: var(--s6) var(--s4) var(--s6) var(--s2);
+  border-top: 1px solid var(--line);
+  transition: background-color var(--t-micro), border-color var(--t-micro);
+}
+.loop:last-child { border-bottom: 1px solid var(--line); }
+.loop::before {
+  content: ""; position: absolute; left: 0; top: -1px; bottom: -1px; width: 2px;
+  background: var(--accent); transform: scaleY(0); transform-origin: top center;
+  transition: transform var(--t-control) var(--ease-out);
+}
+.loop:hover, .loop.is-active { background: var(--panel); border-top-color: var(--line-strong); }
+.loop.is-active::before { transform: scaleY(1); }
+/* < 768: index in its own narrow column, everything else stacks in the second column */
+@media (max-width: 767.98px) {
+  .loop__idx { grid-row: 1 / span 3; }
+  .loop__head, .loop__items, .loop__legend { grid-column: 2; min-width: 0; }
+  .loop__items { margin-top: var(--s2); }
+}
+@media (min-width: 768px) {
+  .loop { grid-template-columns: 3ch minmax(0, 1fr) minmax(0, 1fr); padding-inline: var(--s5) var(--s5); }
+  .loop__idx { grid-row: 1 / span 3; }
+  .loop__head, .loop__legend { grid-column: 2; }
+  .loop__items { grid-column: 3; grid-row: 1 / span 3; align-self: start; padding-top: var(--s2); }
+}
+.loop__idx { font: 400 var(--fs-mono) / 1.6 var(--ff-mono); color: var(--dim); transition: color var(--t-micro); }
+.loop:hover .loop__idx, .loop.is-active .loop__idx { color: var(--accent); }
+.loop__mode { display: block; font: 400 0.6875rem / 1.5 var(--ff-tech); letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); margin-bottom: var(--s2); }
+.loop.is-active .loop__mode { color: var(--accent); }
+.loop__title { margin: 0; font: 500 var(--fs-h4) / 1.3 var(--ff-body); color: var(--text); letter-spacing: -0.01em; }
+.loop__desc { margin: var(--s2) 0 0; font: 400 var(--fs-small) / 1.5 var(--ff-body); color: var(--muted); max-width: 40ch; }
+.loop__items { list-style: none; margin: 0; padding: 0; }
+.loop__items li {
+  position: relative; padding: var(--s2) 0 var(--s2) var(--s5);
+  font: 400 var(--fs-small) / 1.5 var(--ff-body); color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+.loop__items li:first-child { border-top: 0; }
+.loop__items li::before { content: ""; position: absolute; left: 0; top: 1.05em; width: 10px; height: 1px; background: var(--line-strong); }
+/* five-node legend: filled = real (in the loop), outline = simulated — the DOM echo of the emblem for tier NONE */
+.loop__legend { display: flex; flex-wrap: wrap; gap: var(--s3) var(--s5); margin: var(--s4) 0 0; padding: 0; list-style: none; }
+.node { display: inline-flex; align-items: center; gap: 0.75ch; font: 400 0.625rem / 1 var(--ff-mono); letter-spacing: 0.08em; color: var(--dim); white-space: nowrap; }
+.node__box { width: 10px; height: 10px; border: 1px solid var(--line-strong); border-radius: 1px; background: transparent; flex: none; }
+.node.is-real { color: var(--muted); }
+.node.is-real .node__box { background: #CFD0D6; border-color: #CFD0D6; }
+.loop__legend-h { width: 100%; margin: 0; font: 400 0.625rem / 1 var(--ff-mono); letter-spacing: 0.08em; color: var(--dim); }
+
+/* ---- 04 INSTRUMENTS: two frames after the ledger */
+.frames { display: grid; grid-template-columns: 1fr; gap: var(--gap); margin-top: var(--s8); }
+@media (min-width: 768px) { .frames { grid-template-columns: 7fr 5fr; align-items: stretch; } }
+/* SARAS monitor: crop to the screen (the brochure photo's white stand below it is cut off) */
+.frame--screen .frame__media img { object-position: 50% 0%; }
+/* actuator render: a small specimen on black — never upscaled, the plate fills the column height */
+.frame--plate .frame__media { background: #000; flex: 1; min-height: 200px; }
+.frame--plate .frame__media img { object-fit: scale-down; }
+.frame--plate .frame__cap { background: var(--panel); }
+
+/* ---- service sequence (previous / return) */
+.seq { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s4) var(--s6); margin-top: var(--s9); padding-top: var(--s6); border-top: 1px solid var(--line); }
+.seq a { display: inline-flex; flex-direction: column; gap: var(--s2); min-height: 44px; text-decoration: none; color: var(--text); }
+.seq a > .mono { font-size: var(--fs-eyebrow); letter-spacing: 0.08em; transition: color var(--t-micro); }
+.seq a:hover > .mono { color: var(--accent); }
+.seq a > .seq__label { font: 500 var(--fs-h4) / 1.2 var(--ff-body); letter-spacing: -0.01em; }
+.seq a:hover .seq__label { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 6px; }
+.seq__next { text-align: right; align-items: flex-end; }

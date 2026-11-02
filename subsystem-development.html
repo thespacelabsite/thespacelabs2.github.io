@@ -1,407 +1,445 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="en" class="no-js">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description"
-        content="Spacelabs provides cutting-edge aerospace technology, simulation, and software solutions for space and defense missions." />
-    <meta name="author" content="SK">
-    <title>Spacelabs – Subsystem Development</title>
+  <meta charset="utf-8">
+<!--
+  SpaceLabs — SERVICE 02 — SYSTEM DEVELOPMENT (subsystem-development.html)
+  Built from _template.html: head order, CommandBar, MobileOverlay, footer, LaunchButton,
+  manifest dialog and script order are byte-identical with every other page.
+  Content source: inventory.json (verbatim bullets) + brochure facts from the build addendum
+  (GNC/ADCS end-to-end, checkout systems, fuse circuitry, the NGC kit chain).
+  Emblem: EXPLODED NGC BLOCK (assets/js/scenes/subsystem-development.js) painted through the shared stage.
+-->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- PAGE: head — title + description are per page -->
+  <title>System Development — NGC and ADCS — SpaceLabs</title>
+  <meta name="description" content="SpaceLabs develops and qualifies Navigation, Guidance and Control (NGC) hardware and software, ADCS for satellites, triple-mode-redundant fuse electronics and checkout systems for sensors and flight computers.">
+  <meta name="theme-color" content="#050507">
+  <meta name="color-scheme" content="dark">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap"
-        rel="stylesheet">
+  <!-- favicons (favicon2/, relative) -->
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon2/favicon-96x96.png">
+  <link rel="icon" href="favicon2/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon2/apple-touch-icon.png">
+  <link rel="manifest" href="favicon2/site.webmanifest">
 
-    <!-- CSS Dependencies -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- fonts: the ONE stylesheet named in the spec -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Michroma&display=swap">
 
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="favicons/favicon-48x48.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="favicons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
-    <link rel="manifest" href="favicons/site.webmanifest">
-    <link rel="icon" type="image/x-icon" href="favicons/favicon.ico">
-    <link rel="icon" type="image/png" sizes="192x192" href="favicons/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="favicons/android-chrome-512x512.png">
+  <!-- design system -->
+  <link rel="preload" href="assets/css/site.css?v=20261102" as="style">
+  <link rel="stylesheet" href="assets/css/site.css?v=20261102">
+  <!-- PAGE: page-scoped styles (NGC kit chain, datasheet plate, previous / next links) -->
+  <link rel="stylesheet" href="assets/css/pages/subsystem-development.css?v=20261102">
 
-    <style>
-        /* --- VARIABLES & GLOBAL --- */
-        :root {
-            --bg-color: #050505;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --accent: #d412a1;
-            --accent-glow: rgba(212, 18, 161, 0.4);
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --font-heading: 'Space Grotesk', sans-serif;
-            --font-body: 'Inter', sans-serif;
-        }
+  <!-- es-module-shims MUST precede the importmap (Safari < 16.4) -->
+  <script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.8.3/dist/es-module-shims.js" crossorigin="anonymous"></script>
+  <script type="importmap">
+  {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+  </script>
+  <!-- three.js core is preloaded on every page with a [data-region] (crossorigin matches module CORS mode); pages with no scene remove it -->
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" crossorigin="anonymous">
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: var(--font-body);
-            overflow-x: hidden;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        .display-5 {
-            font-family: var(--font-heading);
-            letter-spacing: -0.02em;
-        }
-
-        p,
-        li {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--text-main);
-            transition: all 0.3s ease;
-        }
-
-        a:hover {
-            color: var(--accent);
-        }
-
-        /* --- LOADER --- */
-        #overfull {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(212, 18, 161, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--accent);
-            animation: spin 1s ease-in-out infinite;
-            display: block;
-            margin: 0 auto 15px auto;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* --- NAVBAR --- */
-        .navbar {
-            background: rgba(5, 5, 5, 0.9) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--card-border);
-            padding: 1rem 0;
-        }
-
-        .logogok {
-            height: 40px;
-            width: auto;
-        }
-
-        .nav-link {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-left: 1.5rem;
-            color: var(--text-muted) !important;
-            position: relative;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--accent) !important;
-        }
-
-        .offcanvas {
-            background-color: var(--bg-color) !important;
-            border-left: 1px solid var(--card-border);
-        }
-
-        /* --- HERO / HEADER --- */
-        .page-header {
-            padding-top: 120px;
-            padding-bottom: 60px;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-        }
-
-        .star-field {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 3px),
-                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 2px);
-            background-size: 550px 550px, 350px 350px;
-            opacity: 0.3;
-            z-index: -1;
-        }
-
-        .hero-planet {
-            max-width: 200px;
-            width: 100%;
-            height: auto;
-            animation: floatSat 6s ease-in-out infinite;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-        }
-
-        @keyframes floatSat {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-15px) rotate(2deg);
-            }
-        }
-
-        .breadcrumb {
-            justify-content: center;
-            background: transparent;
-        }
-
-        .breadcrumb-item a {
-            color: var(--accent);
-        }
-
-        .breadcrumb-item.active {
-            color: var(--text-muted);
-        }
-
-        /* --- CONTENT & CARDS --- */
-        .section-padding {
-            padding: 60px 0;
-        }
-
-        .glass-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 2.5rem;
-            transition: transform 0.3s, border-color 0.3s;
-            height: 100%;
-        }
-
-        .glass-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* --- LIST STYLING --- */
-        .service-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .service-list li {
-            position: relative;
-            padding-left: 40px;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            color: #fff;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .service-list li:last-child {
-            border-bottom: none;
-        }
-
-        .service-list li::before {
-            content: '\f085';
-            /* Cogs Icon */
-            font-family: 'FontAwesome';
-            position: absolute;
-            left: 0;
-            top: 2px;
-            color: var(--accent);
-            font-size: 1.2rem;
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            border-top: 1px solid var(--card-border);
-            background: #000;
-            padding-top: 3rem;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--card-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-            margin-left: 10px;
-        }
-
-        .social-icon:hover {
-            border-color: var(--accent);
-            background: var(--accent);
-        }
-    </style>
+  <!-- js flag + 4 s hard timeout: the shutter can never trap the page -->
+  <script>document.documentElement.classList.replace('no-js','js');setTimeout(function(){var s=document.querySelector('.shutter');if(s&&!s.classList.contains('is-done')){s.classList.add('is-done');}},4000);</script>
+  <noscript><style>.shutter{display:none}</style></noscript>
 </head>
 
-<body>
+<!-- PAGE: data-page = filename without .html · data-code = this page's chapter code (shutter label) -->
+<body data-page="subsystem-development" data-code="SERVICE 02 — SYSTEM DEVELOPMENT">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- LOADING OVERLAY -->
-    <div id="overfull">
-        <div class="text-center">
-            <span class="spinner"></span>
-            <h5 class="text-white mt-3" style="font-family: var(--font-heading); letter-spacing: 2px;">SPACELABS</h5>
-            <p class="text-muted small">Loading...</p>
-        </div>
-    </div>
+  <!-- Shutter: covers on load, lifts after fonts (<= 400 ms), hard timeouts 800 ms (core.js) and 4 s (inline) -->
+  <!-- PAGE: shutter — code text -->
+  <div class="shutter is-solid" aria-hidden="true"><span class="shutter__bar"></span><span class="shutter__code">SERVICE 02 — SYSTEM DEVELOPMENT</span></div>
 
-    <!-- NAVIGATION -->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="dist/custom/images/logo.png" class="logogok" alt="SpaceLabs Logo" />
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="offcanvas offcanvas-end text-white" tabindex="-1" id="offcanvasNavbar"
-                aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="overview.html">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#products">Products</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="index.html#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+  <!-- The single shared WebGL canvas (gl.js owns it; CSS keeps it fixed at z 0, opacity 0 until .is-ready) -->
+  <canvas id="stage" aria-hidden="true"></canvas>
+
+  <!-- ===================== CommandBar (identical on every page) ===================== -->
+  <header class="cmd">
+    <a class="cmd__brand" href="index.html" data-code="00 — FIRST LIGHT" aria-label="SpaceLabs — home">
+      <img class="cmd__mark" src="assets/img/mark.svg" alt="" width="22" height="24">
+      <span class="cmd__wordmark">SpaceLabs</span>
+    </a>
+    <nav class="cmd__links" aria-label="Primary">
+      <ul>
+        <li class="cmd__item">
+          <button class="cmd__trigger" type="button" aria-expanded="false" aria-controls="dd-products">Products
+            <svg class="cmd__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3.5 5 7.5 9 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </button>
+          <div class="cmd__dd" id="dd-products">
+            <ul>
+              <li><a class="dd__row" href="astra.html" data-code="PRODUCT 01 — ASTRA">
+                <svg class="dd__glyph" viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+                  <path d="M8 40C12 31 18 26 40 6" opacity=".55"/><path d="M8 40C14 30 22 22 40 10" opacity=".55"/><path d="M8 40C18 27 28 17 40 18" opacity=".55"/><path d="M8 40C20 30 30 22 40 24" opacity=".55"/>
+                  <path class="glyph-accent" d="M8 40C15 29 24 20 40 13" stroke-width="1.5"/><path d="M6 40h36" opacity=".4"/><circle cx="8" cy="40" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+                <span><span class="dd__name">ASTRA</span><span class="dd__desc">AEROSPACE TRAJECTORY OPTIMIZER · 3-DOF</span></span>
+              </a></li>
+              <li><a class="dd__row" href="saras6.html" data-code="PRODUCT 02 — SARAS">
+                <svg class="dd__glyph" viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+                  <circle cx="24" cy="24" r="18" opacity=".7"/><ellipse cx="24" cy="24" rx="18" ry="7" opacity=".7"/>
+                  <ellipse class="glyph-accent" cx="24" cy="24" rx="7" ry="18" stroke-width="1.5"/><rect x="21" y="21" width="6" height="6" fill="currentColor" stroke="none"/>
+                </svg>
+                <span><span class="dd__name">SARAS</span><span class="dd__desc">SIMULATOR FOR AEROSPACE APPLICATIONS · 6-DOF</span></span>
+              </a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="cmd__item">
+          <button class="cmd__trigger" type="button" aria-expanded="false" aria-controls="dd-services">Services
+            <svg class="cmd__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3.5 5 7.5 9 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </button>
+          <div class="cmd__dd" id="dd-services">
+            <ul>
+              <li><a class="dd__row" href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN"><span class="dd__idx">01</span><span><span class="dd__name">Mission Design</span><span class="dd__desc">END-TO-END MISSION PLANNING AND TRAJECTORY DESIGN</span></span></a></li>
+              <li><a class="dd__row" href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT"><span class="dd__idx">02</span><span><span class="dd__name">System Development</span><span class="dd__desc">NGC SYSTEM ARCHITECTURE</span></span></a></li>
+              <li><a class="dd__row" href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT"><span class="dd__idx">03</span><span><span class="dd__name">Math Models</span><span class="dd__desc">MATHEMATICAL MODEL DEVELOPMENT</span></span></a></li>
+              <li><a class="dd__row" href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE"><span class="dd__idx">04</span><span><span class="dd__name">Flight Software</span><span class="dd__desc">ONBOARD FLIGHT SOFTWARE DEVELOPMENT</span></span></a></li>
+              <li><a class="dd__row" href="simulation.html" data-code="SERVICE 05 — SIMULATION"><span class="dd__idx">05</span><span><span class="dd__name">Simulation</span><span class="dd__desc">REAL-TIME 6-DOF · HARDWARE-IN-LOOP</span></span></a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a class="cmd__link" href="overview.html" data-code="COMPANY — 01 / 06">Company</a></li>
+        <li><a class="cmd__link" href="index.html#news" data-code="06 / 07 — DISPATCHES">News</a></li>
+        <li><a class="cmd__link" href="contact.html" data-code="CONTACT — GROUND STATION">Contact</a></li>
+      </ul>
     </nav>
+    <a class="pill pill--primary cmd__cta" href="contact.html" data-code="CONTACT — GROUND STATION">Start a mission</a>
+    <button class="cmd__burger" type="button" aria-expanded="false" aria-controls="overlay" aria-label="Menu"></button>
+  </header>
 
-    <!-- HEADER SECTION -->
-    <section class="page-header">
-        <div class="star-field"></div>
-        <div class="container" data-aos="fade-up">
+  <!-- ===================== MobileOverlay — film index (identical on every page) ===================== -->
+  <div id="overlay" class="overlay is-solid" role="dialog" aria-modal="true" aria-label="Site index" aria-hidden="true">
+    <ol class="overlay__rows">
+      <li><a class="overlay__row" href="index.html" data-code="00 — FIRST LIGHT"><span class="overlay__idx">01</span><span class="overlay__title">Home</span><span class="overlay__dek">FIRST LIGHT · OVERVIEW · PRODUCTS · SERVICES</span></a></li>
+      <li><a class="overlay__row" href="astra.html" data-code="PRODUCT 01 — ASTRA"><span class="overlay__idx">02</span><span class="overlay__title">ASTRA</span><span class="overlay__dek">AEROSPACE TRAJECTORY OPTIMIZER · 3-DOF</span></a></li>
+      <li><a class="overlay__row" href="saras6.html" data-code="PRODUCT 02 — SARAS"><span class="overlay__idx">03</span><span class="overlay__title">SARAS</span><span class="overlay__dek">SIMULATOR FOR AEROSPACE APPLICATIONS · 6-DOF</span></a></li>
+      <li><a class="overlay__row" href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN"><span class="overlay__idx">04</span><span class="overlay__title">Mission Design</span><span class="overlay__dek">SERVICE 01</span></a></li>
+      <li><a class="overlay__row" href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT"><span class="overlay__idx">05</span><span class="overlay__title">System Development</span><span class="overlay__dek">SERVICE 02 · NGC</span></a></li>
+      <li><a class="overlay__row" href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT"><span class="overlay__idx">06</span><span class="overlay__title">Math Models</span><span class="overlay__dek">SERVICE 03</span></a></li>
+      <li><a class="overlay__row" href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE"><span class="overlay__idx">07</span><span class="overlay__title">Flight Software</span><span class="overlay__dek">SERVICE 04</span></a></li>
+      <li><a class="overlay__row" href="simulation.html" data-code="SERVICE 05 — SIMULATION"><span class="overlay__idx">08</span><span class="overlay__title">Simulation</span><span class="overlay__dek">SERVICE 05 · MILS · OILS · HILS</span></a></li>
+      <li><a class="overlay__row" href="overview.html" data-code="COMPANY — 01 / 06"><span class="overlay__idx">09</span><span class="overlay__title">Company</span><span class="overlay__dek">OVERVIEW · LEADERSHIP · MENTORS · TEAM</span></a></li>
+    </ol>
+    <div class="overlay__foot">
+      <a class="pill pill--primary" href="contact.html" data-code="CONTACT — GROUND STATION">Start a mission</a>
+      <a href="mailto:connect@thespacelabs.com">connect@thespacelabs.com</a>
+      <a href="tel:+918590705557">+91-8590705557</a>
+      <a href="tel:+919446594738">+91-9446594738</a>
+      <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="true">Motion on</button>
+    </div>
+  </div>
 
-            <!-- Satellite Image -->
-            <img src="dist/custom/images/sat.png" class="hero-planet" alt="System Development" />
-
-            <h1 class="display-5 fw-bold text-white">System Development</h1>
-            <p class="lead text-muted mx-auto" style="max-width: 700px;">
-                Engineering reliable hardware and software subsystems for critical missions.
-            </p>
-            <nav aria-label="breadcrumb" class="mt-4">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="services.html">Services</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">System Development</li>
-                </ol>
+  <main id="main">
+    <!-- ===================== TitleBlock — SERVICE 02 ===================== -->
+    <header class="title" id="top">
+      <div class="wrap">
+        <div class="title__grid">
+          <div class="title__text">
+            <nav class="crumb" aria-label="Breadcrumb">
+              <a href="index.html" data-code="00 — FIRST LIGHT">HOME</a><span class="crumb__sep" aria-hidden="true">/</span>
+              <a href="index.html#services" data-code="03 / 07 — SERVICES">SERVICES</a><span class="crumb__sep" aria-hidden="true">/</span>
+              <span aria-current="page">SYSTEM DEVELOPMENT</span>
             </nav>
+            <p class="marker rv-eyebrow"><span class="marker__code">SERVICE 02</span> — <span class="marker__label">SYSTEM DEVELOPMENT</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h1 class="title__h1 display-2 rv-lines" style="--d:200ms">System Development</h1>
+            <p class="title__sub rv-eyebrow" style="--d:500ms">Navigation&nbsp;· Guidance&nbsp;· Control</p>
+            <!-- standfirst verbatim from the current page header -->
+            <p class="title__lead lead rv-fade" style="--d:650ms">Engineering reliable hardware and software subsystems for critical missions.</p>
+            <p class="rv-fade" style="--d:800ms">From Navigation, Guidance and Control hardware and software for aerospace vehicles to the attitude determination and control system of a satellite, with the fuse electronics and checkout systems that go with them.</p>
+            <div class="title__actions rv-fade" style="--d:950ms">
+              <a class="pill pill--secondary" href="#capabilities">Development capabilities</a>
+              <a class="ghost" href="#ngc-kit">The NGC kit <span class="arrow" aria-hidden="true">→</span></a>
+            </div>
+          </div>
+
+          <!-- Transparent region: the renderer paints the EXPLODED NGC BLOCK here via scissor. -->
+          <div class="title__object" data-region="emblem">
+            <div class="region__fallback">
+              <!-- hairline still of the exploded block (NONE tier / before the first frame); one magenta element -->
+              <svg viewBox="0 0 400 400" aria-hidden="true" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-linejoin="round">
+                <!-- grid floor -->
+                <g opacity=".5"><path d="M60 388 200 318 340 388"/><path d="M100 388 200 338 300 388"/><path d="M140 388 200 358 260 388"/><path d="M200 318v70"/></g>
+                <!-- slab 4 — ACTUATOR DRIVE (top) -->
+                <path d="M200 38 300 70 200 102 100 70Z"/><path d="M100 70v10l100 32 100-32V70"/><path d="M200 102v10"/>
+                <!-- slab 3 — NGC · ADCS SOFTWARE -->
+                <path d="M200 128 300 160 200 192 100 160Z"/><path d="M100 160v10l100 32 100-32v-10"/><path d="M200 192v10"/>
+                <!-- slab 2 — FLIGHT COMPUTER -->
+                <path d="M200 218 300 250 200 282 100 250Z"/><path d="M100 250v10l100 32 100-32v-10"/><path d="M200 282v10"/>
+                <!-- slab 1 — SENSORS (bottom) -->
+                <path d="M200 308 300 340 200 372 100 340Z"/><path d="M100 340v10l100 32 100-32v-10"/>
+                <!-- connectors (dashed) -->
+                <g stroke-dasharray="3 5"><path d="M100 80v80M300 80v80"/><path d="M100 170v80M300 170v80"/><path d="M100 260v80M300 260v80"/></g>
+                <!-- leaders + labels -->
+                <g stroke="rgba(255,255,255,0.14)"><path d="M300 70h28"/><path d="M300 160h28"/><path d="M300 250h28"/><path d="M300 340h28"/></g>
+                <g fill="rgba(244,244,247,0.45)" stroke="none" font-family="JetBrains Mono, Menlo, Consolas, monospace" font-size="9" letter-spacing="1">
+                  <text x="334" y="73">ACTUATOR</text><text x="334" y="163">NGC·ADCS</text><text x="334" y="253">COMPUTER</text><text x="334" y="343">SENSORS</text>
+                </g>
+                <!-- the single magenta element: the signal pulse on the right connector -->
+                <circle cx="300" cy="205" r="3.5" fill="#D412A1" stroke="none"/>
+              </svg>
+            </div>
+            <p class="visually-hidden">Decorative three-dimensional emblem: four metallic slabs labelled sensors, flight computer, NGC and ADCS software and actuator drive, stacked as one block and pulling apart along magenta connectors as the capabilities list scrolls into view.</p>
+            <p class="region__caption" aria-hidden="true">FIG. 01 — EXPLODED NGC BLOCK</p>
+            <p class="region__tag" data-tag="l0" data-label="SENSORS" aria-hidden="true">SENSORS</p>
+            <p class="region__tag" data-tag="l1" data-label="FLIGHT COMPUTER" aria-hidden="true">FLIGHT COMPUTER</p>
+            <p class="region__tag" data-tag="l2" data-label="NGC · ADCS SOFTWARE" aria-hidden="true">NGC · ADCS SOFTWARE</p>
+            <p class="region__tag" data-tag="l3" data-label="ACTUATOR DRIVE" aria-hidden="true">ACTUATOR DRIVE</p>
+          </div>
+          <!-- SpecStrip omitted: service pages have fewer than three verified cells (spec, SpecStrip). -->
         </div>
+      </div>
+    </header>
+
+    <!-- ===================== 02 — Development capabilities (verbatim bullets, brochure descriptions) ===================== -->
+    <section class="chapter" id="capabilities" data-chapter="02" data-label="CAPABILITIES">
+      <div class="wrap">
+        <div class="grid chapter__head">
+          <div class="c1-8">
+            <p class="marker rv-eyebrow"><span class="marker__code">02 / 06</span> — <span class="marker__label">DEVELOPMENT CAPABILITIES</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h2 class="chapter__h display-2 rv-lines">Development Capabilities</h2>
+            <p class="lead rv-fade">Guidance, Navigation and Control and Attitude Determination and Control Systems, designed, developed and tested end to end for high-reliability, mission-ready performance.</p>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="c1-8">
+            <!-- titles verbatim from the current page's Development Capabilities card; descriptions from the brochure's services page -->
+            <ol class="ledger rv-group">
+              <li class="ledger__row rv-fade"><div class="ledger__cells"><span class="ledger__idx">01</span><span class="ledger__title">Navigation Guidance and Control (NGC) hardware and software system development and qualification.</span><span class="ledger__desc">End-to-end design, development and testing of the GNC system, from navigation hardware to the actuator.</span><span class="ledger__meta">NGC</span></div></li>
+              <li class="ledger__row rv-fade"><div class="ledger__cells"><span class="ledger__idx">02</span><span class="ledger__title">Attitude Determination and Control System (ADCS) development for satellites.</span><span class="ledger__desc">Attitude determination and control designed, developed and tested as one system, end to end.</span><span class="ledger__meta">ADCS</span></div></li>
+              <li class="ledger__row rv-fade"><div class="ledger__cells"><span class="ledger__idx">03</span><span class="ledger__title">Fuse Electronics design with triple mode redundancy.</span><span class="ledger__desc">High-security fuse electronic circuitry: triple-layered safety fuse circuits.</span><span class="ledger__meta">Fuse</span></div></li>
+              <li class="ledger__row rv-fade"><div class="ledger__cells"><span class="ledger__idx">04</span><span class="ledger__title">Checkout design for Sensors and Flight Computers data acquisition and processing.</span><span class="ledger__desc">Rigorous subsystem and system-level testing, from OBC, navigation, servo-actuators and power to full GNC integration.</span><span class="ledger__meta">Checkout</span></div></li>
+            </ol>
+          </div>
+          <figure class="frame frame--black frame--sticky c9-12 rv-frame" data-ratio="4/3">
+            <div class="frame__media"><img src="img/brochure/satellite-gold.jpg" alt="Render of a satellite with two deployed gold-coloured solar arrays" width="692" height="538" loading="lazy" decoding="async"></div>
+            <figcaption class="frame__cap"><span class="frame__idx">FIG. 02</span>Satellite bus — ADCS development for satellites</figcaption>
+          </figure>
+        </div>
+      </div>
     </section>
 
-    <!-- CONTENT SECTION -->
-    <section class="section-padding">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="glass-card" data-aos="fade-up">
-                        <h2 class="h3 text-white mb-4">Development Capabilities</h2>
-                        <ul class="service-list">
-                            <li>Navigation Guidance and Control (NGC) hardware and software system development and
-                                qualification.</li>
-                            <li>Attitude Determination and Control System (ADCS) development for satellites.</li>
-                            <li>Fuse Electronics design with triple mode redundancy.</li>
-                            <li>Checkout design for Sensors and Flight Computers data acquisition and processing.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <!-- ===================== 03 — The NGC kit (brochure: Navigation, Guidance and Control Kit for Aerospace Applications) ===================== -->
+    <section class="chapter" id="ngc-kit" data-chapter="03" data-label="NGC KIT">
+      <div class="wrap">
+        <div class="grid chapter__head">
+          <div class="c1-8">
+            <p class="marker rv-eyebrow"><span class="marker__code">03 / 06</span> — <span class="marker__label">NGC KIT</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h2 class="chapter__h display-2 rv-lines">Navigation, Guidance and Control Kit for aerospace applications.</h2>
+            <p class="lead rv-fade">One chain from sensor to actuator: navigation hardware feeds the checkout system, navigation software estimates the state, guidance commands it, control closes the loop and the actuator moves the vehicle.</p>
+          </div>
         </div>
+        <!-- the six stages of the kit, in the brochure's order -->
+        <ol class="kit rv-group">
+          <li class="kit__node rv-fade"><span class="kit__idx">01</span><span class="kit__label">Navigation hardware</span><span class="kit__spec">MAG&nbsp;· GYRO&nbsp;· ACCEL&nbsp;· MCU</span><span class="kit__arrow" aria-hidden="true"></span></li>
+          <li class="kit__node rv-fade"><span class="kit__idx">02</span><span class="kit__label">Checkout system</span><span class="kit__desc">Sensor and flight-computer data acquisition and processing.</span><span class="kit__arrow" aria-hidden="true"></span></li>
+          <li class="kit__node rv-fade"><span class="kit__idx">03</span><span class="kit__label">Navigation software</span><span class="kit__desc">State estimation from the sensor suite.</span><span class="kit__arrow" aria-hidden="true"></span></li>
+          <li class="kit__node rv-fade"><span class="kit__idx">04</span><span class="kit__label">Guidance</span><span class="kit__desc">Commands the vehicle along the mission trajectory.</span><span class="kit__arrow" aria-hidden="true"></span></li>
+          <li class="kit__node rv-fade"><span class="kit__idx">05</span><span class="kit__label">Control</span><span class="kit__desc">Closes the loop between guidance and actuator.</span><span class="kit__arrow" aria-hidden="true"></span></li>
+          <li class="kit__node rv-fade"><span class="kit__idx">06</span><span class="kit__label">Actuator</span><span class="kit__desc">Drives the vehicle. Servo-actuators are exercised in checkout.</span><span class="kit__arrow" aria-hidden="true"></span></li>
+        </ol>
+        <div class="grid mt-8">
+          <div class="c1-6 stack rv-group">
+            <h3 class="h4 rv-fade">Qualified for flight</h3>
+            <p class="rv-fade">NGC hardware and software are developed and qualified together. Checkout systems carry testing from subsystem to system level, from OBC, navigation, servo-actuators and power to full GNC integration.</p>
+            <p class="rv-fade"><a class="ghost" href="saras6.html" data-code="PRODUCT 02 — SARAS">Validate the kit in SARAS, hardware in the loop <span class="arrow" aria-hidden="true">→</span></a></p>
+          </div>
+          <figure class="frame frame--black c8-12 rv-frame" data-ratio="16/9">
+            <div class="frame__media"><img src="img/brochure/actuator.jpg" alt="Brochure figure of an actuator with rotation arrows" width="460" height="251" loading="lazy" decoding="async"></div>
+            <figcaption class="frame__cap"><span class="frame__idx">FIG. 03</span>Actuator — the last link of the NGC kit</figcaption>
+          </figure>
+        </div>
+      </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="container pb-4">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <p class="mb-0 text-muted small">© <span id="current-year"></span> SpaceLabs. All rights reserved.
-                    </p>
-                </div>
-                <div class="col-md-6 d-flex justify-content-center justify-content-md-end">
-                    <a href="https://www.linkedin.com/company/thespacelabs" target="_blank" class="social-icon">
-                        <img src="icon/linkedin.png" style="width: 20px; filter: invert(1);" alt="LinkedIn">
-                    </a>
-                </div>
-            </div>
+    <!-- ===================== 04 — Verification path (ledger rows to simulation + flight software, SARAS HILS) ===================== -->
+    <section class="chapter" id="verification" data-chapter="04" data-label="VERIFICATION PATH">
+      <div class="wrap">
+        <div class="grid chapter__head">
+          <div class="c1-8">
+            <p class="marker rv-eyebrow"><span class="marker__code">04 / 06</span> — <span class="marker__label">VERIFICATION PATH</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h2 class="chapter__h display-2 rv-lines">From the checkout bench to hardware in the loop.</h2>
+            <p class="lead rv-fade">System development hands over to simulation and flight software: NGC designs can be verified in model, onboard and hardware-in-the-loop testing.</p>
+          </div>
         </div>
-    </footer>
+        <div class="grid">
+          <div class="c1-9">
+            <ol class="ledger ledger--path rv-group">
+              <svg class="ledger__path rv-draw" data-scrub aria-hidden="true" width="32" height="100%">
+                <line x1="16" y1="0" x2="16" y2="100%"/>
+                <circle cx="16" cy="16.7%" r="5" data-node="0.17" data-nodraw/>
+                <circle cx="16" cy="50%" r="5" data-node="0.5" data-nodraw/>
+                <circle cx="16" cy="83.3%" r="5" data-node="0.83" data-nodraw/>
+              </svg>
+              <li class="ledger__row rv-fade"><a class="ledger__link" href="simulation.html" data-code="SERVICE 05 — SIMULATION"><span class="ledger__idx">01</span><span class="ledger__title">Simulation</span><span class="ledger__desc">Real-time 6-DOF simulation and hardware-in-loop testing.</span><span class="ledger__meta">Service 05</span><span class="ledger__arrow" aria-hidden="true">→</span></a></li>
+              <li class="ledger__row rv-fade"><a class="ledger__link" href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE"><span class="ledger__idx">02</span><span class="ledger__title">Flight Software</span><span class="ledger__desc">Reliable onboard flight software development.</span><span class="ledger__meta">Service 04</span><span class="ledger__arrow" aria-hidden="true">→</span></a></li>
+              <li class="ledger__row rv-fade"><a class="ledger__link" href="saras6.html" data-code="PRODUCT 02 — SARAS"><span class="ledger__idx">03</span><span class="ledger__title">SARAS</span><span class="ledger__desc">NGC/AOCS system test bed in MILS, OILS and HILS modes.</span><span class="ledger__meta">Product 02</span><span class="ledger__arrow" aria-hidden="true">→</span></a></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- SCRIPTS -->
-    <script src="dist/js/bootstrap.bundle.min.js"></script>
-    <script src="dist/js/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            once: true
-        });
+    <!-- ===================== 05 — Previous / next service ===================== -->
+    <section class="chapter" id="more-services" data-chapter="05" data-label="SERVICES">
+      <div class="wrap">
+        <div class="grid chapter__head">
+          <div class="c1-8">
+            <p class="marker rv-eyebrow"><span class="marker__code">05 / 06</span> — <span class="marker__label">SERVICES</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h2 class="chapter__h display-2 rv-lines">More services.</h2>
+          </div>
+        </div>
+        <nav class="svcnav rv-group" aria-label="Previous and next service">
+          <a class="svcnav__link svcnav__link--prev rv-fade" href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN">
+            <span class="svcnav__dir"><span class="svcnav__arrow" aria-hidden="true">←</span> Previous · Service 01</span>
+            <span class="svcnav__title">Mission Design</span>
+            <span class="svcnav__desc">End-to-end mission planning and trajectory design.</span>
+          </a>
+          <a class="svcnav__link svcnav__link--next rv-fade" href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT">
+            <span class="svcnav__dir">Next · Service 03 <span class="svcnav__arrow" aria-hidden="true">→</span></span>
+            <span class="svcnav__title">Math Models</span>
+            <span class="svcnav__desc">Precise mathematical model development for simulations.</span>
+          </a>
+        </nav>
+      </div>
+    </section>
 
-        // Loader
-        window.addEventListener('load', function () {
-            const loader = document.getElementById('overfull');
-            loader.style.opacity = '0';
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 500);
-        });
+    <!-- ===================== 06 — CTABand ===================== -->
+    <section class="cta is-solid" id="enquire" data-chapter="06" data-label="ENQUIRE">
+      <div class="wrap">
+        <p class="marker rv-eyebrow"><span class="marker__code">06 / 06</span> — <span class="marker__label">ENQUIRE</span></p>
+        <h2 class="cta__h rv-lines">Build the brain of your vehicle.</h2>
+        <p class="cta__line rv-fade">Tell us what you are flying, which sensors and actuators it carries, and what it has to survive.</p>
+        <div class="cta__actions rv-fade">
+          <a class="pill pill--primary" href="mailto:connect@thespacelabs.com?subject=System%20development%20enquiry">Start a system development enquiry</a>
+          <a class="pill pill--secondary" href="contact.html" data-code="CONTACT — GROUND STATION">Contact page →</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-        // Year
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-    </script>
+  <!-- ===================== Footer — LaunchPad (identical on every page) ===================== -->
+  <footer class="pad is-solid">
+    <div class="wrap">
+      <div class="pad__grid">
+        <div class="pad__col pad__col--brand">
+          <a class="pad__brand" href="index.html" data-code="00 — FIRST LIGHT" aria-label="SpaceLabs — home"><img src="assets/img/mark.svg" alt="" width="22" height="24"><span class="cmd__wordmark">SpaceLabs</span></a>
+          <p class="pad__line">Aerospace and defence simulation, trajectory optimisation and flight software — Thiruvananthapuram, India</p>
+          <time class="clock" datetime="">THIRUVANANTHAPURAM · --:--:-- IST</time>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Products</h2>
+          <ul class="pad__list">
+            <li><a href="astra.html" data-code="PRODUCT 01 — ASTRA">ASTRA</a></li>
+            <li><a href="saras6.html" data-code="PRODUCT 02 — SARAS">SARAS</a></li>
+            <li><a href="assets/spacelabs-services-brochure.pdf" target="_blank" rel="noopener">Brochure <span class="mono">PDF · 27 MB</span></a></li>
+          </ul>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Services</h2>
+          <ul class="pad__list">
+            <li><a href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN">Mission Design</a></li>
+            <li><a href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT">System Development</a></li>
+            <li><a href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT">Math Models</a></li>
+            <li><a href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE">Flight Software</a></li>
+            <li><a href="simulation.html" data-code="SERVICE 05 — SIMULATION">Simulation</a></li>
+          </ul>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Company</h2>
+          <ul class="pad__list">
+            <li><a href="overview.html" data-code="COMPANY — 01 / 06">Overview</a></li>
+            <li><a href="overview.html#leadership" data-code="COMPANY — 03 / 06">Leadership</a></li>
+            <li><a href="overview.html#mentors" data-code="COMPANY — 05 / 06">Mentors</a></li>
+            <li><a href="overview.html#team" data-code="COMPANY — 06 / 06">Team</a></li>
+            <li><a href="index.html#news" data-code="06 / 07 — DISPATCHES">News</a></li>
+            <li><a href="contact.html" data-code="CONTACT — GROUND STATION">Contact</a></li>
+          </ul>
+          <h2 class="pad__h" style="margin-top:var(--s6)">Contact</h2>
+          <ul class="pad__list pad__list--contact" style="margin-top:0">
+            <li><a href="mailto:connect@thespacelabs.com">connect@thespacelabs.com</a></li>
+            <li><a href="tel:+918590705557">+91-8590705557</a></li>
+            <li><a href="tel:+919446594738">+91-9446594738</a></li>
+            <li><a href="https://www.linkedin.com/company/thespacelabs/" target="_blank" rel="noopener">LinkedIn <span class="ext" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://thespacelabs.com/" target="_blank" rel="noopener">thespacelabs.com <span class="ext" aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pad__legal">
+        <p>© <span data-year>2026</span> SpaceLabs Analytics and Dynamics Pvt Ltd. All rights reserved.</p>
+        <div class="pad__tools">
+          <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="true">Motion on</button>
+          <a class="pad__social" href="https://www.linkedin.com/company/thespacelabs/" target="_blank" rel="noopener" aria-label="SpaceLabs on LinkedIn"><img src="icon/linkedin.png" alt="" width="20" height="20" loading="lazy" decoding="async"></a>
+        </div>
+      </div>
+    </div>
+    <div class="pad__platform" aria-hidden="true"></div>
+  </footer>
 
+  <!-- ===================== LaunchButton + crew-manifest dialog (identical on every page) ===================== -->
+  <button class="launch" type="button" aria-label="Back to top" title="Back to top">
+    <span class="launch__glow" aria-hidden="true"></span>
+    <svg class="launch__ring" viewBox="0 0 62 62" aria-hidden="true"><circle cx="31" cy="31" r="26"/></svg>
+    <span class="launch__plume" aria-hidden="true"><i></i><i></i><i></i></span>
+    <svg class="launch__rocket" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2.5c2.6 2.2 4 5.2 4 8.7V15H8v-3.8c0-3.5 1.4-6.5 4-8.7Z"/>
+      <path d="M8 12.5 5 15.5V19l3-1.5M16 12.5l3 3V19l-3-1.5"/>
+      <circle cx="12" cy="9.5" r="1.4"/>
+      <path class="nozzle" d="M10 17.5h4M12 17.5v3"/>
+    </svg>
+    <span class="launch__label" aria-hidden="true"></span>
+  </button>
+
+  <dialog class="dialog dialog--manifest" id="manifest" aria-labelledby="manifest-h">
+    <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+    <p class="dialog__eyebrow">Mission control — crew manifest</p>
+    <h2 class="dialog__h" id="manifest-h">Secret Found! 🚀</h2>
+    <div class="dialog__media"><img src="img/astronaut.png" alt="" width="120" height="120" loading="lazy" decoding="async"></div>
+    <div class="dialog__body"><p>Want to know who created this and me?</p></div>
+    <div class="dialog__actions"><a class="pill pill--primary" href="https://www.linkedin.com/in/ananthudev/" target="_blank" rel="noopener">Connect on LinkedIn →</a></div>
+  </dialog>
+
+  <!-- ===================== Scripts (order matters; all deferred, then the module) ===================== -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+  <script type="module" src="assets/js/core.js?v=20261102"></script>
+
+  <!-- PAGE: 3D. One shared WebGL stage (assets/js/gl.js) + this page's scene. The boot waits for core.js
+       (window.SL.ready), runs on requestIdleCallback, and fails soft: tier NONE (reduced motion, Motion off,
+       no WebGL, context lost) or any import error leaves every .region__fallback poster / SVG visible.
+       Module imports carry NO ?v= query (scenes import ../gl.js; a query would load gl.js twice).
+       Contract recap: #stage is fixed at z 0 and fades in via .is-ready; each painted [data-region] gets
+       data-gl="on" (hides its fallback); body[data-tier] = HIGH|MID|LOW|NONE; scroll progress for
+       [data-scrub] sections comes from window.SL.onScrub (gl.js's bindScrub reads it automatically);
+       core.js keeps data-px/data-py on hovered .panel elements; "sl:launch" {kind:'egg'} fires at T-0. -->
+  <script type="module">
+    try {
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
+      idle(async () => {
+        if (!document.querySelector('[data-region]')) return;
+        try {
+          if (window.SL && window.SL.ready) { try { await window.SL.ready; } catch (err) { /* core failed: still try the scene */ } }
+          const { createStage } = await import('./assets/js/gl.js');
+          const stage = createStage();
+          addEventListener('pagehide', (e) => { if (!e.persisted) { try { stage.dispose(); } catch (err) { /* noop */ } } });
+          if (stage.isNone()) return;
+          // PAGE: scene — EXPLODED NGC BLOCK emblem (assets/js/scenes/subsystem-development.js)
+          const scene = await import('./assets/js/scenes/subsystem-development.js'); scene.mount(stage);
+        } catch (err) { console.warn('[scene] unavailable', err); }
+      }, { timeout: 300 });
+    } catch (err) { console.warn('[scene] unavailable', err); }
+  </script>
 </body>
-
 </html>

@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+<!--
+  (The charset meta stays within the first 1024 bytes: keep this comment AFTER it.)
+
+  SpaceLabs — REFERENCE TEMPLATE (_template.html)
+  =============================================================================
+  This file is the canonical skeleton for every page. Copy it, keep the page's
+  existing filename, and change ONLY the parts marked with a "PAGE:" comment.
+  (Never write a literal comment terminator inside a comment: it ends the comment early.)
+  Everything else (head order, CommandBar, MobileOverlay, footer, LaunchButton,
+  manifest dialog, script order) must stay byte-identical across the ten pages
+  so check.mjs reports one nav variant and one footer variant.
+
+  PER-PAGE CHECKLIST
+    1. <title> and <meta name="description">                  (PAGE: head)
+    2. body[data-page] = filename without .html, body[data-code] = chapter code
+    3. Shutter code label text                                 (PAGE: shutter)
+    4. Active nav link: core.js sets aria-current from body[data-page];
+       you MAY hard-code aria-current="page" on the matching link too.
+    5. TitleBlock: crumb, marker, H1 (display-1 on product pages, display-2
+       elsewhere), optional Michroma sub-line, standfirst, SpecStrip (only
+       when >= 3 verified cells), the data-region kind of the object cell.
+    6. Chapters: <section class="chapter" id data-chapter="NN" data-label>.
+    7. CTABand copy + mailto subject.
+    8. Scene: the module at the bottom boots gl.js (one shared WebGL stage) and
+       mounts this page's scene: keep mountAmbient for an ambient title cell, or
+       import assets/js/scenes/PAGE.js (exports mount(stage)). Change only the
+       two "PAGE:" lines inside it. Pages with no [data-region] may delete it.
+
+  HARD RULES: relative paths only (never a leading "/"), pinned CDN versions,
+  es-module-shims BEFORE the importmap, no facts invented, British "defence",
+  brand "SpaceLabs", two products only (ASTRA, SARAS), every image lazy below
+  the fold with meaningful alt, tap targets >= 44 px.
+-->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- PAGE: head — title + description are per page -->
+  <title>SpaceLabs — Reference template</title>
+  <meta name="description" content="Reference page skeleton for the SpaceLabs site: CommandBar, TitleBlock, SpecStrip, Ledger, Dossier, CTA band and LaunchPad footer.">
+  <meta name="theme-color" content="#050507">
+  <meta name="color-scheme" content="dark">
+
+  <!-- favicons (favicon2/, relative) -->
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon2/favicon-96x96.png">
+  <link rel="icon" href="favicon2/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon2/apple-touch-icon.png">
+  <link rel="manifest" href="favicon2/site.webmanifest">
+
+  <!-- fonts: the ONE stylesheet named in the spec -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Michroma&display=swap">
+
+  <!-- design system -->
+  <link rel="preload" href="assets/css/site.css?v=20261102" as="style">
+  <link rel="stylesheet" href="assets/css/site.css?v=20261102">
+  <!-- PAGE: optional page-scoped styles go in assets/css/pages/PAGE.css and are linked here
+       with a plain stylesheet link (rel=stylesheet, href=assets/css/pages/PAGE.css?v=20261102). -->
+
+  <!-- es-module-shims MUST precede the importmap (Safari < 16.4) -->
+  <script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.8.3/dist/es-module-shims.js" crossorigin="anonymous"></script>
+  <script type="importmap">
+  {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+  </script>
+  <!-- three.js core is preloaded on every page with a [data-region] (crossorigin matches module CORS mode); pages with no scene remove it -->
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" crossorigin="anonymous">
+
+  <!-- js flag + 4 s hard timeout: the shutter can never trap the page -->
+  <script>document.documentElement.classList.replace('no-js','js');setTimeout(function(){var s=document.querySelector('.shutter');if(s&&!s.classList.contains('is-done')){s.classList.add('is-done');}},4000);</script>
+  <noscript><style>.shutter{display:none}</style></noscript>
+</head>
+
+<!-- PAGE: data-page = filename without .html · data-code = this page's chapter code (shutter label) -->
+<body data-page="_template" data-code="TEMPLATE — 00">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Shutter: covers on load, lifts after fonts (<= 400 ms), hard timeouts 800 ms (core.js) and 4 s (inline) -->
+  <!-- PAGE: shutter — code text -->
+  <div class="shutter is-solid" aria-hidden="true"><span class="shutter__bar"></span><span class="shutter__code">TEMPLATE — 00</span></div>
+
+  <!-- The single shared WebGL canvas (gl.js owns it; CSS keeps it fixed at z 0, opacity 0 until .is-ready) -->
+  <canvas id="stage" aria-hidden="true"></canvas>
+
+  <!-- ===================== CommandBar (identical on every page) ===================== -->
+  <header class="cmd">
+    <a class="cmd__brand" href="index.html" data-code="00 — FIRST LIGHT" aria-label="SpaceLabs — home">
+      <img class="cmd__mark" src="assets/img/mark.svg" alt="" width="22" height="24">
+      <span class="cmd__wordmark">SpaceLabs</span>
+    </a>
+    <nav class="cmd__links" aria-label="Primary">
+      <ul>
+        <li class="cmd__item">
+          <button class="cmd__trigger" type="button" aria-expanded="false" aria-controls="dd-products">Products
+            <svg class="cmd__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3.5 5 7.5 9 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </button>
+          <div class="cmd__dd" id="dd-products">
+            <ul>
+              <li><a class="dd__row" href="astra.html" data-code="PRODUCT 01 — ASTRA">
+                <svg class="dd__glyph" viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+                  <path d="M8 40C12 31 18 26 40 6" opacity=".55"/><path d="M8 40C14 30 22 22 40 10" opacity=".55"/><path d="M8 40C18 27 28 17 40 18" opacity=".55"/><path d="M8 40C20 30 30 22 40 24" opacity=".55"/>
+                  <path class="glyph-accent" d="M8 40C15 29 24 20 40 13" stroke-width="1.5"/><path d="M6 40h36" opacity=".4"/><circle cx="8" cy="40" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+                <span><span class="dd__name">ASTRA</span><span class="dd__desc">AEROSPACE TRAJECTORY OPTIMIZER · 3-DOF</span></span>
+              </a></li>
+              <li><a class="dd__row" href="saras6.html" data-code="PRODUCT 02 — SARAS">
+                <svg class="dd__glyph" viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+                  <circle cx="24" cy="24" r="18" opacity=".7"/><ellipse cx="24" cy="24" rx="18" ry="7" opacity=".7"/>
+                  <ellipse class="glyph-accent" cx="24" cy="24" rx="7" ry="18" stroke-width="1.5"/><rect x="21" y="21" width="6" height="6" fill="currentColor" stroke="none"/>
+                </svg>
+                <span><span class="dd__name">SARAS</span><span class="dd__desc">SIMULATOR FOR AEROSPACE APPLICATIONS · 6-DOF</span></span>
+              </a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="cmd__item">
+          <button class="cmd__trigger" type="button" aria-expanded="false" aria-controls="dd-services">Services
+            <svg class="cmd__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3.5 5 7.5 9 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </button>
+          <div class="cmd__dd" id="dd-services">
+            <ul>
+              <li><a class="dd__row" href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN"><span class="dd__idx">01</span><span><span class="dd__name">Mission Design</span><span class="dd__desc">END-TO-END MISSION PLANNING AND TRAJECTORY DESIGN</span></span></a></li>
+              <li><a class="dd__row" href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT"><span class="dd__idx">02</span><span><span class="dd__name">System Development</span><span class="dd__desc">NGC SYSTEM ARCHITECTURE</span></span></a></li>
+              <li><a class="dd__row" href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT"><span class="dd__idx">03</span><span><span class="dd__name">Math Models</span><span class="dd__desc">MATHEMATICAL MODEL DEVELOPMENT</span></span></a></li>
+              <li><a class="dd__row" href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE"><span class="dd__idx">04</span><span><span class="dd__name">Flight Software</span><span class="dd__desc">ONBOARD FLIGHT SOFTWARE DEVELOPMENT</span></span></a></li>
+              <li><a class="dd__row" href="simulation.html" data-code="SERVICE 05 — SIMULATION"><span class="dd__idx">05</span><span><span class="dd__name">Simulation</span><span class="dd__desc">REAL-TIME 6-DOF · HARDWARE-IN-LOOP</span></span></a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a class="cmd__link" href="overview.html" data-code="COMPANY — 01 / 06">Company</a></li>
+        <li><a class="cmd__link" href="index.html#news" data-code="06 / 07 — DISPATCHES">News</a></li>
+        <li><a class="cmd__link" href="contact.html" data-code="CONTACT — GROUND STATION">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="pill pill--primary cmd__cta" href="contact.html" data-code="CONTACT — GROUND STATION">Start a mission</a>
+    <button class="cmd__burger" type="button" aria-expanded="false" aria-controls="overlay" aria-label="Menu"></button>
+  </header>
+
+  <!-- ===================== MobileOverlay — film index (identical on every page) ===================== -->
+  <div id="overlay" class="overlay is-solid" role="dialog" aria-modal="true" aria-label="Site index" aria-hidden="true">
+    <ol class="overlay__rows">
+      <li><a class="overlay__row" href="index.html" data-code="00 — FIRST LIGHT"><span class="overlay__idx">01</span><span class="overlay__title">Home</span><span class="overlay__dek">FIRST LIGHT · OVERVIEW · PRODUCTS · SERVICES</span></a></li>
+      <li><a class="overlay__row" href="astra.html" data-code="PRODUCT 01 — ASTRA"><span class="overlay__idx">02</span><span class="overlay__title">ASTRA</span><span class="overlay__dek">AEROSPACE TRAJECTORY OPTIMIZER · 3-DOF</span></a></li>
+      <li><a class="overlay__row" href="saras6.html" data-code="PRODUCT 02 — SARAS"><span class="overlay__idx">03</span><span class="overlay__title">SARAS</span><span class="overlay__dek">SIMULATOR FOR AEROSPACE APPLICATIONS · 6-DOF</span></a></li>
+      <li><a class="overlay__row" href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN"><span class="overlay__idx">04</span><span class="overlay__title">Mission Design</span><span class="overlay__dek">SERVICE 01</span></a></li>
+      <li><a class="overlay__row" href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT"><span class="overlay__idx">05</span><span class="overlay__title">System Development</span><span class="overlay__dek">SERVICE 02 · NGC</span></a></li>
+      <li><a class="overlay__row" href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT"><span class="overlay__idx">06</span><span class="overlay__title">Math Models</span><span class="overlay__dek">SERVICE 03</span></a></li>
+      <li><a class="overlay__row" href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE"><span class="overlay__idx">07</span><span class="overlay__title">Flight Software</span><span class="overlay__dek">SERVICE 04</span></a></li>
+      <li><a class="overlay__row" href="simulation.html" data-code="SERVICE 05 — SIMULATION"><span class="overlay__idx">08</span><span class="overlay__title">Simulation</span><span class="overlay__dek">SERVICE 05 · MILS · OILS · HILS</span></a></li>
+      <li><a class="overlay__row" href="overview.html" data-code="COMPANY — 01 / 06"><span class="overlay__idx">09</span><span class="overlay__title">Company</span><span class="overlay__dek">OVERVIEW · LEADERSHIP · MENTORS · TEAM</span></a></li>
+    </ol>
+    <div class="overlay__foot">
+      <a class="pill pill--primary" href="contact.html" data-code="CONTACT — GROUND STATION">Start a mission</a>
+      <a href="mailto:connect@thespacelabs.com">connect@thespacelabs.com</a>
+      <a href="tel:+918590705557">+91-8590705557</a>
+      <a href="tel:+919446594738">+91-9446594738</a>
+      <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="true">Motion on</button>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- ===================== TitleBlock ===================== -->
+    <!-- PAGE: crumb, marker, H1 (add .display-1 for ASTRA/SARAS, .display-2 otherwise), sub-line, lead,
+         SpecStrip (only with >= 3 verified cells; source line per value in a comment), object region kind.
+         Pages without an object cell: add .title--no-object to <header class="title"> and drop .title__object. -->
+    <header class="title" id="top">
+      <div class="wrap">
+        <div class="title__grid">
+          <div class="title__text">
+            <nav class="crumb" aria-label="Breadcrumb">
+              <a href="index.html" data-code="00 — FIRST LIGHT">HOME</a><span class="crumb__sep" aria-hidden="true">/</span>
+              <a href="overview.html" data-code="COMPANY — 01 / 06">COMPANY</a><span class="crumb__sep" aria-hidden="true">/</span>
+              <span aria-current="page">TEMPLATE</span>
+            </nav>
+            <p class="marker rv-eyebrow"><span class="marker__code">00 / 03</span> — <span class="marker__label">TEMPLATE</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h1 class="title__h1 display-2 rv-lines" style="--d:200ms">Built by people who have flown missions.</h1>
+            <p class="title__sub rv-eyebrow" style="--d:500ms">Optimize, simulate &amp; succeed</p>
+            <p class="title__lead lead rv-fade" style="--d:650ms">SpaceLabs provides cutting edge technology to clients, helping them in the areas of configuration design, trajectory optimization, simulations and subsystem development for aerospace and defence applications.</p>
+          </div>
+
+          <!-- Transparent region: the renderer paints here via scissor. Keep it EMPTY except
+               .region__fallback (shown until gl.js sets data-gl="on", and always on tier NONE),
+               the visually hidden description and optional .region__caption / .region__tag labels.
+               PAGE: data-region kind — "emblem" (title blocks), "hero", "panel-astra", "panel-saras",
+               "heritage", "stage" (scrub stages), "ambient". -->
+          <div class="title__object" data-region="emblem">
+            <div class="region__fallback">
+              <svg viewBox="0 0 400 400" aria-hidden="true" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1">
+                <circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="110" stroke-dasharray="4 6"/>
+                <ellipse cx="200" cy="200" rx="150" ry="52"/><path d="M60 300C120 230 190 200 340 110" stroke="#D412A1" stroke-width="1.5"/>
+                <circle cx="340" cy="110" r="3" fill="#FF3FC6" stroke="none"/>
+              </svg>
+            </div>
+            <p class="visually-hidden">Decorative three-dimensional emblem: a wireframe sphere with a single magenta trajectory.</p>
+            <p class="region__caption" aria-hidden="true">FIG. 00 — EMBLEM REGION</p>
+          </div>
+
+          <!-- SpecStrip: sources — HQ: contact.html address; LEADERSHIP: overview.html Sheela DS bio;
+               MENTORS: overview.html Our Mentors (four); FOCUS: overview.html second paragraph. -->
+          <dl class="strip title__strip rv-group">
+            <div class="strip__cell rv-fade"><dt>Headquarters</dt><dd class="strip__text">Thiruvananthapuram<small>Kerala, India</small></dd></div>
+            <div class="strip__cell rv-fade"><dt>Leadership</dt><dd><span class="rv-count" data-value="35+">35+</span><span class="unit">YRS</span><small>ISRO R&amp;D experience</small></dd></div>
+            <div class="strip__cell rv-fade"><dt>Mentors</dt><dd><span class="rv-count" data-value="4">4</span><small>Former ISRO senior scientists</small></dd></div>
+            <div class="strip__cell rv-fade"><dt>Focus</dt><dd class="strip__text">Simulation and trajectory optimization</dd></div>
+          </dl>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================== Chapter 01 — Ledger ===================== -->
+    <!-- PAGE: every chapter = <section class="chapter" id data-chapter="NN" data-label="LABEL"> -->
+    <section class="chapter" id="services" data-chapter="01" data-label="SERVICES">
+      <div class="wrap">
+        <div class="grid chapter__head">
+          <div class="c1-8">
+            <p class="marker rv-eyebrow"><span class="marker__code">01 / 03</span> — <span class="marker__label">SERVICES</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h2 class="chapter__h display-2 rv-lines">From mission design to flight software.</h2>
+            <p class="lead rv-fade">Comprehensive solutions for aerospace and defence missions.</p>
+          </div>
+        </div>
+        <ol class="ledger rv-group">
+          <li class="ledger__row rv-fade"><a class="ledger__link" href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN"><span class="ledger__idx">01</span><span class="ledger__title">Mission Design</span><span class="ledger__desc">End-to-end mission planning and trajectory design.</span><span class="ledger__meta">Service</span><span class="ledger__arrow" aria-hidden="true">→</span></a></li>
+          <li class="ledger__row rv-fade"><a class="ledger__link" href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT"><span class="ledger__idx">02</span><span class="ledger__title">System Development</span><span class="ledger__desc">NGC (Navigation, Guidance &amp; Control) system architecture.</span><span class="ledger__meta">Service</span><span class="ledger__arrow" aria-hidden="true">→</span></a></li>
+          <li class="ledger__row rv-fade"><a class="ledger__link" href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT"><span class="ledger__idx">03</span><span class="ledger__title">Math Models</span><span class="ledger__desc">Precise mathematical model development for simulations.</span><span class="ledger__meta">Service</span><span class="ledger__arrow" aria-hidden="true">→</span></a></li>
+          <li class="ledger__row rv-fade"><a class="ledger__link" href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE"><span class="ledger__idx">04</span><span class="ledger__title">Flight Software</span><span class="ledger__desc">Reliable onboard flight software development.</span><span class="ledger__meta">Service</span><span class="ledger__arrow" aria-hidden="true">→</span></a></li>
+          <li class="ledger__row rv-fade"><a class="ledger__link" href="simulation.html" data-code="SERVICE 05 — SIMULATION"><span class="ledger__idx">05</span><span class="ledger__title">Simulation</span><span class="ledger__desc">Real-time 6-DOF simulation and hardware-in-loop testing.</span><span class="ledger__meta">Service</span><span class="ledger__arrow" aria-hidden="true">→</span></a></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================== Chapter 02 — Dossier ===================== -->
+    <section class="chapter" id="leadership" data-chapter="02" data-label="LEADERSHIP">
+      <div class="wrap">
+        <div class="grid chapter__head">
+          <div class="c1-8">
+            <p class="marker rv-eyebrow"><span class="marker__code">02 / 03</span> — <span class="marker__label">LEADERSHIP</span></p>
+            <span class="marker__rule rv-rule" aria-hidden="true"></span>
+            <h2 class="chapter__h display-2 rv-lines">Thirty-five years of ISRO R&amp;D, now building for industry.</h2>
+          </div>
+        </div>
+        <article class="dossier dossier--lead rv-group">
+          <figure class="dossier__portrait rv-fade">
+            <img src="img/web/sheela-ds.jpg" alt="Sheela DS, Co-Founder and CEO of SpaceLabs" width="600" height="600" loading="lazy" decoding="async">
+          </figure>
+          <div class="dossier__body rv-fade">
+            <p class="dossier__role">Co-Founder &amp; CEO</p>
+            <h3 class="dossier__name">Sheela DS</h3>
+            <p class="dossier__bio">Ms. Sheela is a seasoned professional with over 35+ years of R&amp;D experience at the Indian Space Research Organisation (ISRO). She is a distinguished expert in space vehicle guidance algorithm development, design, and mission planning and analysis. Throughout her career, she has played a pivotal role in shaping mission-critical technologies. At SpaceLabs, Ms. Sheela provides strategic leadership, actively guiding the organization's vision, mission, and overall direction.</p>
+            <p class="dossier__meta">FORMERLY ISRO · 35+ YEARS R&amp;D</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== CTABand ===================== -->
+    <!-- PAGE: copy + mailto subject, e.g. mailto:connect@thespacelabs.com?subject=ASTRA%20demonstration%20request -->
+    <section class="cta is-solid" id="next" data-chapter="03" data-label="NEXT">
+      <div class="wrap">
+        <p class="marker rv-eyebrow"><span class="marker__code">03 / 03</span> — <span class="marker__label">NEXT</span></p>
+        <h2 class="cta__h rv-lines">Start a mission.</h2>
+        <p class="cta__line rv-fade">Tell us what you are flying.</p>
+        <div class="cta__actions rv-fade">
+          <a class="pill pill--primary" href="contact.html" data-code="CONTACT — GROUND STATION">Talk to us</a>
+          <a class="pill pill--secondary" href="index.html#products" data-code="02 / 07 — PRODUCTS">Explore products</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== Footer — LaunchPad (identical on every page) ===================== -->
+  <footer class="pad is-solid">
+    <div class="wrap">
+      <div class="pad__grid">
+        <div class="pad__col pad__col--brand">
+          <a class="pad__brand" href="index.html" data-code="00 — FIRST LIGHT" aria-label="SpaceLabs — home"><img src="assets/img/mark.svg" alt="" width="22" height="24"><span class="cmd__wordmark">SpaceLabs</span></a>
+          <p class="pad__line">Aerospace and defence simulation, trajectory optimisation and flight software — Thiruvananthapuram, India</p>
+          <time class="clock" datetime="">THIRUVANANTHAPURAM · --:--:-- IST</time>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Products</h2>
+          <ul class="pad__list">
+            <li><a href="astra.html" data-code="PRODUCT 01 — ASTRA">ASTRA</a></li>
+            <li><a href="saras6.html" data-code="PRODUCT 02 — SARAS">SARAS</a></li>
+            <li><a href="assets/spacelabs-services-brochure.pdf" target="_blank" rel="noopener">Brochure <span class="mono">PDF · 27 MB</span></a></li>
+          </ul>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Services</h2>
+          <ul class="pad__list">
+            <li><a href="mission-design.html" data-code="SERVICE 01 — MISSION DESIGN">Mission Design</a></li>
+            <li><a href="subsystem-development.html" data-code="SERVICE 02 — SYSTEM DEVELOPMENT">System Development</a></li>
+            <li><a href="algorithm-development.html" data-code="SERVICE 03 — ALGORITHM DEVELOPMENT">Math Models</a></li>
+            <li><a href="flight-software-development.html" data-code="SERVICE 04 — FLIGHT SOFTWARE">Flight Software</a></li>
+            <li><a href="simulation.html" data-code="SERVICE 05 — SIMULATION">Simulation</a></li>
+          </ul>
+        </div>
+        <div class="pad__col">
+          <h2 class="pad__h">Company</h2>
+          <ul class="pad__list">
+            <li><a href="overview.html" data-code="COMPANY — 01 / 06">Overview</a></li>
+            <li><a href="overview.html#leadership" data-code="COMPANY — 03 / 06">Leadership</a></li>
+            <li><a href="overview.html#mentors" data-code="COMPANY — 05 / 06">Mentors</a></li>
+            <li><a href="overview.html#team" data-code="COMPANY — 06 / 06">Team</a></li>
+            <li><a href="index.html#news" data-code="06 / 07 — DISPATCHES">News</a></li>
+            <li><a href="contact.html" data-code="CONTACT — GROUND STATION">Contact</a></li>
+          </ul>
+          <h2 class="pad__h" style="margin-top:var(--s6)">Contact</h2>
+          <ul class="pad__list pad__list--contact" style="margin-top:0">
+            <li><a href="mailto:connect@thespacelabs.com">connect@thespacelabs.com</a></li>
+            <li><a href="tel:+918590705557">+91-8590705557</a></li>
+            <li><a href="tel:+919446594738">+91-9446594738</a></li>
+            <li><a href="https://www.linkedin.com/company/thespacelabs/" target="_blank" rel="noopener">LinkedIn <span class="ext" aria-hidden="true">↗</span></a></li>
+            <li><a href="https://thespacelabs.com/" target="_blank" rel="noopener">thespacelabs.com <span class="ext" aria-hidden="true">↗</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pad__legal">
+        <p>© <span data-year>2026</span> SpaceLabs Analytics and Dynamics Pvt Ltd. All rights reserved.</p>
+        <div class="pad__tools">
+          <button class="motion-toggle" type="button" data-motion-toggle aria-pressed="true">Motion on</button>
+          <a class="pad__social" href="https://www.linkedin.com/company/thespacelabs/" target="_blank" rel="noopener" aria-label="SpaceLabs on LinkedIn"><img src="icon/linkedin.png" alt="" width="20" height="20" loading="lazy" decoding="async"></a>
+        </div>
+      </div>
+    </div>
+    <div class="pad__platform" aria-hidden="true"></div>
+  </footer>
+
+  <!-- ===================== LaunchButton + crew-manifest dialog (identical on every page) ===================== -->
+  <button class="launch" type="button" aria-label="Back to top" title="Back to top">
+    <span class="launch__glow" aria-hidden="true"></span>
+    <svg class="launch__ring" viewBox="0 0 62 62" aria-hidden="true"><circle cx="31" cy="31" r="26"/></svg>
+    <span class="launch__plume" aria-hidden="true"><i></i><i></i><i></i></span>
+    <svg class="launch__rocket" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2.5c2.6 2.2 4 5.2 4 8.7V15H8v-3.8c0-3.5 1.4-6.5 4-8.7Z"/>
+      <path d="M8 12.5 5 15.5V19l3-1.5M16 12.5l3 3V19l-3-1.5"/>
+      <circle cx="12" cy="9.5" r="1.4"/>
+      <path class="nozzle" d="M10 17.5h4M12 17.5v3"/>
+    </svg>
+    <span class="launch__label" aria-hidden="true"></span>
+  </button>
+
+  <dialog class="dialog dialog--manifest" id="manifest" aria-labelledby="manifest-h">
+    <button class="dialog__close" type="button" data-dialog-close aria-label="Close"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+    <p class="dialog__eyebrow">Mission control — crew manifest</p>
+    <h2 class="dialog__h" id="manifest-h">Secret Found! 🚀</h2>
+    <div class="dialog__media"><img src="img/astronaut.png" alt="" width="120" height="120" loading="lazy" decoding="async"></div>
+    <div class="dialog__body"><p>Want to know who created this and me?</p></div>
+    <div class="dialog__actions"><a class="pill pill--primary" href="https://www.linkedin.com/in/ananthudev/" target="_blank" rel="noopener">Connect on LinkedIn →</a></div>
+  </dialog>
+
+  <!-- ===================== Scripts (order matters; all deferred, then the module) ===================== -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+  <script type="module" src="assets/js/core.js?v=20261102"></script>
+
+  <!-- PAGE: 3D. One shared WebGL stage (assets/js/gl.js) + this page's scene. The boot waits for core.js
+       (window.SL.ready), runs on requestIdleCallback, and fails soft: tier NONE (reduced motion, Motion off,
+       no WebGL, context lost) or any import error leaves every .region__fallback poster / SVG visible.
+       Module imports carry NO ?v= query (scenes import ../gl.js; a query would load gl.js twice).
+       Contract recap: #stage is fixed at z 0 and fades in via .is-ready; each painted [data-region] gets
+       data-gl="on" (hides its fallback); body[data-tier] = HIGH|MID|LOW|NONE; scroll progress for
+       [data-scrub] sections comes from window.SL.onScrub (gl.js's bindScrub reads it automatically);
+       core.js keeps data-px/data-py on hovered .panel elements; "sl:launch" {kind:'egg'} fires at T-0. -->
+  <script type="module">
+    try {
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
+      idle(async () => {
+        if (!document.querySelector('[data-region]')) return;
+        try {
+          if (window.SL && window.SL.ready) { try { await window.SL.ready; } catch (err) { /* core failed: still try the scene */ } }
+          const { createStage } = await import('./assets/js/gl.js');
+          const stage = createStage();
+          addEventListener('pagehide', (e) => { if (!e.persisted) { try { stage.dispose(); } catch (err) { /* noop */ } } });
+          if (stage.isNone()) return;
+          // PAGE: scene — ambient title cell (overview + this template). Pages with their own emblem replace these two lines with:
+          //   const scene = await import('./assets/js/scenes/PAGE.js'); scene.mount(stage);
+          const { mountAmbient } = await import('./assets/js/scenes/index.js');
+          mountAmbient(stage, document.querySelector('[data-region="emblem"]'), { exposure: 0.55 });
+        } catch (err) { console.warn('[scene] unavailable', err); }
+      }, { timeout: 300 });
+    } catch (err) { console.warn('[scene] unavailable', err); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+/* SpaceLabs — page styles: saras6.html (SARAS, PRODUCT 02). Loaded after site.css; nothing here overrides the shared system. */
+
+/* ---- Six Axes emblem cell: live attitude readout + ring degree tags -------- */
+.emblem__readout {
+  /* top-left of the region, clear of the nav bar above and of the FIG. 01 caption pinned bottom-left (site.css) */
+  position: absolute; left: var(--s5); right: var(--s5); top: var(--s5); bottom: auto; margin: 0; z-index: 2;
+  justify-content: flex-start; text-align: left; pointer-events: none;
+}
+/* desktop: the region starts under the fixed nav (negative top margin in site.css) and the chapter-nav column
+   occupies the right 64 px of the viewport */
+@media (min-width: 1024px) { .emblem__readout { top: calc(var(--nav-h) + var(--s5)); right: 64px; } }
+.emblem__readout .chip { flex: none; }
+.title__object .region__tag, .scrub__sticky > .region__tag { font-variant-numeric: tabular-nums; }
+.region__tag.is-hot { color: var(--accent); }
+
+/* ---- Scrub stage: chapter marker pinned top-left, bigger SVG still ---------- */
+.scrub__head { position: absolute; left: var(--gutter); top: calc(var(--nav-h) + var(--s6)); z-index: 2; margin: 0; }
+.scrub__sticky > .region__fallback > svg { width: min(70%, 520px); max-height: 72%; }
+html.is-reduced .scrub__head { position: static; padding: var(--s7) var(--gutter) 0; }
+@media (max-width: 1023.98px) { .scrub__readout--mobile { display: block; left: var(--gutter); right: auto; bottom: auto; top: calc(var(--nav-h) + var(--s6) + 2.4em); text-align: left; } }
+
+/* ---- Configuration & Analysis: ledger + real screenshot ---------------------- */
+.config__fig { align-self: start; }
+@media (min-width: 768px) { .config__fig { position: sticky; top: calc(var(--nav-h) + var(--s6)); } }
+
+/* ---- Simulation modes: the Loops grid (MILS · SILS · OILS · HILS) ----------- */
+.loops {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+  background: var(--line); border: 1px solid var(--line);
+}
+@media (min-width: 640px) { .loops { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .loops { grid-template-columns: repeat(4, 1fr); } }
+.loop {
+  background: var(--panel); padding: var(--s6); min-width: 0;
+  display: flex; flex-direction: column; gap: var(--s3);
+  transition: background-color var(--t-micro);
+}
+.loop:hover { background: var(--panel-raised); }
+.loop__group { font: 400 0.625rem / 1.5 var(--ff-tech); letter-spacing: 0.22em; text-transform: uppercase; color: var(--dim); margin: 0 0 var(--s2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.loop__code { font: 500 var(--fs-spec) / 1 var(--ff-mono); letter-spacing: -0.02em; color: var(--text); font-variant-numeric: tabular-nums; transition: color var(--t-micro); }
+.loop:hover .loop__code { color: var(--accent); }
+.loop__name { font: 500 var(--fs-h4) / 1.3 var(--ff-body); letter-spacing: -0.01em; color: var(--text); margin: 0; }
+.loop__sub { font: 400 var(--fs-small) / 1.5 var(--ff-body); color: var(--muted); margin: 0; }
+.loop__list { list-style: none; margin: auto 0 0; padding: var(--s4) 0 0; border-top: 1px solid var(--line); display: grid; gap: var(--s3); }
+.loop__list li { font: 400 var(--fs-small) / 1.5 var(--ff-body); color: var(--muted); padding-left: 2ch; position: relative; }
+.loop__list li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 8px; height: 1px; background: var(--accent); }
+.loop__src { font: 400 0.6875rem / 1.5 var(--ff-mono); color: var(--dim); letter-spacing: 0.06em; margin: 0; }
+.modes__chip { display: inline-flex; gap: 1ch; align-items: center; margin-bottom: var(--s4); }
+
+/* ---- Related: ASTRA panel-lite + ledger ------------------------------------- */
+.related { display: grid; gap: var(--s6); align-items: start; }
+@media (min-width: 1024px) { .related { grid-template-columns: 5fr 7fr; gap: var(--gap); } }
+.panel--lite .panel__glyph { position: absolute; right: var(--s6); top: var(--s6); width: 88px; height: 88px; color: var(--dim); z-index: 3; opacity: 0.9; transition: color var(--t-control); }
+.panel--lite:hover .panel__glyph { color: var(--muted); }
+.panel--lite .panel__glyph .glyph-accent { stroke: var(--accent); }
+.panel--lite .panel__text { min-height: 260px; }
+
+/* ---- TitleBlock SpecStrip: always visible (no observer), facts never ellipsised ---- */
+.title__strip dt { white-space: normal; overflow: visible; text-overflow: clip; }
+.title__strip small { letter-spacing: 0; }
+/* phones: the two short cells (DOF, Link) share a row; the two long ones (modes, analysis) take full rows */
+@media (max-width: 767.98px) {
+  .title__strip .strip__cell { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
+  .title__strip .strip__cell:nth-child(1) { order: 1; border-top: 0; }
+  .title__strip .strip__cell:nth-child(3) { order: 2; border-top: 0; border-left: 1px solid var(--line); padding-left: var(--s5); }
+  .title__strip .strip__cell:nth-child(2) { order: 3; grid-column: 1 / -1; }
+  .title__strip .strip__cell:nth-child(4) { order: 4; grid-column: 1 / -1; }
+}
+@media (min-width: 1024px) { .title__strip .strip__cell:nth-child(2n + 1) { padding-left: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.is-reduced) .title__strip .strip__cell { animation: saras-strip-in 0.7s var(--ease-out) both; animation-delay: calc(900ms + var(--n, 0) * 70ms); }
+  .title__strip .strip__cell:nth-child(2) { --n: 1; } .title__strip .strip__cell:nth-child(3) { --n: 2; } .title__strip .strip__cell:nth-child(4) { --n: 3; }
+}
+@keyframes saras-strip-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* ---- Long eyebrows on this page wrap instead of ellipsising (sub-line, loop group labels, scrub marker) ---- */
+.title__sub { white-space: normal; overflow: visible; text-overflow: clip; }
+.loop__group { white-space: normal; overflow: visible; text-overflow: clip; }
+.modes__chip { flex-wrap: wrap; row-gap: var(--s2); }
+.modes__chip .chip { flex: none; }
+@media (max-width: 1023.98px) {
+  .emblem__readout, .scrub__readout--mobile { font-size: 0.6875rem; gap: 0.75ch; }
+  .scrub__head { right: var(--gutter); }
+  .scrub__head .marker__label { letter-spacing: 0.12em; }
+  .scrub__readout--mobile { right: var(--gutter); }
+}
+/* very narrow phones: the scrub marker may take two lines, so the readout drops below it */
+@media (max-width: 379.98px) {
+  .scrub__head .marker__label { white-space: normal; }
+  .scrub__readout--mobile { top: calc(var(--nav-h) + var(--s6) + 4.2em); }
+}
+/* HILS tag sits just above its node instead of across the halo */
+.scrub__sticky > .region__tag[data-tag="hils"] { margin-top: -1.6em; }
+/* desktop: the SIM readout sits bottom-left under the step copy, clear of the fixed launch button (bottom-right) */
+@media (min-width: 1024px) { .scrub__sticky > .scrub__readout { left: var(--gutter); right: auto; text-align: left; justify-content: flex-start; } }

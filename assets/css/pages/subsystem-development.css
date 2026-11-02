@@ -1,0 +1,84 @@
+/* ==========================================================================
+   SpaceLabs — subsystem-development.css (SERVICE 02 — SYSTEM DEVELOPMENT)
+   Page-scoped additions on top of site.css: NGC kit chain, datasheet plate,
+   previous / next service links, emblem tag tint. No shared rules are changed.
+   ========================================================================== */
+
+/* ---------- title sub-line: the full "NAVIGATION · GUIDANCE · CONTROL" must read on a 390 px phone.
+   Below 640 px: tighter tracking, and it may wrap (at the separators) instead of ellipsising. */
+@media (max-width: 639.98px) {
+  body[data-page="subsystem-development"] .title__sub {
+    white-space: normal; overflow: visible; text-overflow: clip; letter-spacing: 0.12em; line-height: 1.7;
+  }
+  body[data-page="subsystem-development"] .title__sub.is-in { letter-spacing: 0.12em; }
+  /* chapter markers ("02 / 06 — DEVELOPMENT CAPABILITIES") wrap rather than ellipsise */
+  body[data-page="subsystem-development"] .marker__label { white-space: normal; overflow: visible; text-overflow: clip; letter-spacing: 0.16em; }
+}
+
+/* ---------- emblem tags: a touch brighter than --dim so the layer names read over the render.
+   The invisible ::before copy doubles the box, so the centred tag starts its text AT the projected
+   point (the end of each leader hairline) and reads to the right of the stack instead of over it. */
+body[data-page="subsystem-development"] .title__object .region__tag { color: var(--muted); padding-left: 8px; }
+body[data-page="subsystem-development"] .title__object .region__tag::before { content: attr(data-label); visibility: hidden; padding-right: 8px; }
+
+/* ---------- NGC kit chain (Navigation Hardware → Checkout → Navigation Software → Guidance → Control → Actuator) */
+.kit { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); }
+.kit__node {
+  position: relative; min-width: 0;
+  display: grid; grid-template-columns: 3ch 1fr; column-gap: var(--s4); align-items: start; align-content: start;
+  padding: var(--s5) var(--s5) var(--s5) 0; border-bottom: 1px solid var(--line);
+  transition: background-color var(--t-micro), border-color var(--t-micro);
+}
+.kit__node:hover { background: var(--panel); }
+.kit__idx { font: 400 var(--fs-mono) / 1.6 var(--ff-mono); color: var(--dim); transition: color var(--t-micro); }
+.kit__node:hover .kit__idx { color: var(--accent); }
+.kit__label { font: 500 var(--fs-h4) / 1.3 var(--ff-body); color: var(--text); letter-spacing: -0.01em; }
+.kit__desc { grid-column: 2; font: 400 var(--fs-small) / 1.5 var(--ff-body); color: var(--muted); margin-top: var(--s2); }
+.kit__spec { grid-column: 2; font: 400 var(--fs-mono) / 1.6 var(--ff-mono); color: var(--dim); letter-spacing: 0.04em; margin-top: var(--s2); }
+.kit__arrow { grid-column: 2; margin-top: var(--s3); font: 400 1.125rem / 1 var(--ff-mono); color: var(--accent); }
+.kit__arrow::before { content: "↓"; }
+.kit__node:last-child .kit__arrow { display: none; }
+@media (min-width: 640px) {
+  .kit { grid-template-columns: repeat(3, 1fr); column-gap: var(--gap); row-gap: var(--s6); border-top: 0; }
+  .kit__node { grid-template-columns: 1fr; border-top: 1px solid var(--line); border-bottom: 0; padding-right: var(--s7); }
+  .kit__idx { margin-bottom: var(--s3); }
+  .kit__desc, .kit__spec, .kit__arrow { grid-column: 1; }
+  .kit__arrow { position: absolute; right: 0; top: var(--s5); margin: 0; }
+  .kit__arrow::before { content: "→"; }
+  .kit__node:nth-child(3n) .kit__arrow { position: static; margin-top: var(--s3); }
+  .kit__node:nth-child(3n) .kit__arrow::before { content: "↓"; }
+}
+@media (min-width: 1024px) {
+  .kit { grid-template-columns: repeat(6, 1fr); column-gap: var(--s5); row-gap: 0; }
+  .kit__node { padding-right: var(--s6); }
+  .kit__node:nth-child(3n) .kit__arrow { position: absolute; margin: 0; }
+  .kit__node:nth-child(3n) .kit__arrow::before { content: "→"; }
+}
+
+/* ---------- brochure renders on black: show the whole object (contain) on a matching black field */
+.frame--black .frame__media { background: #000; }
+.frame--black .frame__media img { object-fit: contain; }
+/* the satellite figure rides along beside the capabilities ledger on wide screens */
+@media (min-width: 1024px) {
+  .frame--sticky { position: sticky; top: calc(var(--nav-h) + var(--s6)); align-self: start; }
+}
+
+/* ---------- previous / next service */
+.prevnext { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); }
+.prevnext__link {
+  position: relative; display: grid; gap: var(--s3); align-content: start; min-height: 44px;
+  padding: var(--s7) 0; border-bottom: 1px solid var(--line);
+  text-decoration: none; color: inherit; transition: background-color var(--t-micro);
+}
+.prevnext__link:hover { background: var(--panel); }
+.prevnext__eyebrow { color: var(--dim); }
+.prevnext__h { font: 500 var(--fs-h3) / 1.1 var(--ff-display); letter-spacing: -0.02em; color: var(--text-display); margin: 0; display: flex; gap: 0.5ch; align-items: baseline; flex-wrap: wrap; }
+.prevnext__arrow { font: 400 0.8em / 1 var(--ff-mono); color: var(--muted); transition: transform var(--t-control) var(--ease-out), color var(--t-micro); }
+.prevnext__link:hover .prevnext__arrow { color: var(--text); transform: translateX(8px); }
+.prevnext__link--prev:hover .prevnext__arrow { transform: translateX(-8px); }
+.prevnext__desc { color: var(--muted); font-size: var(--fs-small); max-width: 40ch; margin: 0; }
+@media (min-width: 768px) {
+  .prevnext { grid-template-columns: 1fr 1fr; column-gap: var(--gap); }
+  .prevnext__link--next { text-align: right; justify-items: end; }
+  .prevnext__link--next .prevnext__h { justify-content: flex-end; }
+}

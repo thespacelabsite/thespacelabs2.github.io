@@ -1,0 +1,140 @@
+/* ==========================================================================
+   SpaceLabs — pages/index.css (page-scoped; loaded after site.css)
+   Hero beats · overview sticky title · products figures · services flight path ·
+   heritage night framing · partners · dispatches 2-up · anchors
+   ========================================================================== */
+
+/* ---------- anchors (#home at the top of main, #news alias inside #dispatches) ---------- */
+.anchor-top, .anchor-alias { position: absolute; left: 0; top: 0; width: 1px; height: 1px; pointer-events: none; }
+
+/* ---------- HERO beats ------------------------------------------------------ */
+/* .beat already carries the gutter as padding: its .wrap must not add a second gutter */
+.beat > .wrap, .beat > .beat__in { width: min(100%, var(--content-max)); margin-inline: auto; }
+.beat--centre > .beat__in { width: auto; display: grid; justify-items: center; }
+.beat--centre .marker { justify-content: center; }
+.hero__eyebrow { color: var(--muted); margin: var(--s4) 0 var(--s5); }
+.hero__h1 { color: var(--text-display); }
+.hero__lead { margin-top: var(--s5); }
+.hero__actions { margin-top: var(--s4); }
+.hero__h2 { margin-inline: auto; }
+.beat .strip { background: rgba(5, 5, 7, 0.28); }
+@media (max-width: 767.98px) {
+  .hero__eyebrow { white-space: normal; overflow: visible; }
+  .beat .strip dd { font-size: clamp(1.5rem, 1rem + 2vw, 2rem); }
+  /* two-column strip on phones: labels wrap instead of ellipsising ("SIMULATION MODES"), and the word value keeps
+     the small text size so MILS · OILS · HILS reads on one or two lines */
+  .beat .strip dt { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.5; }
+  .beat .strip dd.strip__text { font-size: 1.0625rem; line-height: 1.35; }
+}
+/* Beats B and C hold count-ups and reveals: keep their content outside the viewport until the beat is on, so the
+   IntersectionObservers in core.js fire at the beat, not at page load. The beat's own 0.6 s opacity fade carries
+   the entrance; the old beat collapses only after it has faded out. */
+.beat--b:not(.is-on) > .beat__in, .beat--c:not(.is-on) > .beat__in { transform: translateY(120vh); transition: transform 0s linear 0.7s; }
+.beat.is-on > .beat__in { transform: none; transition: none; }
+html.is-reduced .beat__in, html.no-js .beat__in { transform: none !important; transition: none !important; }
+/* no JS at all: the beats stack in flow and stay visible */
+html.no-js .hero { height: auto; }
+html.no-js .hero__stage { position: relative; height: auto; }
+html.no-js .beat { position: relative; inset: auto; opacity: 1; pointer-events: auto; padding-block: var(--s8); }
+html.no-js .hero__cue, html.no-js .hero__readout, html.no-js .hero::after { display: none; }
+/* poster fallback (tier NONE, reduced motion, no JS): the sunrise crops to the bright sun behind the white H1 on
+   narrow screens — a scrim keeps every beat readable; when the hero stacks into flow the poster covers the first
+   screen only and fades into the void beneath it */
+.hero__poster::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(5, 5, 7, 0.88) 0%, rgba(5, 5, 7, 0.6) 45%, rgba(5, 5, 7, 0.4) 100%); }
+html.is-reduced .hero__stage > .hero__poster, html.no-js .hero__stage > .hero__poster { bottom: auto; height: 100svh; }
+html.is-reduced .hero__poster::after, html.no-js .hero__poster::after { background: linear-gradient(to top, var(--void) 0%, rgba(5, 5, 7, 0.72) 30%, rgba(5, 5, 7, 0.62) 100%); }
+/* narrow screens: the SIM readout (decorative, aria-hidden) would sit on top of the Scroll cue — keep the cue only */
+@media (max-width: 639.98px) { .hero__readout { display: none; } }
+
+/* ---------- 01 OVERVIEW --------------------------------------------------- */
+/* Stacked below 1024 px; from 1024 px a 5-column sticky title beside a 7-column body. The heading size is capped so
+   its longest word ("technologies", ~6.7 em) always fits the title column: 1024 px -> 335 px column / ~41 px type,
+   1440 px -> 510 px column / ~51 px type. */
+.overview { padding-top: var(--s7); }
+/* the hero's bottom fade (site.css .hero::after) ends in solid void exactly at the hero's edge; continue it into the
+   overview and release it gradually, so the ambient Earth never shows a hard horizontal seam there */
+.overview { background: linear-gradient(to bottom, var(--void) 0, rgba(5, 5, 7, 0.6) 14vh, rgba(5, 5, 7, 0) 42vh); }
+.overview__grid > .overview__head, .overview__grid > .overview__body { grid-column: 1 / -1; min-width: 0; }
+h2.overview__h { font: 600 clamp(2rem, 1rem + 2.4vw, 3.25rem) / 1.04 var(--ff-display); letter-spacing: -0.03em; max-width: 18ch; overflow-wrap: normal; hyphens: manual; }
+.overview__body > .lead { color: var(--text); }
+.overview__body > p + p { margin-top: var(--s5); }
+.overview__facets { margin-top: var(--s8); }
+@media (min-width: 1024px) {
+  .overview__grid > .overview__head { grid-column: 1 / 6; position: sticky; top: calc(var(--nav-h) + var(--s7)); align-self: start; }
+  .overview__grid > .overview__body { grid-column: 6 / -1; }
+  h2.overview__h { max-width: 16ch; }
+}
+
+/* ---------- 02 PRODUCTS ---------------------------------------------------- */
+.panel .region__fallback > svg { opacity: 0.9; }
+/* phones and tablets: the shared 16/10 (and, up to 1280 px, 5/4) panel is shorter than its text block (eyebrow +
+   name + desc + line + CTA), which pushed "PRODUCT 01" out of the top edge. A taller card leaves the glyph its own
+   band above the text. */
+@media (max-width: 1279.98px) {
+  .panels .panel { aspect-ratio: auto; min-height: 460px; }
+  .panels .panel .region__fallback > svg { transform: translateY(-22%); }
+}
+/* the lifted glyph's lower half (ASTRA floor grid, SARAS gimbal ring) runs behind the copy: make the text plate solid
+   where the words are, at every width */
+.panels .panel__text { background: linear-gradient(to top, var(--panel) 0%, var(--panel) 62%, rgba(18, 18, 26, 0.85) 80%, rgba(18, 18, 26, 0) 100%); }
+@media (max-width: 767.98px) { .panels .panel { min-height: 520px; } }
+/* Image frames on this page: always visible once on screen (the shared clip-path wipe left the SARAS screenshot and
+   the news cards as empty boxes until they were 18 % above the fold). They keep a gentle settle instead. */
+#main .frame.js-reveal img { clip-path: none; transform: scale(1.04); transition: transform 1.2s var(--ease-out); }
+#main .frame.js-reveal.is-in img { transform: none; }
+.products__foot { margin-top: var(--s6); }
+.products__foot .ghost .mono { font-size: 0.6875rem; color: var(--dim); margin-left: 0.25ch; }
+.products__figures { margin-top: var(--s8); row-gap: var(--s6); }
+.products__figures .frame__cap { color: var(--muted); }
+
+/* ---------- 03 SERVICES — flight-path ledger ----------------------------- */
+.ledger__path line { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+.ledger--path .ledger__row:first-child { border-top-color: var(--line); }
+@media (max-width: 767.98px) {
+  .ledger--path { padding-left: 0; }
+  .ledger__path { display: none; }
+}
+
+/* ---------- 04 HERITAGE — night framing ---------------------------------- */
+.heritage { min-height: 100svh; display: grid; align-content: center; padding-block: var(--s10); overflow: hidden; }
+.heritage > .region__fallback { pointer-events: none; }
+.heritage__poster img { object-position: 50% 38%; }
+.heritage__poster::before, .heritage__poster::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 28%; pointer-events: none;
+}
+.heritage__poster::before { top: 0; background: linear-gradient(to bottom, var(--void), rgba(5, 5, 7, 0)); }
+.heritage__poster::after { bottom: 0; background: linear-gradient(to top, var(--void), rgba(5, 5, 7, 0)); }
+.heritage__wrap { position: relative; z-index: 1; }
+.heritage .statement__aside { padding-bottom: var(--s2); }
+.heritage .dossier__role { color: var(--muted); margin-bottom: var(--s4); }
+.heritage .statement__aside > p + p { margin-top: var(--s4); }
+@media (min-width: 1024px) { .heritage .statement__aside { padding-left: var(--s6); border-left: 1px solid var(--line); } }
+
+/* ---------- 05 PARTNERS ----------------------------------------------------- */
+#partners .marker { margin-bottom: var(--s2); }
+/* phones: wrap the five marks into a centred block instead of a hidden side-scroller (Skyroot was off-screen) */
+@media (max-width: 639.98px) {
+  #partners .partners__row { overflow: visible; flex-wrap: wrap; justify-content: center; gap: var(--s6) var(--s7); scroll-snap-type: none; padding-bottom: 0; }
+}
+#partners .partners { border-top: 0; padding-top: var(--s5); }
+.partners__row img { max-height: 36px; }
+/* L&T, MTAR and Skyroot are single-colour dark line marks (Skyroot is pure black and vanished on the void):
+   render them as white silhouettes at the shared monochrome opacity; IIT Madras and Cosmicport keep the grey filter */
+.partners__row li:nth-child(2) img, .partners__row li:nth-child(4) img, .partners__row li:nth-child(5) img { filter: brightness(0) invert(1); opacity: 0.6; }
+.partners__row li img:hover { opacity: 1; }
+.partners__row li:nth-child(3) img { height: 30px; }
+@media (min-width: 768px) { .partners__row li:nth-child(3) img { height: 38px; } }
+@media (min-width: 1024px) { .partners__row img { height: 44px; max-height: 44px; } .partners__row li:nth-child(3) img { height: 40px; } }
+
+/* ---------- 06 DISPATCHES --------------------------------------------------- */
+@media (min-width: 768px) { .dispatches--2 { grid-template-columns: repeat(2, 1fr); } }
+.dispatches__aside { align-self: end; }
+.dispatches__aside .eyebrow { margin-bottom: var(--s2); }
+.dispatches__aside p + p { margin-top: 0; }
+@media (max-width: 767.98px) { .dispatches__aside { padding-top: var(--s2); } }
+
+/* ---------- 07 CTA ------------------------------------------------------------ */
+.cta__actions .pill--secondary { max-width: 100%; white-space: normal; text-align: center; }
+
+/* news thumbnails at the clippings' native 600x494 ratio (4/3 cropped the headline printed in the clipping) */
+.frame[data-ratio="600/494"] { --ratio: 600 / 494; }

@@ -1,0 +1,105 @@
+/* SpaceLabs — contact.html page-scoped styles (loaded after site.css)
+   Covers only what the shared system does not: the title-block coordinate readout, the two-column
+   coords/channels layout, the following pin tag, and the mailto composer's form controls. */
+
+/* ---------- TitleBlock extras ---------- */
+.title__coords { margin-top: var(--s6); gap: var(--s3); color: var(--dim); }
+.title__coords .clock { font-size: var(--fs-mono); color: var(--dim); }
+.title--contact .title__lead { max-width: 46ch; }
+
+/* The pin label is two lines and sits to the upper-right of the pin (positioned by scenes/contact.js);
+   site.css keeps it hidden until projected. */
+.title__object .region__tag--pin {
+  white-space: normal; text-align: left; line-height: 1.6; color: var(--muted);
+  padding-left: var(--s3); border-left: 1px solid var(--accent);
+  transform-origin: left center; max-width: min(60%, 260px);
+}
+.title__object .region__tag--pin.is-left {
+  text-align: right; padding-left: 0; padding-right: var(--s3); border-left: 0; border-right: 1px solid var(--accent);
+}
+.title__object .region__tag--pin.is-below {
+  text-align: center; padding-left: 0; padding-top: var(--s2); border-left: 0; border-top: 1px solid var(--accent); max-width: none;
+}
+
+/* ---------- Chapter 01 — coords + channels ---------- */
+.coords-grid { row-gap: var(--s7); align-items: start; }
+.coords .eyebrow { margin-bottom: var(--s2); }
+.coords__lines { line-height: 1.6; max-width: 34ch; }
+.coords__map { margin-top: var(--s5); }
+.coords__meta { margin: var(--s6) 0 0; padding: 0; border-top: 1px solid var(--line); }
+.coords__meta > div { display: grid; grid-template-columns: 1fr auto; gap: var(--s4); align-items: baseline; padding: var(--s3) 0; border-bottom: 1px solid var(--line); }
+.coords__meta dt { font-family: var(--ff-tech); font-weight: 400; text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.6875rem; line-height: 1.5; color: var(--dim); white-space: nowrap; }
+.coords__meta dd { margin: 0; font: 400 var(--fs-mono) / 1.6 var(--ff-mono); font-variant-numeric: tabular-nums; color: var(--text); text-align: right; }
+.coords__meta .clock { font: inherit; color: inherit; }
+@media (min-width: 1024px) {
+  .coords { position: sticky; top: calc(var(--nav-h) + var(--s6)); align-self: start; }
+}
+@media (max-width: 767px) {
+  .channel__value { font-size: clamp(1.25rem, 1rem + 1.6vw, 1.5rem); }
+}
+
+/* ---------- Chapter 02 — mailto composer ---------- */
+.compose-grid { align-items: start; }
+.compose { display: grid; gap: var(--s6); }
+.compose__row { display: grid; gap: var(--s6); }
+@media (min-width: 640px) { .compose__row { grid-template-columns: 1fr 1fr; } }
+
+.field { display: grid; gap: var(--s2); min-width: 0; }
+.field__label {
+  font-family: var(--ff-tech); font-weight: 400; text-transform: uppercase; letter-spacing: 0.22em;
+  font-size: 0.6875rem; line-height: 1.5; color: var(--dim);
+}
+.field__input {
+  width: 100%; min-height: 48px; margin: 0; padding: 12px 0;
+  font: 400 var(--fs-body) / 1.5 var(--ff-body); color: var(--text);
+  background: transparent; border: 0; border-bottom: 1px solid var(--line-strong); border-radius: 0;
+  appearance: none; -webkit-appearance: none; outline: none;
+  transition: border-color var(--t-control) var(--ease-out), background-color var(--t-control) var(--ease-out);
+}
+.field__input::placeholder { color: var(--dim); opacity: 1; }
+.field__input:hover { border-bottom-color: var(--muted); }
+.field__input:focus { border-bottom-color: var(--accent); }
+.field__input:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 2px; }
+.field__textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+.field__select { position: relative; }
+.field__select .field__input { padding-right: 32px; cursor: pointer; text-overflow: ellipsis; }
+.field__select option { background: var(--panel-raised); color: var(--text); }
+.field__chev { position: absolute; right: 8px; top: 50%; width: 12px; height: 12px; transform: translateY(-50%); color: var(--dim); pointer-events: none; }
+.field__input:focus + .field__chev { color: var(--accent); }
+/* autofill must not paint the browser's yellow */
+.field__input:-webkit-autofill, .field__input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text); -webkit-box-shadow: 0 0 0 1000px var(--ink) inset; transition: background-color 9999s;
+}
+
+.compose__preview { padding: var(--s4) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); row-gap: var(--s2); }
+.compose__preview > span:not(.chip) { color: var(--muted); overflow-wrap: anywhere; }
+.compose__actions { display: flex; flex-wrap: wrap; gap: var(--s4) var(--s5); align-items: center; }
+.compose__note { max-width: 56ch; }
+html.no-js #compose-send { display: none; }
+
+.compose__aside .eyebrow { margin-bottom: var(--s4); }
+.compose__links { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.compose__links li { border-bottom: 1px solid var(--line); }
+.compose__links a { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); min-height: 48px; padding: var(--s3) 0; font: 500 var(--fs-small) / 1.4 var(--ff-body); }
+.compose__links .mono { font-size: 0.6875rem; letter-spacing: 0.04em; }
+@media (min-width: 768px) and (max-width: 1023px) {
+  .compose-grid .compose { grid-column: 1 / 9; }
+  .compose-grid .compose__aside { grid-column: 9 / -1; }
+}
+@media (min-width: 1024px) {
+  .compose__aside { position: sticky; top: calc(var(--nav-h) + var(--s6)); }
+}
+
+/* ---------- QA finish ---------- */
+/* The shared eyebrow rule ellipsises on one line; on a 390 px screen that clipped "THIRUVANANTHAPURAM, INDIA". Wrap instead. */
+.title--contact .title__sub { white-space: normal; overflow: visible; text-overflow: clip; }
+/* The pin label floats over city lights: a quiet backing keeps it legible without becoming a box. */
+.title__object .region__tag--pin {
+  color: var(--text); background: rgba(5, 5, 7, 0.62); padding-top: 6px; padding-bottom: 6px; padding-right: var(--s3);
+}
+.title__object .region__tag--pin.is-left { padding-left: var(--s3); }
+.title__object .region__tag--pin.is-below { padding: var(--s2) var(--s3) 6px; }
+/* Address reads as four deliberate lines (street · locality · city/PIN · country). */
+.coords__lines { max-width: none; }
+/* The composer's TO / SUBJECT readout spans the form width so its hairlines align with the fields. */
+.compose__preview { display: flex; width: 100%; }

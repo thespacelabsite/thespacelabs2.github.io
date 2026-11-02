@@ -1,0 +1,83 @@
+/* ==========================================================================
+   SpaceLabs — astra.css (page-scoped, loaded after site.css)
+   PRODUCT 01 — ASTRA: emblem tags, convergence stage tags, figure rows,
+   paired ledgers with headings, the related SARAS panel (lite) layout.
+   ========================================================================== */
+
+/* ---------- title block ---------- */
+.astra-title .title__sub { color: var(--muted); }
+.astra-title .title__object .region__tag[data-tag="cand"] { color: var(--text); }
+.astra-title .title__object .region__tag[data-tag="opt"] { color: var(--accent-hot); }
+.astra-title .region__tag::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 8px; vertical-align: middle; opacity: 0.8; }
+/* FIG. caption: a dark chip so it stays legible over the limb; wraps inside the cell on narrow screens */
+.astra-title .region__caption { right: var(--s5); max-width: max-content; padding: 4px 8px; background: rgba(5, 5, 7, 0.72); border-radius: 2px; }
+/* the shared eyebrow rule ellipsises; facts on this page wrap instead */
+.astra-title .title__sub, .astra-title .strip dt, body[data-page="astra"] main .marker__label { white-space: normal; overflow: visible; text-overflow: clip; }
+.astra-title .title__sub { line-height: 1.7; }
+@media (max-width: 479.98px) {
+  .astra-title .title__sub { letter-spacing: 0.1em; }
+  .astra-title .astra-cap-x { display: none; }   /* caption keeps "FIG. 01 — TRAJECTORY FAN" on one line in the short mobile cell */
+}
+/* projected tags sit beside their point, not on top of the line */
+.astra-title .region__tag[data-tag="opt"] { margin-top: -18px; }
+.astra-title .region__tag[data-tag="cand"] { margin-top: -16px; }
+
+/* ---------- chapter intro rows ---------- */
+.astra-figs { display: grid; grid-template-columns: 1fr; gap: var(--s6); margin-top: var(--s7); }
+@media (min-width: 768px) { .astra-figs { grid-template-columns: 1fr 1fr; gap: var(--gap); } }
+/* diagrams and screenshots carry labels: show them whole (contain), letterboxed on their own dark ground */
+.astra-figs .frame__media { background: #000; }
+.astra-figs .frame__media img { object-fit: contain; object-position: center; }
+.astra-figs--ui .frame__media { background: #0b0b10; }
+
+/* ---------- convergence stage ---------- */
+.astra-stage .scrub__sticky { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.astra-stage .region__tag { color: var(--muted); }
+.astra-stage .region__tag::before { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: currentColor; margin-right: 8px; vertical-align: middle; }
+.astra-stage .region__tag[data-tag="insertion"] { color: var(--accent-hot); }
+/* the readout sits above the fixed LaunchButton (56 px at right/bottom 24 px) instead of running into it */
+.astra-stage .scrub__readout { max-width: calc(100% - 2 * var(--gutter)); bottom: calc(24px + 56px + var(--s5)); }
+.astra-stage .region__tag[data-tag="launch"] { margin-top: 16px; margin-left: -40px; }
+.astra-stage .region__tag[data-tag="insertion"] { margin-top: 16px; margin-left: 52px; }
+/* the orbit ring can pass behind the step column: a soft void halo keeps the copy crisp over it */
+.astra-stage .step h3, .astra-stage .step p, .astra-stage .step__list { text-shadow: 0 0 6px var(--void, #050507), 0 0 12px var(--void, #050507); }
+.astra-stage .scrub__readout [data-readout] { font-variant-numeric: tabular-nums; color: var(--muted); }
+.astra-stage .step .marker { color: var(--dim); }
+.astra-stage .step__list { list-style: none; margin: var(--s4) 0 0; padding: 0; display: grid; gap: var(--s1); font: 400 var(--fs-mono) / 1.6 var(--ff-mono); color: var(--dim); letter-spacing: 0.04em; }
+.astra-stage .step__list li::before { content: "— "; color: var(--accent); }
+.astra-stage .region__fallback > svg { width: min(70%, 520px); max-height: 60%; }
+@media (max-width: 1023.98px) {
+  .astra-stage .region__fallback { align-items: start; padding-top: calc(var(--nav-h) + var(--s6)); }
+  .astra-stage .region__tag { display: none; }
+  .astra-stage .step__list { display: none; }
+}
+html.is-reduced .astra-stage .region__fallback { align-items: center; padding-top: 0; }
+
+/* ---------- paired ledgers with headings ---------- */
+.astra-pair__h { display: flex; align-items: baseline; gap: var(--s4); margin-bottom: var(--s5); }
+.astra-pair__h .mono { color: var(--dim); }
+.astra-pair__h h3 { font-size: var(--fs-h4); font-family: var(--ff-body); letter-spacing: -0.01em; color: var(--text); }
+.astra-pair__lead { color: var(--muted); max-width: 48ch; margin-bottom: var(--s6); font-size: var(--fs-small); }
+.ledger--astra .ledger__cells { min-height: 64px; padding-block: var(--s4); }
+.ledger--astra .ledger__title { font-size: var(--fs-body); grid-column: 3 / 12; }
+@media (max-width: 767.98px) { .ledger--astra .ledger__title { grid-column: 2; } }
+
+/* ---------- related: SARAS lite panel + ledger ---------- */
+.astra-related { display: grid; grid-template-columns: 1fr; gap: var(--s7); }
+@media (min-width: 1024px) { .astra-related { grid-template-columns: 5fr 7fr; gap: var(--gap); align-items: start; } }
+.panel--lite.astra-saras { display: grid; grid-template-columns: 1fr; min-height: 0; }
+.panel--lite.astra-saras > .region__fallback { position: relative; inset: auto; display: grid; place-items: center; min-height: 200px; }
+.panel--lite.astra-saras > .region__fallback > svg { width: 44%; max-width: 180px; max-height: none; color: var(--dim); }
+.panel--lite.astra-saras .panel__text { padding: var(--s5) var(--s6) var(--s6); background: var(--panel); border-top: 1px solid var(--line); }
+@media (min-width: 480px) and (max-width: 1023.98px) {
+  .panel--lite.astra-saras { grid-template-columns: 200px 1fr; }
+  .panel--lite.astra-saras > .region__fallback { min-height: 100%; }
+  .panel--lite.astra-saras .panel__text { border-top: 0; border-left: 1px solid var(--line); }
+}
+.panel--lite.astra-saras:not([data-gl="on"]) { transform: none; }
+.panel--lite.astra-saras .panel__name { font-size: 1.75rem; }
+.astra-related .ledger__desc { grid-column: 3 / 12; }
+@media (max-width: 767.98px) { .astra-related .ledger__desc { grid-column: 2; } }
+
+/* ---------- misc ---------- */
+.astra-note { font: 400 var(--fs-mono) / 1.6 var(--ff-mono); color: var(--dim); letter-spacing: 0.04em; margin-top: var(--s5); max-width: 62ch; }
