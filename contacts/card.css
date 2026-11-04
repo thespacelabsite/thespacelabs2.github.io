@@ -1,0 +1,130 @@
+/* SpaceLabs contact cards: one stylesheet shared by every card.
+   Tokens mirror assets/css/site.css. Cards load this file instead of site.css so they stay
+   light on a phone right after an NFC tap: no WebGL, no frameworks, compositor-only animation. */
+:root {
+  --void: #050507;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --text: #F4F4F7;
+  --text-soft: rgba(244, 244, 247, 0.78);
+  --muted: #A0A0AE;
+  --accent: #D412A1;
+  --accent-hot: #FF3FC6;
+  --atmos: #4FA8FF;
+  --sun: #FFE6C2;
+  --ff-display: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --ff-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --ff-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --ff-tech: "Michroma", Arial, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --horizon: 232px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--void); color-scheme: dark; -webkit-text-size-adjust: 100%; }
+body { margin: 0; position: relative; min-height: 100svh; overflow-x: clip; color: var(--text); font: 400 1rem / 1.6 var(--ff-body); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent-hot); outline-offset: 3px; }
+
+/* ---------- Sky: stars, Earth limb and sunrise behind the card ---------- */
+.sky { position: absolute; inset: 0 0 auto; height: 900px; overflow: hidden; pointer-events: none; z-index: -1;
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(1px 1px at 8% 9%, #fff, transparent), radial-gradient(1px 1px at 17% 24%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 27% 6%, rgba(255, 255, 255, 0.8), transparent), radial-gradient(1px 1px at 36% 17%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 46% 4%, #fff, transparent), radial-gradient(1px 1px at 58% 13%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 67% 7%, rgba(255, 255, 255, 0.75), transparent), radial-gradient(1px 1px at 76% 21%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 88% 8%, #fff, transparent), radial-gradient(1px 1px at 94% 19%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 12% 15%, rgba(255, 255, 255, 0.4), transparent), radial-gradient(1px 1px at 83% 14%, rgba(255, 255, 255, 0.4), transparent);
+}
+.sky::before { /* the planet: only its crest and rim are visible, the body is the page's own near-black */
+  --d: max(1500px, 130vw);
+  content: ""; position: absolute; left: 50%; top: var(--horizon); width: var(--d); height: var(--d); margin-left: calc(var(--d) / -2); border-radius: 50%;
+  background: radial-gradient(circle at 50% 0, #0B1A38 0, #070A14 16%, var(--void) 36%);
+  box-shadow: 0 -1px 3px rgba(79, 168, 255, 0.95), 0 -6px 26px rgba(79, 168, 255, 0.5), 0 -24px 80px rgba(79, 168, 255, 0.2), inset 0 8px 26px rgba(79, 168, 255, 0.28);
+}
+.sky::after { /* sunrise cresting the limb, right of the portrait */
+  content: ""; position: absolute; left: calc(50% + 118px); top: calc(var(--horizon) + 8px); width: 220px; height: 220px; margin: -110px 0 0 -110px; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0, var(--sun) 2.5%, rgba(255, 230, 194, 0.32) 8%, rgba(255, 230, 194, 0.09) 28%, rgba(255, 230, 194, 0) 62%);
+}
+
+/* ---------- Card column ---------- */
+.card { width: min(100%, 460px); margin-inline: auto; padding: 20px 20px 40px; display: flex; flex-direction: column; overflow-x: clip; /* the tilted orbit must never widen the page; clip keeps .portrait's 3D intact */ }
+.brand { align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; text-decoration: none; }
+.brand img { width: 20px; height: auto; display: block; }
+.brand span { font: 400 0.75rem / 1 var(--ff-tech); letter-spacing: 0.22em; text-transform: uppercase; }
+
+/* Portrait with a real 3D orbit: the ring and the photo share one 3D context, so the ring passes
+   behind the photo on the far side and in front of it on the near side. */
+.portrait { position: relative; width: 168px; height: 168px; margin: 24px auto 0; perspective: 900px; transform-style: preserve-3d; }
+.portrait__img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; background: #12121A; box-shadow: 0 0 0 1px var(--line-strong), 0 18px 50px rgba(0, 0, 0, 0.65); transform: translateZ(0); }
+.orbit { position: absolute; inset: -30px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.26); transform-style: preserve-3d; will-change: transform; animation: orbit 16s linear infinite; }
+.orbit::before { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 1px dashed rgba(255, 255, 255, 0.12); }
+.orbit__sat { position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--accent-hot); box-shadow: 0 0 6px var(--accent-hot), 0 0 18px var(--accent); animation: sat 16s linear infinite; }
+@keyframes orbit {
+  from { transform: rotateZ(-14deg) rotateX(74deg) rotateZ(0deg); }
+  to { transform: rotateZ(-14deg) rotateX(74deg) rotateZ(360deg); }
+}
+@keyframes sat { /* undoes the ring's spin and tilt so the beacon stays a round dot */
+  from { transform: rotateZ(0deg) rotateX(-74deg); }
+  to { transform: rotateZ(-360deg) rotateX(-74deg); }
+}
+
+.name { margin: 34px 0 0; text-align: center; color: var(--text); font: 500 clamp(2.1rem, 9vw, 2.75rem) / 1.02 var(--ff-display); letter-spacing: -0.03em; text-wrap: balance; }
+.role { margin: 14px 0 0; text-align: center; color: var(--text); font: 400 0.6875rem / 1.6 var(--ff-tech); letter-spacing: 0.2em; text-transform: uppercase; }
+.org { margin: 6px 0 0; text-align: center; color: var(--muted); font: 400 0.75rem / 1.5 var(--ff-mono); letter-spacing: 0.04em; }
+
+/* ---------- Actions ---------- */
+.actions { display: flex; gap: 10px; margin-top: 26px; }
+.btn { flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 52px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line-strong); background: rgba(5, 5, 7, 0.6); color: var(--text); font: 500 0.9375rem / 1 var(--ff-body); text-decoration: none; cursor: pointer; transition: background 0.26s, border-color 0.26s, transform 0.26s var(--ease); }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn:hover { border-color: var(--text); }
+.btn:active { transform: scale(0.98); }
+.btn--primary { flex-grow: 1.7; background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn--primary:hover { background: #E81FB2; border-color: #E81FB2; }
+.btn[hidden] { display: none; }
+
+/* ---------- Channels: hairline rows, values wrap and are never cut off ---------- */
+.rows { list-style: none; margin: 28px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.rows li { border-bottom: 1px solid var(--line); }
+.row { display: grid; grid-template-columns: 40px 1fr 16px; align-items: center; column-gap: 12px; min-height: 68px; padding: 12px 4px; text-decoration: none; transition: background 0.26s; }
+.row:hover { background: rgba(255, 255, 255, 0.03); }
+.row__icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line-strong); color: var(--text); }
+.row__icon svg { width: 18px; height: 18px; }
+.row__label { display: block; color: var(--muted); font: 400 0.6875rem / 1.4 var(--ff-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+.row__value { display: block; margin-top: 2px; color: var(--text); font-weight: 500; font-size: 1rem; line-height: 1.35; overflow-wrap: anywhere; }
+.row__arrow { color: var(--muted); font-size: 0.9375rem; transition: transform 0.26s var(--ease), color 0.26s; }
+.row:hover .row__arrow { color: var(--accent-hot); transform: translateX(3px); }
+
+/* ---------- Profile + footer ---------- */
+.profile { margin-top: 30px; }
+.profile h2 { margin: 0; color: var(--muted); font: 400 0.6875rem / 1.5 var(--ff-tech); letter-spacing: 0.2em; text-transform: uppercase; }
+.profile p { margin: 12px 0 0; color: var(--text-soft); font-size: 0.9688rem; line-height: 1.65; }
+.foot { margin: 32px 0 0; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font: 400 0.6875rem / 1.6 var(--ff-mono); letter-spacing: 0.04em; }
+.foot a { display: inline-block; padding-block: 14px; margin-block: -6px; color: var(--text); text-underline-offset: 3px; } /* 44 px tap target */
+
+/* ---------- One-time entrance ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.portrait__img { animation: rise 1s var(--ease) both; }
+.name, .role, .org, .actions, .rows, .profile, .foot { animation: rise 0.9s var(--ease) both; }
+.name { animation-delay: 80ms; }
+.role, .org { animation-delay: 150ms; }
+.actions { animation-delay: 220ms; }
+.rows { animation-delay: 290ms; }
+.profile, .foot { animation-delay: 360ms; }
+
+@media (max-width: 359.98px) {
+  .orbit { inset: -20px; }
+  .orbit::before { inset: -8px; }
+}
+@media (min-width: 720px) {
+  :root { --horizon: 280px; }
+  .card { padding-top: 28px; }
+  .portrait { width: 200px; height: 200px; margin-top: 28px; }
+  .sky::after { left: calc(50% + 190px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .orbit { transform: rotateZ(-14deg) rotateX(74deg) rotateZ(40deg); }
+  .orbit__sat { transform: rotateZ(-40deg) rotateX(-74deg); }
+}

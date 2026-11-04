@@ -1,0 +1,2 @@
+# vCards must keep CRLF line endings (RFC 2426); stop git normalising them
+*.vcf -text
